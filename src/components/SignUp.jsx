@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Avatar,
     Button,
@@ -15,6 +15,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Copyright from './Copyright';
+import { auth } from '../../config/firebase';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,59 +38,84 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
-  const classes = useStyles();
+    const [userDetails, setUserDetails] = useState({});
+    const [validateUser, setValidateUser] = useState("");
+    const classes = useStyles();
 
-  return (
+    const handleUserDetails = ({currentTarget}) => {
+        setUserDetails({ ...userDetails, [currentTarget.name]: currentTarget.value });
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { firstName, email, password } = userDetails;
+
+        try {
+            const { user } = await auth.createUserWithEmailAndPassword(email, password);
+            await user.updateProfile({ displayName: firstName });
+        } catch (err) {
+            console.log('Error Signing up', err);
+            setValidateUser(err.message);
+        }
+    }
+
+    console.log('current user', auth.currentUser);
+
+    return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
-          <div className={classes.paper}>
-        <Grid container direction="column" alignItems="center">
-            <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-            Sign up
-            </Typography>
-        </Grid>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
+        <CssBaseline />
+        <div className={classes.paper}>
+            <Grid container direction="column" alignItems="center">
+                <Avatar className={classes.avatar}>
+                <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                Sign up
+                </Typography>
+            </Grid>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField
+                <TextField
                 autoComplete="fname"
                 name="firstName"
                 variant="outlined"
+                onChange={e => handleUserDetails(e)}
                 required
                 fullWidth
                 id="firstName"
                 label="First Name"
                 autoFocus
-              />
+                />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+                <TextField
                 variant="outlined"
+                onChange={e => handleUserDetails(e)}
                 required
                 fullWidth
                 id="lastName"
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
-              />
+                />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+                <TextField
                 variant="outlined"
+                onChange={e => handleUserDetails(e)}
                 required
                 fullWidth
                 id="email"
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-              />
+                />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+                <TextField
                 variant="outlined"
+                onChange={e => handleUserDetails(e)}
                 required
                 fullWidth
                 name="password"
@@ -97,37 +123,37 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-              />
+                />
             </Grid>
             <Grid item xs={12}>
-              <FormControlLabel
+                <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
+                label="I want to receive updates via email."
+                />
             </Grid>
-          </Grid>
-          <Button
+            </Grid>
+            <Button
             type="submit"
             fullWidth
             size="large"
             variant="contained"
             color="primary"
             className={classes.submit}
-          >
+            >
             Sign Up
-          </Button>
-          <Grid container justify="flex-end">
+            </Button>
+            <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+                <Link href="#" variant="body2">
                 Already have an account? Sign in
-              </Link>
+                </Link>
             </Grid>
-          </Grid>
+            </Grid>
         </form>
-      </div>
-      <Box mt={5}>
+        </div>
+        <Box mt={5}>
         <Copyright />
-      </Box>
+        </Box>
     </Container>
-  );
+    );
 }

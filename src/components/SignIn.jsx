@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Avatar,
   Button,
@@ -15,6 +15,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Copyright from './Copyright';
+import { auth } from '../../config/firebase';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,7 +38,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn() {
-  const classes = useStyles();
+  const [signInDetails, setSignInDetails] = useState({});
+    const [validateUser, setValidateUser] = useState("");
+    const classes = useStyles();
+
+    const handleSignInDetails = ({currentTarget}) => {
+        setSignInDetails({ ...signInDetails, [currentTarget.name]: currentTarget.value });
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { email, password } = signInDetails;
+
+        try {
+          const { user } = await auth.signInWithEmailAndPassword(email, password);
+          console.log('user logged in', user);
+        } catch (err) {
+            console.log('Error Signing up', err);
+            setValidateUser(err.message);
+        }
+    }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -51,9 +71,10 @@ export default function SignIn() {
           Sign in
         </Typography>
         </Grid>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
+            onChange={e => handleSignInDetails(e)}
             margin="normal"
             required
             fullWidth
@@ -65,6 +86,7 @@ export default function SignIn() {
           />
           <TextField
             variant="outlined"
+            onChange={e => handleSignInDetails(e)}
             margin="normal"
             required
             fullWidth
