@@ -1,7 +1,12 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head';
+import { useSelector, useDispatch } from "react-redux";
+import incrementCounter from "../redux/actions/counter/incrementCounter";
+import decrementCounter from "../redux/actions/counter/decrementCounter";
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
+  const counter = useSelector(state => state.counter)
+  const dispatch = useDispatch();
   return (
     <div className={styles.container}>
       <Head>
@@ -13,6 +18,14 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+
+        <span>{counter.value}</span>
+      <button onClick={() => dispatch(incrementCounter())}>
+        Increment counter
+      </button>
+      <button onClick={() => dispatch(decrementCounter())}>
+        Decrement counter
+      </button>
 
         <p className={styles.description}>
           Get started by editing{' '}
