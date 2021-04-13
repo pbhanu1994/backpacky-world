@@ -12,10 +12,13 @@ import {
   Typography,
   Container
 } from '@material-ui/core';
+import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import {LockOutlined as LockOutlinedIcon} from '@material-ui/icons';
+import firebaseClient from '../firebaseClient';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import Copyright from './Copyright';
-import { auth } from '../../config/firebase';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,9 +41,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn() {
-  const [signInDetails, setSignInDetails] = useState({});
+    firebaseClient();
+    const [signInDetails, setSignInDetails] = useState({});
     const [validateUser, setValidateUser] = useState("");
     const classes = useStyles();
+    const router = useRouter();
 
     const handleSignInDetails = ({currentTarget}) => {
         setSignInDetails({ ...signInDetails, [currentTarget.name]: currentTarget.value });
@@ -51,8 +56,8 @@ export default function SignIn() {
         const { email, password } = signInDetails;
 
         try {
-          const { user } = await auth.signInWithEmailAndPassword(email, password);
-          console.log('user logged in', user);
+          const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
+          user && router.push('/');
         } catch (err) {
             console.log('Error Signing up', err);
             setValidateUser(err.message);
@@ -72,8 +77,8 @@ export default function SignIn() {
         </Typography>
         </Grid>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
+          {/* T0-DO Add Icons for Email & Password */}
           <TextField
-            variant="outlined"
             onChange={e => handleSignInDetails(e)}
             margin="normal"
             required
@@ -85,7 +90,6 @@ export default function SignIn() {
             autoFocus
           />
           <TextField
-            variant="outlined"
             onChange={e => handleSignInDetails(e)}
             margin="normal"
             required

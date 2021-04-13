@@ -10,12 +10,17 @@ import {
     Grid,
     Box,
     Typography,
+    Snackbar,
+    Slide,
     Container
 } from '@material-ui/core';
+import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import firebaseClient from '../firebaseClient';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import Copyright from './Copyright';
-import { auth } from '../../config/firebase';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,9 +43,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
+    firebaseClient();
     const [userDetails, setUserDetails] = useState({});
     const [validateUser, setValidateUser] = useState("");
+    const [open, setOpen] = useState(false);
     const classes = useStyles();
+    const router = useRouter();
 
     const handleUserDetails = ({currentTarget}) => {
         setUserDetails({ ...userDetails, [currentTarget.name]: currentTarget.value });
@@ -51,15 +59,14 @@ export default function SignUp() {
         const { firstName, email, password } = userDetails;
 
         try {
-            const { user } = await auth.createUserWithEmailAndPassword(email, password);
+            const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
             await user.updateProfile({ displayName: firstName });
+            user && router.push('/');
         } catch (err) {
             console.log('Error Signing up', err);
             setValidateUser(err.message);
         }
     }
-
-    console.log('current user', auth.currentUser);
 
     return (
     <Container component="main" maxWidth="xs">
@@ -79,7 +86,6 @@ export default function SignUp() {
                 <TextField
                 autoComplete="fname"
                 name="firstName"
-                variant="outlined"
                 onChange={e => handleUserDetails(e)}
                 required
                 fullWidth
@@ -90,7 +96,6 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12} sm={6}>
                 <TextField
-                variant="outlined"
                 onChange={e => handleUserDetails(e)}
                 required
                 fullWidth
@@ -102,7 +107,6 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
                 <TextField
-                variant="outlined"
                 onChange={e => handleUserDetails(e)}
                 required
                 fullWidth
@@ -114,7 +118,6 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
                 <TextField
-                variant="outlined"
                 onChange={e => handleUserDetails(e)}
                 required
                 fullWidth
