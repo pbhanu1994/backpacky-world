@@ -15,7 +15,6 @@ import {
 import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import firebaseClient from '../firebaseClient';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import Toast from './common/Toast';
@@ -41,8 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = () => {
-    firebaseClient();
+export default function SignUp() {
     const [userDetails, setUserDetails] = useState({});
     const [validateUser, setValidateUser] = useState("");
     const [toast, setToast] = useState({open: false, color: "error", message: ""});
@@ -68,7 +66,7 @@ const SignUp = () => {
         try {
             const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
             await user.updateProfile({ displayName: firstName });
-            user && router.push('/');
+            user && router.push('/home');
         } catch (err) {
             console.log('Error Signing up', err);
             setToast({...toast, open: true, color: "error", message: err.message});
@@ -168,5 +166,3 @@ const SignUp = () => {
     </Container>
     );
 }
-
-export default SignUp;

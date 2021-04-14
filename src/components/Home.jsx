@@ -1,13 +1,18 @@
 import React from 'react'
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import nookies from 'nookies';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
-export default function () {
+export default function Home({ userId }) {
+    const router = useRouter();
     return (
         <div>
-            <h1>Welcome to BackPacky World</h1>
+            <h1>Welcome to Dashboard</h1>
             <h3>Have a Safe Travel!</h3>
-            <Link href="/signin">Sign In</Link>
-            <Link href="/signup">Sign Up</Link>
+            <h2>UID: {userId}</h2>
+            <button onClick={async () => {await firebase.auth().signOut(); nookies.destroy(undefined, "token", {}); router.push('/')}}>Signout</button>
         </div>
     )
 }
