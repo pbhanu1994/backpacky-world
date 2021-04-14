@@ -2,19 +2,21 @@
   "name": "backpacky-world",
   "version": "0.1.0",
   "private": true,
+  "main": "function.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next export",
-    "deploy": "next build && next export && firebase deploy"
+    "deploy": "yarn build && cross-env NODE_ENV=production firebase deploy —-only functions,hosting"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
+    "cross-env": "^7.0.3",
     "firebase": "^8.3.2",
     "firebase-admin": "^9.6.0",
+    "firebase-functions": "^3.13.2",
     "next": "10.1.2",
     "next-redux-wrapper": "^6.0.2",
     "nookies": "^2.5.2",

@@ -9,7 +9,7 @@ import {verifyIdToken} from '../src/firebaseAdmin';
 
 import styles from '../styles/Home.module.css';
 
-function Home({ userId }) {
+export default function Home({ userId }) {
   firebaseClient();
   return (
      <HomeComponent userId={userId} />
@@ -29,6 +29,4 @@ export async function getServerSideProps(context) {
         context.res.end();
         return { props: {}}
     }
-} 
-
-export default Home;
+}

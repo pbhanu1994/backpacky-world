@@ -1,10 +1,10 @@
 import firebase from 'firebase';
-import firebaseClientConfig from '../config/firebase.json';
+import FIREBASE_CONFIG from '../config/firebase.json';
 
 export default function firebaseClient() {
    // Initialize Firebase
    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseClientConfig);
+      firebase.initializeApp(FIREBASE_CONFIG);
    } 
    else {
       firebase.app(); // if already initialized, use that one

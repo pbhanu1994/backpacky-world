@@ -20,3 +20,7 @@ export default function Landing() {
       <LandingComponent />
   )
 }
+
+// export async function getServerSideProps() {
+//   return { props: { isSSR: true } }
+// }
