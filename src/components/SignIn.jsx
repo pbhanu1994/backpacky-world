@@ -18,6 +18,7 @@ import {LockOutlined as LockOutlinedIcon} from '@material-ui/icons';
 import firebaseClient from '../firebaseClient';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import Toast from './common/Toast';
 import Copyright from './Copyright';
 
 const useStyles = makeStyles((theme) => ({
@@ -44,8 +45,17 @@ export default function SignIn() {
     firebaseClient();
     const [signInDetails, setSignInDetails] = useState({});
     const [validateUser, setValidateUser] = useState("");
+    const [toast, setToast] = useState({open: false, color: "error", message: ""});
     const classes = useStyles();
     const router = useRouter();
+
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+          return;
+      }
+  
+      setToast({ ...toast, open: false, color: "error", message: "" });
+    };
 
     const handleSignInDetails = ({currentTarget}) => {
         setSignInDetails({ ...signInDetails, [currentTarget.name]: currentTarget.value });
@@ -60,13 +70,14 @@ export default function SignIn() {
           user && router.push('/');
         } catch (err) {
             console.log('Error Signing up', err);
-            setValidateUser(err.message);
+            setToast({...toast, open: true, color: "error", message: err.message});     
         }
     }
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Toast toastOpen={toast.open} toastColor={toast.color} toastMessage={toast.message} onHandleClose={handleClose} />
       <div className={classes.paper}>
         <Grid container direction="column" alignItems="center">
         <Avatar className={classes.avatar}>
