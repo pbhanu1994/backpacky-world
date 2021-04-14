@@ -10,8 +10,6 @@ import {
     Grid,
     Box,
     Typography,
-    Snackbar,
-    Slide,
     Container
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
@@ -20,6 +18,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import firebaseClient from '../firebaseClient';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import Toast from './common/Toast';
 import Copyright from './Copyright';
 
 const useStyles = makeStyles((theme) => ({
@@ -42,13 +41,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+const SignUp = () => {
     firebaseClient();
     const [userDetails, setUserDetails] = useState({});
     const [validateUser, setValidateUser] = useState("");
-    const [open, setOpen] = useState(false);
+    const [toast, setToast] = useState({open: false, color: "error", message: ""});
     const classes = useStyles();
     const router = useRouter();
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+    
+        setToast({ ...toast, open: false, color: "error", message: "" });
+    };
 
     const handleUserDetails = ({currentTarget}) => {
         setUserDetails({ ...userDetails, [currentTarget.name]: currentTarget.value });
@@ -64,13 +71,14 @@ export default function SignUp() {
             user && router.push('/');
         } catch (err) {
             console.log('Error Signing up', err);
-            setValidateUser(err.message);
+            setToast({...toast, open: true, color: "error", message: err.message});
         }
     }
 
     return (
     <Container component="main" maxWidth="xs">
         <CssBaseline />
+        <Toast toastOpen={toast.open} toastColor={toast.color} toastMessage={toast.message} onHandleClose={handleClose} />
         <div className={classes.paper}>
             <Grid container direction="column" alignItems="center">
                 <Avatar className={classes.avatar}>
@@ -160,3 +168,5 @@ export default function SignUp() {
     </Container>
     );
 }
+
+export default SignUp;
