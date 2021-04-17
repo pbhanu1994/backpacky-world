@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -12,95 +12,117 @@ import {
   Grid,
   Box,
   Typography,
-  Container
-} from '@material-ui/core';
-import { useRouter } from 'next/router';
-import { LockOutlined as LockOutlinedIcon, Visibility, VisibilityOff } from '@material-ui/icons';
-import Joi from 'joi-browser';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import { validate, validateProperty } from '../../utils/validate';
-import { signInStyles } from './signInStyles';
-import Toast from '../common/Toast';
-import Copyright from '../Copyright';
+  Container,
+} from "@material-ui/core";
+import { useRouter } from "next/router";
+import {
+  LockOutlined as LockOutlinedIcon,
+  Visibility,
+  VisibilityOff,
+} from "@material-ui/icons";
+import Joi from "joi-browser";
+import firebase from "firebase/app";
+import "firebase/auth";
+import { validate, validateProperty } from "../../utils/validate";
+import { signInStyles } from "./signInStyles";
+import Toast from "../common/Toast";
+import Copyright from "../Copyright";
 
 export default function SignIn() {
-    const [signInDetails, setSignInDetails] = useState({});
-    const [showPassword, setShowPassword] = useState(false);
-    const [errors, setErrors] = useState({});
-    const [toast, setToast] = useState({open: false, color: "error", message: ""});
-    const classes = signInStyles();
-    const router = useRouter();
+  const [signInDetails, setSignInDetails] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [toast, setToast] = useState({
+    open: false,
+    color: "error",
+    message: "",
+  });
+  const classes = signInStyles();
+  const router = useRouter();
 
-    // Validation Schema
-    const schema = {
-      email: Joi.string().email().required().label('Email'),
-      password: Joi.string().required().label("Password")
-    };
+  // Validation Schema
+  const schema = {
+    email: Joi.string().email().required().label("Email"),
+    password: Joi.string().required().label("Password"),
+  };
 
-    const handleSignInDetails = ({currentTarget}) => {
-      // Validating the field
-      const errorMessage = validateProperty(
-        schema,
-        currentTarget.name,
-        currentTarget.value
-      );
+  const handleSignInDetails = ({ currentTarget }) => {
+    // Validating the field
+    const errorMessage = validateProperty(
+      schema,
+      currentTarget.name,
+      currentTarget.value
+    );
 
-      setErrors({
-        ...errors,
-        [currentTarget.name]: errorMessage && errorMessage
-      });
+    setErrors({
+      ...errors,
+      [currentTarget.name]: errorMessage && errorMessage,
+    });
 
-      setSignInDetails({ ...signInDetails, [currentTarget.name]: currentTarget.value });
-    }
+    setSignInDetails({
+      ...signInDetails,
+      [currentTarget.name]: currentTarget.value,
+    });
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const { email, password } = signInDetails;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = signInDetails;
 
-        const resultError = validate(signInDetails, schema);
-        resultError && setErrors(resultError);
+    const resultError = validate(signInDetails, schema);
+    resultError && setErrors(resultError);
 
-        if (resultError === null) {
-          setErrors({});
+    if (resultError === null) {
+      setErrors({});
 
-          try {
-            const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
-            user && router.push('/home');
-          } catch (err) {
-              console.log('Error Signing up', err);
-              setToast({...toast, open: true, color: "error", message: err.message});
-          }
-        }
-
-    }
-
-    // On Toast Close
-    const handleClose = (event, reason) => {
-      if (reason === 'clickaway') {
-          return;
+      try {
+        const { user } = await firebase
+          .auth()
+          .signInWithEmailAndPassword(email, password);
+        user && router.push("/home");
+      } catch (err) {
+        console.log("Error Signing up", err);
+        setToast({
+          ...toast,
+          open: true,
+          color: "error",
+          message: err.message,
+        });
       }
-  
-      setToast({ ...toast, open: false, message: "" });
-    };
+    }
+  };
+
+  // On Toast Close
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setToast({ ...toast, open: false, message: "" });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <Toast toastOpen={toast.open} toastColor={toast.color} toastMessage={toast.message} onHandleClose={handleClose} />
+      <Toast
+        toastOpen={toast.open}
+        toastColor={toast.color}
+        toastMessage={toast.message}
+        onHandleClose={handleClose}
+      />
       <div className={classes.paper}>
         <Grid container direction="column" alignItems="center">
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Welcome
-        </Typography>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Welcome
+          </Typography>
         </Grid>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           {/* T0-DO Add Icons for Email & Password */}
           <TextField
-            onChange={e => handleSignInDetails(e)}
+            onChange={(e) => handleSignInDetails(e)}
             margin="normal"
             required
             fullWidth
@@ -113,7 +135,7 @@ export default function SignIn() {
             helperText={errors["email"]}
           />
           <TextField
-            onChange={e => handleSignInDetails(e)}
+            onChange={(e) => handleSignInDetails(e)}
             margin="normal"
             required
             fullWidth
@@ -133,7 +155,7 @@ export default function SignIn() {
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
-              )
+              ),
             }}
             error={errors["password"]}
             helperText={errors["password"]}
@@ -159,7 +181,10 @@ export default function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-                Don't have an account? <Link href="/signup" variant="body2">Sign Up</Link>
+              Don't have an account?{" "}
+              <Link href="/signup" variant="body2">
+                Sign Up
+              </Link>
             </Grid>
           </Grid>
         </form>
