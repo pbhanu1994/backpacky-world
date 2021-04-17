@@ -22,10 +22,10 @@ export async function getServerSideProps(context) {
         const token = await verifyIdToken(cookies.token);
         const {uid} = token;
         return {
-            props: { userId: uid || null}
+            props: { userId: uid}
         }
     } catch (err) {
-        context.res.writeHead(302, {location: '/signin'});
+        context.res.writeHead(302, {Location: '/signin'});
         context.res.end();
         return { props: {}}
     }

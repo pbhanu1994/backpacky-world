@@ -15,8 +15,10 @@ import {
 import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import {LockOutlined as LockOutlinedIcon} from '@material-ui/icons';
+import Joi from 'joi-browser';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { validate, validateProperty } from '../utils/validate';
 import Toast from './common/Toast';
 import Copyright from './Copyright';
 
@@ -43,34 +45,62 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
     const [signInDetails, setSignInDetails] = useState({});
     const [validateUser, setValidateUser] = useState("");
+    const [errors, setErrors] = useState({});
     const [toast, setToast] = useState({open: false, color: "error", message: ""});
     const classes = useStyles();
     const router = useRouter();
 
-    const handleClose = (event, reason) => {
-      if (reason === 'clickaway') {
-          return;
-      }
-  
-      setToast({ ...toast, open: false, color: "error", message: "" });
+    // Validation Schema
+    const schema = {
+      email: Joi.string().email().required().label('Email'),
+      password: Joi.string().required().label("Password")
     };
 
     const handleSignInDetails = ({currentTarget}) => {
-        setSignInDetails({ ...signInDetails, [currentTarget.name]: currentTarget.value });
+      // Validating the field
+      const errorMessage = validateProperty(
+        schema,
+        currentTarget.name,
+        currentTarget.value
+      );
+
+      setErrors({
+        ...errors,
+        [currentTarget.name]: errorMessage && errorMessage
+      });
+
+      setSignInDetails({ ...signInDetails, [currentTarget.name]: currentTarget.value });
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password } = signInDetails;
 
-        try {
-          const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
-          user && router.push('/home');
-        } catch (err) {
-            console.log('Error Signing up', err);
-            setToast({...toast, open: true, color: "error", message: err.message});     
+        const resultError = validate(signInDetails, schema);
+        resultError && setErrors(resultError);
+
+        if (resultError === null) {
+          setErrors({});
+
+          try {
+            const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
+            user && router.push('/home');
+          } catch (err) {
+              console.log('Error Signing up', err);
+              setToast({...toast, open: true, color: "error", message: err.message});
+          }
         }
+
     }
+
+    // On Toast Close
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+          return;
+      }
+  
+      setToast({ ...toast, open: false, message: "" });
+    };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -97,6 +127,8 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            error={errors["email"]}
+            helperText={errors["email"]}
           />
           <TextField
             onChange={e => handleSignInDetails(e)}
@@ -108,6 +140,8 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            error={errors["password"]}
+            helperText={errors["password"]}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}

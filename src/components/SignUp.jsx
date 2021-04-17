@@ -15,8 +15,10 @@ import {
 import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Joi from 'joi-browser';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { validate, validateProperty } from '../utils/validate';
 import Toast from './common/Toast';
 import Copyright from './Copyright';
 
@@ -43,35 +45,65 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
     const [userDetails, setUserDetails] = useState({});
     const [validateUser, setValidateUser] = useState("");
+    const [errors, setErrors] = useState({});
     const [toast, setToast] = useState({open: false, color: "error", message: ""});
     const classes = useStyles();
     const router = useRouter();
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-    
-        setToast({ ...toast, open: false, color: "error", message: "" });
-    };
+    // Validation Schema
+    const schema = {
+        firstName: Joi.string().required().label('First Name'),
+        lastName: Joi.string().required().label('Last Name'),
+        email: Joi.string().email().required().label('Email'),
+        password: Joi.string().min(5).required().label("Password"),
+      };
 
     const handleUserDetails = ({currentTarget}) => {
-        setUserDetails({ ...userDetails, [currentTarget.name]: currentTarget.value });
+       // Validating the field
+      const errorMessage = validateProperty(
+        schema,
+        currentTarget.name,
+        currentTarget.value
+      );
+
+      setErrors({
+        ...errors,
+        [currentTarget.name]: errorMessage && errorMessage
+      });
+
+      setUserDetails({ ...userDetails, [currentTarget.name]: currentTarget.value });
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { firstName, email, password } = userDetails;
 
-        try {
-            const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
-            await user.updateProfile({ displayName: firstName });
-            user && router.push('/home');
-        } catch (err) {
-            console.log('Error Signing up', err);
-            setToast({...toast, open: true, color: "error", message: err.message});
+        const resultError = validate(userDetails, schema);
+        resultError && setErrors(resultError);
+
+        if(resultError === null) {
+            setErrors({});
+
+            try {
+                const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                await user.updateProfile({ displayName: firstName });
+                user && router.push('/home');
+            } catch (err) {
+                console.log('Error Signing up', err);
+                setToast({...toast, open: true, color: "error", message: err.message});
+            }
         }
+
     }
+
+     // On Toast Close
+     const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+    
+        setToast({ ...toast, open: false, message: "" });
+    };
 
     return (
     <Container component="main" maxWidth="xs">
@@ -98,6 +130,8 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                error={errors["firstName"]}
+                helperText={errors["firstName"]}
                 />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -109,6 +143,8 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                error={errors["lastName"]}
+                helperText={errors["lastName"]}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -120,6 +156,8 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                error={errors["email"]}
+                helperText={errors["email"]}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -132,6 +170,8 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                error={errors["password"]}
+                helperText={errors["password"]}
                 />
             </Grid>
             <Grid item xs={12}>
