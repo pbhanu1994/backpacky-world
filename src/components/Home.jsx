@@ -12,7 +12,7 @@ export default function Home({ userId }) {
             <h1>Welcome to Dashboard</h1>
             <h3>Have a Safe Travel!</h3>
             <h2>UID: {userId}</h2>
-            <button onClick={async () => {await firebase.auth().signOut(); nookies.destroy(undefined, "token", {}); router.push('/')}}>Signout</button>
+            <button onClick={async () => {await firebase.auth().signOut(); router.push('/')}}>Signout</button>
         </div>
     )
 }

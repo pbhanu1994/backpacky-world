@@ -4,7 +4,7 @@ import firebaseClient from './firebaseClient';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
-const AuthContext = createContext({});
+const AuthContext = createContext({ user: null });
 
 export const AuthProvider = ({ children }) => {
     firebaseClient();
@@ -14,14 +14,27 @@ export const AuthProvider = ({ children }) => {
         return firebase.auth().onIdTokenChanged(async (user) => {
             if (!user) {
                 setUser(null);
-                nookies.set(undefined, "token", "", {});
+                nookies.destroy(null, "token");
+                nookies.set(undefined, "token", "", { path: '/' });
                 return;
             }
             const token = await user.getIdToken();
             setUser(user);
-            nookies.set(undefined, "token", token, {});
+            nookies.destroy(null, "token");
+            nookies.set(undefined, "token", token, { path: '/' });
         });
     }, []);
+
+    // force refresh the token every 10 minutes
+  useEffect(() => {
+    const handle = setInterval(async () => {
+      const user = firebaseClient.auth().currentUser;
+      if (user) await user.getIdToken(true);
+    }, 10 * 60 * 1000);
+
+    // clean up setInterval
+    return () => clearInterval(handle);
+  }, []);
 
     return (<AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>);
 }

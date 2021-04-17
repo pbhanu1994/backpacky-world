@@ -4,6 +4,8 @@ import {
   Button,
   CssBaseline,
   TextField,
+  InputAdornment,
+  IconButton,
   FormControlLabel,
   Checkbox,
   Link,
@@ -13,7 +15,7 @@ import {
   Container
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
-import {LockOutlined as LockOutlinedIcon} from '@material-ui/icons';
+import { LockOutlined as LockOutlinedIcon, Visibility, VisibilityOff } from '@material-ui/icons';
 import Joi from 'joi-browser';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -24,7 +26,7 @@ import Copyright from '../Copyright';
 
 export default function SignIn() {
     const [signInDetails, setSignInDetails] = useState({});
-    const [validateUser, setValidateUser] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
     const [toast, setToast] = useState({open: false, color: "error", message: ""});
     const classes = signInStyles();
@@ -92,7 +94,7 @@ export default function SignIn() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Welcome
         </Typography>
         </Grid>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
@@ -117,9 +119,22 @@ export default function SignIn() {
             fullWidth
             name="password"
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             autoComplete="current-password"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(!showPassword)}
+                    onMouseDown={(e) => e.preventDefault()}
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
             error={errors["password"]}
             helperText={errors["password"]}
           />
@@ -144,9 +159,7 @@ export default function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+                Don't have an account? <Link href="/signup" variant="body2">Sign Up</Link>
             </Grid>
           </Grid>
         </form>

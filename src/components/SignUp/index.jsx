@@ -4,16 +4,18 @@ import {
     Button,
     CssBaseline,
     TextField,
+    InputAdornment,
+    IconButton,
     FormControlLabel,
     Checkbox,
-    Link,
     Grid,
+    Link,
     Box,
     Typography,
     Container
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { LockOutlined as LockOutlinedIcon, Visibility, VisibilityOff } from '@material-ui/icons';
 import Joi from 'joi-browser';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -24,7 +26,7 @@ import Copyright from '../Copyright';
 
 export default function SignUp() {
     const [userDetails, setUserDetails] = useState({});
-    const [validateUser, setValidateUser] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
     const [toast, setToast] = useState({open: false, color: "error", message: ""});
     const classes = signUpStyles();
@@ -95,7 +97,7 @@ export default function SignUp() {
                 <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                Sign up
+                Create Account
                 </Typography>
             </Grid>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
@@ -147,9 +149,22 @@ export default function SignUp() {
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"
+                InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword(!showPassword)}
+                          onMouseDown={(e) => e.preventDefault()}
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
                 error={errors["password"]}
                 helperText={errors["password"]}
                 />
@@ -173,9 +188,7 @@ export default function SignUp() {
             </Button>
             <Grid container justify="flex-end">
             <Grid item>
-                <Link href="#" variant="body2">
-                Already have an account? Sign in
-                </Link>
+                Already have an account? <Link href="/signin" variant="body2">Sign in</Link>
             </Grid>
             </Grid>
         </form>

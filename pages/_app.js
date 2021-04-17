@@ -32,7 +32,7 @@ function MyApp({ Component, pageProps, store, ...rest }) {
         <AuthProvider>
           <Component {...pageProps} />
         </AuthProvider>
-      </ThemeProvider>
+     </ThemeProvider>
       {/* // </Provider> */}
     </React.Fragment>
   )

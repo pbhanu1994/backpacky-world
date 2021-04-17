@@ -1,11 +1,13 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import FIREBASE_CONFIG from '../config/firebase.json';
 
 export default function firebaseClient() {
    // Initialize Firebase
    if (!firebase.apps.length) {
       firebase.initializeApp(FIREBASE_CONFIG);
-   } 
+      // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+   }
    else {
       firebase.app(); // if already initialized, use that one
    }
