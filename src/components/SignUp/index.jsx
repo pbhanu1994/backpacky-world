@@ -13,41 +13,21 @@ import {
     Container
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
-import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Joi from 'joi-browser';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { validate, validateProperty } from '../utils/validate';
-import Toast from './common/Toast';
-import Copyright from './Copyright';
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+import { validate, validateProperty } from '../../utils/validate';
+import {signUpStyles} from './signUpStyles';
+import Toast from '../common/Toast';
+import Copyright from '../Copyright';
 
 export default function SignUp() {
     const [userDetails, setUserDetails] = useState({});
     const [validateUser, setValidateUser] = useState("");
     const [errors, setErrors] = useState({});
     const [toast, setToast] = useState({open: false, color: "error", message: ""});
-    const classes = useStyles();
+    const classes = signUpStyles();
     const router = useRouter();
 
     // Validation Schema
