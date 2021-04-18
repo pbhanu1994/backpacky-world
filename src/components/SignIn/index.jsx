@@ -79,7 +79,8 @@ export default function SignIn() {
         const { user } = await firebase
           .auth()
           .signInWithEmailAndPassword(email, password);
-        user && router.push("/home");
+          
+        window.location.href = `${user && "/home"}`;
       } catch (err) {
         console.log("Error Signing up", err);
         setToast({

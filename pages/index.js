@@ -3,10 +3,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from 'next/router';
-import nookies from 'nookies';
-import {useAuth} from '../src/auth';
+import { useAuth } from '../src/auth';
 import LandingComponent from "../src/components/Landing";
-import HomeComponent from "../src/components/Home";
 import styles from '../styles/Home.module.css';
 
 export default function Landing() {
@@ -20,7 +18,3 @@ export default function Landing() {
       <LandingComponent />
   )
 }
-
-// export async function getServerSideProps() {
-//   return { props: { isSSR: true } }
-// }

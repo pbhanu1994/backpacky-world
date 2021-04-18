@@ -1,8 +1,14 @@
-import firebaseClient from '../src/firebaseClient';
+import { useRouter } from 'next/router';
 import SignUpComponent from '../src/components/SignUp';
+import { useAuth } from '../src/auth';
 
 export default function SignUp() {
-  firebaseClient();
+  const { user } = useAuth();
+  const router = useRouter();
+
+  if(user && user.uid) {
+    router.push('/home');
+  }
   return (
     <SignUpComponent />
   )

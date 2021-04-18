@@ -82,7 +82,8 @@ export default function SignUp() {
           .auth()
           .createUserWithEmailAndPassword(email, password);
         await user.updateProfile({ displayName: firstName });
-        user && router.push("/home");
+        
+        window.location.href = `${user && "/home"}`;
       } catch (err) {
         console.log("Error Signing up", err);
         setToast({

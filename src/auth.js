@@ -1,40 +1,36 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import nookies from 'nookies';
-import firebaseClient from './firebaseClient';
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import cookie from 'js-cookie';
+import { auth } from './firebaseClient';
 
 const AuthContext = createContext({ user: null });
 
 export const AuthProvider = ({ children }) => {
-    firebaseClient();
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        return firebase.auth().onIdTokenChanged(async (user) => {
+        return auth.onIdTokenChanged(async (user) => {
+          cookie.remove("__session");
             if (!user) {
                 setUser(null);
-                nookies.destroy(null, "token");
-                nookies.set(undefined, "token", "", { path: '/' });
+                cookie.set("__session", "");
                 return;
             }
             const token = await user.getIdToken();
             setUser(user);
-            nookies.destroy(null, "token");
-            nookies.set(undefined, "token", token, { path: '/' });
+            cookie.set("__session", token);
         });
     }, []);
 
-    // force refresh the token every 10 minutes
-  useEffect(() => {
-    const handle = setInterval(async () => {
-      const user = firebaseClient.auth().currentUser;
-      if (user) await user.getIdToken(true);
-    }, 10 * 60 * 1000);
+    // Force refresh the token every 10 minutes
+    useEffect(() => {
+      const handle = setInterval(async () => {
+        const user = auth.currentUser;
+        if (user) await user.getIdToken(true);
+      }, 10 * 60 * 1000);
 
-    // clean up setInterval
-    return () => clearInterval(handle);
-  }, []);
+      // clean up setInterval
+      return () => clearInterval(handle);
+    }, []);
 
     return (<AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>);
 }

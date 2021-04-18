@@ -1,9 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import nookies from "nookies";
-import firebase from "firebase/app";
-import "firebase/auth";
+import cookie from 'js-cookie';
+import { auth } from '../firebaseClient';
 
 export default function Home({ userId }) {
   const router = useRouter();
@@ -14,7 +13,8 @@ export default function Home({ userId }) {
       <h2>UID: {userId}</h2>
       <button
         onClick={async () => {
-          await firebase.auth().signOut();
+          await auth.signOut();
+          cookie.remove("__session");
           router.push("/");
         }}
       >
