@@ -1,8 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import cookie from 'js-cookie';
-import { auth } from '../firebaseClient';
+import cookie from "js-cookie";
+import { auth } from "../firebaseClient";
+import Sidebar from "./Sidebar";
 
 export default function Home({ userId }) {
   const router = useRouter();
@@ -11,6 +12,7 @@ export default function Home({ userId }) {
       <h1>Welcome to Dashboard</h1>
       <h3>Have a Safe Travel!</h3>
       <h2>UID: {userId}</h2>
+      <Sidebar />
       <button
         onClick={async () => {
           await auth.signOut();
