@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
   item: {
     marginBottom: "1rem",
     "&:hover": {
-      backgroundColor: "#eff1ff",
+      backgroundColor: theme.palette.primary.extraLight,
       borderRadius: 20,
       color: theme.palette.primary.main,
     },
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   selected: {
     borderRadius: 20,
     color: theme.palette.primary.main,
-    backgroundColor: "#eff1ff !important",
+    backgroundColor: `${theme.palette.primary.extraLight} !important`,
   },
   icon: {
     color: ({ selectedItem, item }) => {
@@ -25,8 +25,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   text: {
-    fontWeight: "bold",
-    // display: "none",
+    fontWeight: 900,
+    [theme.breakpoints.down('sm')]: {
+      display: "none",
+    },
   },
 }));
 
@@ -38,13 +40,15 @@ export default function SidebarOption({
   onHandleListItemClick,
 }) {
   const classes = useStyles({ selectedItem, item });
+  const active = selectedItem === item;
+
   return (
     <ListItem
       button
-      selected={selectedItem === item}
+      selected={active}
       classes={{
         root: classes.item,
-        selected: selectedItem === item && classes.selected,
+        selected: active && classes.selected,
       }}
       onClick={(event) => onHandleListItemClick(event, item)}
     >

@@ -19,7 +19,7 @@ import {
 import { auth } from "../firebaseClient";
 import Sidebar from "./Sidebar";
 
-export default function Home({ userId }) {
+export default function Journal({ userId }) {
   const router = useRouter();
   return (
     <Grid container spacing={4}>
@@ -27,8 +27,8 @@ export default function Home({ userId }) {
           <Sidebar />
         </Grid>
         <Grid item xs={10} md={9}>
-          <h1>Welcome to Dashboard</h1>
-      <h3>Have a Safe Travel!</h3>
+          <h1>Welcome to Journal</h1>
+      <h3>Make a wonderful list</h3>
       <h2>UID: {userId}</h2>
       <button
         onClick={async () => {

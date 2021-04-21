@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from 'next/router'
 import { List, Divider } from "@material-ui/core";
 import InboxIcon from "@material-ui/icons/Inbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
@@ -9,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: 260,
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 90,
+    },
     padding: "1rem",
     backgroundColor: theme.palette.background.paper,
     borderRadius: 20,
@@ -17,11 +21,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Sidebar() {
+  const router = useRouter();
   const classes = useStyles();
-  const [selectedItem, setSelectedItem] = React.useState("home");
+  const [selectedItem, setSelectedItem] = React.useState(router.pathname);
 
   const handleListItemClick = (event, item) => {
     setSelectedItem(item);
+    router.push(item);
   };
 
   return (
@@ -31,28 +37,28 @@ export default function Sidebar() {
           Icon={InboxIcon}
           text="Home"
           selectedItem={selectedItem}
-          item="home"
+          item="/home"
           onHandleListItemClick={handleListItemClick}
         />
         <SidebarOption
           Icon={DraftsIcon}
-          text="Drafts"
+          text="Journal"
           selectedItem={selectedItem}
-          item="drafts"
+          item="/journal"
           onHandleListItemClick={handleListItemClick}
         />
         <SidebarOption
           Icon={DraftsIcon}
           text="Messages"
           selectedItem={selectedItem}
-          item="messages"
+          item="/messages"
           onHandleListItemClick={handleListItemClick}
         />
         <SidebarOption
           Icon={DraftsIcon}
           text="Settings"
           selectedItem={selectedItem}
-          item="settings"
+          item="/settings"
           onHandleListItemClick={handleListItemClick}
         />
       </List>
