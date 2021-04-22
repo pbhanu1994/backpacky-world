@@ -81,6 +81,7 @@ export default function SignIn() {
           .signInWithEmailAndPassword(email, password);
           
         window.location.href = `${user && "/home"}`;
+        // router.replace(user && '/home');
       } catch (err) {
         console.log("Error Signing up", err);
         setToast({

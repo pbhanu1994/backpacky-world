@@ -5,6 +5,7 @@ import InboxIcon from "@material-ui/icons/Inbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
 import { makeStyles } from "@material-ui/core/styles";
 import SidebarOption from "./SidebarOption";
+import ViewProfile from "./ViewProfile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +33,7 @@ export default function Sidebar() {
 
   return (
     <div className={classes.root}>
+      <ViewProfile />
       <List component="nav" aria-label="main mailbox folders">
         <SidebarOption
           Icon={InboxIcon}
@@ -63,6 +65,7 @@ export default function Sidebar() {
         />
       </List>
       <Divider />
+      
     </div>
   );
 }

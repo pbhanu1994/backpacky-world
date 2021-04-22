@@ -17,7 +17,7 @@ import {
   Container,
 } from "@material-ui/core";
 import { auth } from "../firebaseClient";
-import Sidebar from "./Sidebar";
+import Sidebar from './Sidebar';
 
 export default function Home({ userId }) {
   const router = useRouter();
@@ -28,9 +28,9 @@ export default function Home({ userId }) {
         </Grid>
         <Grid item xs={10} md={9}>
           <h1>Welcome to Dashboard</h1>
-      <h3>Have a Safe Travel!</h3>
-      <h2>UID: {userId}</h2>
-      <button
+          <h3>Have a Safe Travel!</h3>
+          <h2>UID: {userId}</h2>
+        <button
         onClick={async () => {
           await auth.signOut();
           cookie.remove("__session");
