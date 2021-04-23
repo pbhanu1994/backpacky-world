@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     root: {
+      marginBottom: "1rem",
       borderRadius: 20,
       padding: "0.6rem",
       cursor: "pointer"

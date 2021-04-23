@@ -5,6 +5,9 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   item: {
     marginBottom: "1rem",
+    marginTop: ({item}) => {
+      return item === "/logout" && "1rem"
+    },
     "&:hover": {
       backgroundColor: theme.palette.primary.extraLight,
       borderRadius: 20,

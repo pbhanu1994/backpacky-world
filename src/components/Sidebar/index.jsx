@@ -1,15 +1,18 @@
 import React from "react";
 import { useRouter } from 'next/router'
-import { List, Divider } from "@material-ui/core";
+import cookie from "js-cookie";
+import { List, Divider, Grid } from "@material-ui/core";
 import InboxIcon from "@material-ui/icons/Inbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
 import { makeStyles } from "@material-ui/core/styles";
+import { auth } from "../../firebaseClient";
 import SidebarOption from "./SidebarOption";
 import ViewProfile from "./ViewProfile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
+    height: "100vh",
     maxWidth: 260,
     [theme.breakpoints.down('sm')]: {
       maxWidth: 90,
@@ -19,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
     marginLeft: "1rem",
   },
+  logOut: {
+    marginTop: "auto"
+  }
 }));
 
 export default function Sidebar() {
@@ -32,8 +38,10 @@ export default function Sidebar() {
   };
 
   return (
-    <div className={classes.root}>
+    <Grid className={classes.root} container
+    direction="column">
       <ViewProfile />
+      <Divider />
       <List component="nav" aria-label="main mailbox folders">
         <SidebarOption
           Icon={InboxIcon}
@@ -64,8 +72,20 @@ export default function Sidebar() {
           onHandleListItemClick={handleListItemClick}
         />
       </List>
-      <Divider />
-      
-    </div>
+      <Grid item className={classes.logOut}>
+        <Divider />
+        <SidebarOption
+            Icon={DraftsIcon}
+            text="Logout"
+            selectedItem={selectedItem}
+            item="/logout"
+            onHandleListItemClick={async () => {
+              await auth.signOut();
+              cookie.remove("__session");
+              router.push("/");
+            }}
+          />
+      </Grid>
+    </Grid>
   );
 }
