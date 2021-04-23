@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "deploy": "yarn build && cross-env NODE_ENV=production firebase deploy —-only functions,hosting"
+    "deploy": "yarn build && cross-env NODE_ENV=production firebase deploy"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
