@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useSelector, useDispatch } from "react-redux";
+import Navbar from "../src/components/Navbar";
 import JournalComponent from "../src/components/Journal";
 import { parseCookies } from '../src/utils/parseCookies';
 import { verifyIdToken } from '../src/firebaseAdmin';
@@ -10,7 +11,10 @@ import styles from '../styles/Home.module.css';
 
 export default function Journal({ userId }) {
   return (
+    <>
+     <Navbar />
      <JournalComponent userId={userId} />
+     </>
   )
 }
 

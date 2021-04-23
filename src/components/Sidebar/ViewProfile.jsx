@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         <Paper variant="outlined" onClick={() => router.push('/profile')} classes={{ root: classes.root }}>
             <Grid container alignItems="center" spacing={2}>
                 <Grid item>
-                    <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" className={classes.large} />
+                    <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
                 </Grid>
                 <Grid item>
                     <Typography variant="h6" className={classes.profileName}>

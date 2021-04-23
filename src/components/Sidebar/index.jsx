@@ -12,7 +12,7 @@ import ViewProfile from "./ViewProfile";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    height: "100vh",
+    height: "90vh",
     maxWidth: 260,
     [theme.breakpoints.down('sm')]: {
       maxWidth: 90,
@@ -62,6 +62,13 @@ export default function Sidebar() {
           text="Messages"
           selectedItem={selectedItem}
           item="/messages"
+          onHandleListItemClick={handleListItemClick}
+        />
+        <SidebarOption
+          Icon={DraftsIcon}
+          text="Explore"
+          selectedItem={selectedItem}
+          item="/explore"
           onHandleListItemClick={handleListItemClick}
         />
         <SidebarOption
