@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     profileName: {
         lineHeight: 1
     }
-  }));
+}));
 
   export default function Sidebar() {
     const router = useRouter();

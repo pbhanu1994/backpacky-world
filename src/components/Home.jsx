@@ -40,7 +40,6 @@ export default function Home({ userId }) {
         Signout
       </button>
         </Grid>
-      
     </Grid>
   );
 }
