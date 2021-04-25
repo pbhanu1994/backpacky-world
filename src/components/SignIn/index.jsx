@@ -79,7 +79,7 @@ export default function SignIn() {
         const { user } = await firebase
           .auth()
           .signInWithEmailAndPassword(email, password);
-          
+
         window.location.href = `${user && "/home"}`;
         // router.replace(user && '/home');
       } catch (err) {

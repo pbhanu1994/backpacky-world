@@ -1,20 +1,23 @@
 import React from "react";
-import { useRouter } from 'next/router'
-import cookie from "js-cookie";
+import { useRouter } from "next/router";
+
 import { List, Divider, Grid } from "@material-ui/core";
-import InboxIcon from "@material-ui/icons/Inbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
+import {
+  Inbox as InboxIcon,
+  Drafts as DraftsIcon,
+  Settings as SettingsIcon,
+} from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { auth } from "../../firebaseClient";
+
 import SidebarOption from "./SidebarOption";
-import ViewProfile from "./ViewProfile";
+import ViewProfile from "../common/ViewProfile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     height: "90vh",
     maxWidth: 260,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       maxWidth: 90,
     },
     padding: "1rem",
@@ -22,9 +25,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
     marginLeft: "1rem",
   },
-  logOut: {
-    marginTop: "auto"
-  }
+  settings: {
+    marginTop: "auto",
+  },
 }));
 
 export default function Sidebar() {
@@ -38,9 +41,13 @@ export default function Sidebar() {
   };
 
   return (
-    <Grid className={classes.root} container
-    direction="column">
-      <ViewProfile />
+    <Grid className={classes.root} container direction="column">
+      <ViewProfile
+        variant="outlined"
+        profileAvatar="https://material-ui.com/static/images/avatar/1.jpg"
+        profileName="Bhanu Prakash"
+        textSecondary="pbhanu.1994@gmail.com"
+      />
       <Divider />
       <List component="nav" aria-label="main mailbox folders">
         <SidebarOption
@@ -79,19 +86,15 @@ export default function Sidebar() {
           onHandleListItemClick={handleListItemClick}
         />
       </List>
-      <Grid item className={classes.logOut}>
+      <Grid item className={classes.settings}>
         <Divider />
         <SidebarOption
-            Icon={DraftsIcon}
-            text="Logout"
-            selectedItem={selectedItem}
-            item="/logout"
-            onHandleListItemClick={async () => {
-              await auth.signOut();
-              cookie.remove("__session");
-              router.push("/");
-            }}
-          />
+          Icon={SettingsIcon}
+          text="Settings"
+          selectedItem={selectedItem}
+          item="/settings"
+          onHandleListItemClick={handleListItemClick}
+        />
       </Grid>
     </Grid>
   );

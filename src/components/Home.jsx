@@ -17,29 +17,34 @@ import {
   Container,
 } from "@material-ui/core";
 import { auth } from "../firebaseClient";
-import Sidebar from './Sidebar';
+import Sidebar from "./Sidebar";
+import ProfileList from "./Navbar/ProfileList";
+import NotificationList from "./Navbar/NotificationList";
 
 export default function Home({ userId }) {
   const router = useRouter();
   return (
     <Grid container spacing={4}>
-       <Grid item xs={2} md={3}>
-          <Sidebar />
-        </Grid>
-        <Grid item xs={10} md={9}>
-          <h1>Welcome to Dashboard</h1>
-          <h3>Have a Safe Travel!</h3>
-          <h2>UID: {userId}</h2>
+      <Grid item xs={2} md={3}>
+        <Sidebar />
+      </Grid>
+      <Grid item xs={10} md={9}>
+        <h1>Welcome to Dashboard</h1>
+        <h3>Have a Safe Travel!</h3>
+        <h2>UID: {userId}</h2>
+        <ProfileList />
+        <br />
+        <NotificationList />
         <button
-        onClick={async () => {
-          await auth.signOut();
-          cookie.remove("__session");
-          router.push("/");
-        }}
-      >
-        Signout
-      </button>
-        </Grid>
+          onClick={async () => {
+            await auth.signOut();
+            cookie.remove("__session");
+            router.push("/");
+          }}
+        >
+          Signout
+        </button>
+      </Grid>
     </Grid>
   );
 }
