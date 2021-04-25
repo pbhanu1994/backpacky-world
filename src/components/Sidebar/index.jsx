@@ -42,12 +42,14 @@ export default function Sidebar() {
 
   return (
     <Grid className={classes.root} container direction="column">
-      <ViewProfile
-        variant="outlined"
-        profileAvatar="https://material-ui.com/static/images/avatar/1.jpg"
-        profileName="Bhanu Prakash"
-        textSecondary="pbhanu.1994@gmail.com"
-      />
+      <div style={{ marginBottom: "1rem" }}>
+        <ViewProfile
+          variant="outlined"
+          profileAvatar="https://material-ui.com/static/images/avatar/1.jpg"
+          profileName="Bhanu Prakash"
+          textSecondary="pbhanu.1994@gmail.com"
+        />
+      </div>
       <Divider />
       <List component="nav" aria-label="main mailbox folders">
         <SidebarOption
