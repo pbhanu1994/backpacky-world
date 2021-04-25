@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
 import cookie from "js-cookie";
 import {
+  Paper,
   List,
   ListItem,
   ListItemIcon,
@@ -32,7 +33,7 @@ export default function ProfileList() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <Paper elevation={3} className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
         <ListItem>
           <ViewProfile
@@ -63,6 +64,6 @@ export default function ProfileList() {
           <ListItemText primary="Logout" />
         </ListItem>
       </List>
-    </div>
+    </Paper>
   );
 }

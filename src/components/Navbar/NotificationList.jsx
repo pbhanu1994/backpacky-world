@@ -2,6 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
 import {
+  Paper,
   List,
   ListItem,
   ListItemIcon,
@@ -23,7 +24,7 @@ export default function NotificationList() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <Paper elevation={3} className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
         <ListItem button>
           <ListItemIcon>
@@ -45,6 +46,6 @@ export default function NotificationList() {
           <ListItemText secondary="Second Notificaton liked your post on blah blah blah..." />
         </ListItem>
       </List>
-    </div>
+    </Paper>
   );
 }

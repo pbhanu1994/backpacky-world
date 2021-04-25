@@ -18,8 +18,6 @@ import {
 } from "@material-ui/core";
 import { auth } from "../firebaseClient";
 import Sidebar from "./Sidebar";
-import ProfileList from "./Navbar/ProfileList";
-import NotificationList from "./Navbar/NotificationList";
 
 export default function Home({ userId }) {
   const router = useRouter();
@@ -32,9 +30,6 @@ export default function Home({ userId }) {
         <h1>Welcome to Dashboard</h1>
         <h3>Have a Safe Travel!</h3>
         <h2>UID: {userId}</h2>
-        <ProfileList />
-        <br />
-        <NotificationList />
         <button
           onClick={async () => {
             await auth.signOut();
