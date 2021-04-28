@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     height: "90vh",
+    position: "fixed",
     maxWidth: 260,
     [theme.breakpoints.down("sm")]: {
       maxWidth: 90,
