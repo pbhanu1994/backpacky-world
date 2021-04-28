@@ -122,7 +122,7 @@ export default function SignIn() {
           </Typography>
         </Grid>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
-          {/* T0-DO Add Icons for Email & Password */}
+          {/* TODO: Add Icons for Email & Password */}
           <TextField
             onChange={(e) => handleSignInDetails(e)}
             margin="normal"

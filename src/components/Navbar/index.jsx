@@ -11,6 +11,8 @@ import NotificationList from "./NotificationList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    position: "sticky",
+    top: 0,
     padding: "1rem",
   },
   logo: {
@@ -40,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
   },
   profileAndNotificationList: {
-    position: "absolute",
+    position: "fixed",
     right: 0,
     marginRight: "1.2rem",
     marginTop: "-0.5rem",
