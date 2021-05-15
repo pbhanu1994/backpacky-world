@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { useAuth } from "../src/handlers/auth";
-import LandingComponent from "../src/components/Landing";
+import LandingComponent from "../src/components/templates/Landing";
 import styles from "../styles/Home.module.css";
 
 export default function Landing() {

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import SignUpComponent from "../src/components/SignUp";
+import SignUpComponent from "../src/components/templates/SignUp";
 import { useAuth } from "../src/handlers/auth";
 
 export default function SignUp() {

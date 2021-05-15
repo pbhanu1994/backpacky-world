@@ -7,33 +7,13 @@ import {
   Drafts as DraftsIcon,
   Settings as SettingsIcon,
 } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core/styles";
-
 import SidebarOption from "./SidebarOption";
-import ViewProfile from "../common/ViewProfile";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    height: "90vh",
-    position: "fixed",
-    maxWidth: 260,
-    [theme.breakpoints.down("sm")]: {
-      maxWidth: 90,
-    },
-    padding: "1rem",
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: 20,
-    marginLeft: "1rem",
-  },
-  settings: {
-    marginTop: "auto",
-  },
-}));
+import ViewProfile from "../../atoms/ViewProfile";
+import { sidebarStyles } from "./sidebarStyles";
 
 export default function Sidebar() {
   const router = useRouter();
-  const classes = useStyles();
+  const classes = sidebarStyles();
   const [selectedItem, setSelectedItem] = React.useState(router.pathname);
 
   const handleListItemClick = (event, item) => {

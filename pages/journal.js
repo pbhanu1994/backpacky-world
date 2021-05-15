@@ -2,20 +2,14 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
-import Navbar from "../src/components/Navbar";
-import JournalComponent from "../src/components/Journal";
+import JournalComponent from "../src/components/templates/Journal";
 import { parseCookies } from "../src/helpers/parseCookies";
 import { verifyIdToken } from "../src/handlers/firebaseAdmin";
 
 import styles from "../styles/Home.module.css";
 
 export default function Journal({ userId }) {
-  return (
-    <>
-      <Navbar />
-      <JournalComponent userId={userId} />
-    </>
-  );
+  return <JournalComponent userId={userId} />;
 }
 
 export async function getServerSideProps({ req, res }) {

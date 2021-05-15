@@ -5,55 +5,15 @@ import {
   Search as SearchIcon,
   ArrowDropDown as ArrowDownwardIcon,
 } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core/styles";
-import ProfileList from "./ProfileList";
-import NotificationList from "./NotificationList";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    position: "sticky",
-    top: 0,
-    padding: "1rem",
-  },
-  logo: {
-    paddingLeft: "2rem",
-  },
-  searchField: {
-    display: "flex",
-    alignItems: "center",
-    padding: "0.5rem",
-    borderRadius: 30,
-    background: "#f5f5f5",
-  },
-  searchFieldInput: {
-    paddingLeft: "0.5rem",
-  },
-  notificationAndAccount: {
-    width: "10rem",
-    display: "flex",
-    justifyContent: "space-evenly",
-  },
-  profileListButton: {
-    display: "flex",
-    alignItems: "center",
-    background: "none",
-    cursor: "pointer",
-    border: "1px solid rgba(0, 0, 0, 0.12)",
-    borderRadius: 20,
-  },
-  profileAndNotificationList: {
-    position: "fixed",
-    right: 0,
-    marginRight: "1.2rem",
-    marginTop: "-0.5rem",
-  },
-}));
+import ProfileList from "../ProfileList";
+import NotificationList from "../NotificationList";
+import { navbarStyles } from "./navbarStyles";
 
 export default function Navbar() {
   const [showProfileList, setShowProfileList] = useState(false);
   const [showNotificationList, setShowNotificationList] = useState(false);
 
-  const classes = useStyles();
+  const classes = navbarStyles();
 
   return (
     <>
