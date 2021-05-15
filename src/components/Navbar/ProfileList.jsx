@@ -1,7 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
-import cookie from "js-cookie";
 import {
   Paper,
   List,
@@ -10,13 +9,11 @@ import {
   ListItemText,
   Divider,
 } from "@material-ui/core";
-
 import {
   Settings as SettingsIcon,
   ExitToApp as LogoutIcon,
 } from "@material-ui/icons";
-
-import { auth } from "../../firebaseClient";
+import { signOut } from "../../handlers/auth";
 import ViewProfile from "../common/ViewProfile";
 
 const useStyles = makeStyles((theme) => ({
@@ -50,14 +47,7 @@ export default function ProfileList() {
           <ListItemText primary="Settings" />
         </ListItem>
         <Divider />
-        <ListItem
-          button
-          onClick={async () => {
-            await auth.signOut();
-            cookie.remove("__session");
-            router.push("/");
-          }}
-        >
+        <ListItem button onClick={signOut}>
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>

@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { useAuth } from "../src/auth";
+import { useAuth } from "../src/handlers/auth";
 import LandingComponent from "../src/components/Landing";
 import styles from "../styles/Home.module.css";
 

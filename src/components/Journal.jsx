@@ -1,6 +1,5 @@
 import React from "react";
 import { useRouter } from "next/router";
-import cookie from "js-cookie";
 import {
   Avatar,
   Button,
@@ -16,7 +15,6 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
-import { auth } from "../firebaseClient";
 import Sidebar from "./Sidebar";
 
 export default function Journal({ userId }) {
@@ -30,15 +28,6 @@ export default function Journal({ userId }) {
         <h1>Welcome to Journal</h1>
         <h3>Make a wonderful list</h3>
         <h2>UID: {userId}</h2>
-        <button
-          onClick={async () => {
-            await auth.signOut();
-            cookie.remove("__session");
-            router.push("/");
-          }}
-        >
-          Signout
-        </button>
       </Grid>
     </Grid>
   );

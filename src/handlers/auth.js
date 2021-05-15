@@ -37,4 +37,11 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// Signout here
+export const signOut = async () => {
+  await auth.signOut();
+  cookie.remove("__session");
+  window.location.href = "/";
+};
+
 export const useAuth = () => useContext(AuthContext);

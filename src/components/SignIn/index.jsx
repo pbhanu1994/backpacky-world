@@ -23,7 +23,7 @@ import {
 import Joi from "joi-browser";
 import firebase from "firebase/app";
 import "firebase/auth";
-import { validate, validateProperty } from "../../utils/validate";
+import { validate, validateProperty } from "../../helpers/validate";
 import { signInStyles } from "./signInStyles";
 import Toast from "../common/Toast";
 import Copyright from "../Copyright";

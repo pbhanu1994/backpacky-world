@@ -1,6 +1,5 @@
 import React from "react";
 import { useRouter } from "next/router";
-import cookie from "js-cookie";
 import {
   Avatar,
   Button,
@@ -17,7 +16,7 @@ import {
   Container,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { auth } from "../firebaseClient";
+import { signOut } from "../handlers/auth";
 import Sidebar from "./Sidebar";
 
 const useStyles = makeStyles((theme) => ({
@@ -49,15 +48,7 @@ export default function Home({ userId }) {
         <h1>Welcome to Dashboard</h1>
         <h3>Have a Safe Travel!</h3>
         <h2>UID: {userId}</h2>
-        <button
-          onClick={async () => {
-            await auth.signOut();
-            cookie.remove("__session");
-            router.push("/");
-          }}
-        >
-          Signout
-        </button>
+        <button onClick={signOut}>Signout</button>
       </Grid>
     </Grid>
   );

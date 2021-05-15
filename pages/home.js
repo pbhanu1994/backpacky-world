@@ -1,8 +1,8 @@
 import React from "react";
 import Navbar from "../src/components/Navbar";
 import HomeComponent from "../src/components/Home";
-import { parseCookies } from "../src/utils/parseCookies";
-import { verifyIdToken } from "../src/firebaseAdmin";
+import { parseCookies } from "../src/helpers/parseCookies";
+import { verifyIdToken } from "../src/handlers/firebaseAdmin";
 
 import styles from "../styles/Home.module.css";
 

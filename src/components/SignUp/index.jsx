@@ -23,7 +23,7 @@ import {
 import Joi from "joi-browser";
 import firebase from "firebase/app";
 import "firebase/auth";
-import { validate, validateProperty } from "../../utils/validate";
+import { validate, validateProperty } from "../../helpers/validate";
 import { signUpStyles } from "./signUpStyles";
 import Toast from "../common/Toast";
 import Copyright from "../Copyright";
@@ -82,7 +82,7 @@ export default function SignUp() {
           .auth()
           .createUserWithEmailAndPassword(email, password);
         await user.updateProfile({ displayName: firstName });
-        
+
         window.location.href = `${user && "/home"}`;
       } catch (err) {
         console.log("Error Signing up", err);
