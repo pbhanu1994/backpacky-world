@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { Avatar, Paper, Grid, Typography } from "@material-ui/core";
+import { PAGE_PATH } from "../../constants/navigationConstants";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +28,7 @@ export default function ViewProfile({
     <Paper
       elevation={0}
       variant={variant}
-      onClick={() => router.push("/profile")}
+      onClick={() => router.push(PAGE_PATH.PROFILE)}
       classes={{ root: classes.root }}
     >
       <Grid container alignItems="center" spacing={2}>

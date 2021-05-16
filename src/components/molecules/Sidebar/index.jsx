@@ -1,14 +1,15 @@
 import React from "react";
 import { useRouter } from "next/router";
-
 import { List, Divider, Grid } from "@material-ui/core";
 import {
-  Inbox as InboxIcon,
-  Drafts as DraftsIcon,
-  Settings as SettingsIcon,
+  HomeOutlined as HomeIcon,
+  BookOutlined as JournalIcon,
+  MessageOutlined as MessagesIcon,
+  SettingsOutlined as SettingsIcon,
 } from "@material-ui/icons";
 import SidebarOption from "./SidebarOption";
 import ViewProfile from "../../atoms/ViewProfile";
+import { SIDEBAR_NAVIGATIONS } from "../../../constants/navigationConstants";
 import { sidebarStyles } from "./sidebarStyles";
 
 export default function Sidebar() {
@@ -19,6 +20,13 @@ export default function Sidebar() {
   const handleListItemClick = (event, item) => {
     setSelectedItem(item);
     router.push(item);
+  };
+
+  const icons = {
+    Home: HomeIcon,
+    Journal: JournalIcon,
+    Messages: MessagesIcon,
+    Settings: SettingsIcon,
   };
 
   return (
@@ -33,51 +41,37 @@ export default function Sidebar() {
       </div>
       <Divider />
       <List component="nav" aria-label="main mailbox folders">
-        <SidebarOption
-          Icon={InboxIcon}
-          text="Home"
-          selectedItem={selectedItem}
-          item="/home"
-          onHandleListItemClick={handleListItemClick}
-        />
-        <SidebarOption
-          Icon={DraftsIcon}
-          text="Journal"
-          selectedItem={selectedItem}
-          item="/journal"
-          onHandleListItemClick={handleListItemClick}
-        />
-        <SidebarOption
-          Icon={DraftsIcon}
-          text="Messages"
-          selectedItem={selectedItem}
-          item="/messages"
-          onHandleListItemClick={handleListItemClick}
-        />
-        <SidebarOption
-          Icon={DraftsIcon}
-          text="Explore"
-          selectedItem={selectedItem}
-          item="/explore"
-          onHandleListItemClick={handleListItemClick}
-        />
-        <SidebarOption
-          Icon={DraftsIcon}
-          text="Settings"
-          selectedItem={selectedItem}
-          item="/settings"
-          onHandleListItemClick={handleListItemClick}
-        />
+        {SIDEBAR_NAVIGATIONS.length > 0 &&
+          SIDEBAR_NAVIGATIONS.map(
+            (item) =>
+              item.label !== "Settings" && (
+                <SidebarOption
+                  key={item.label}
+                  Icon={icons[item.label]}
+                  text={item.label}
+                  selectedItem={selectedItem}
+                  item={item.value}
+                  onHandleListItemClick={handleListItemClick}
+                />
+              )
+          )}
       </List>
       <Grid item className={classes.settings}>
         <Divider />
-        <SidebarOption
-          Icon={SettingsIcon}
-          text="Settings"
-          selectedItem={selectedItem}
-          item="/settings"
-          onHandleListItemClick={handleListItemClick}
-        />
+        {SIDEBAR_NAVIGATIONS.length > 0 &&
+          SIDEBAR_NAVIGATIONS.filter((item) => item.label === "Settings").map(
+            (item) =>
+              item.label === "Settings" && (
+                <SidebarOption
+                  key={item.label}
+                  Icon={icons[item.label]}
+                  text={item.label}
+                  selectedItem={selectedItem}
+                  item={item.value}
+                  onHandleListItemClick={handleListItemClick}
+                />
+              )
+          )}
       </Grid>
     </Grid>
   );

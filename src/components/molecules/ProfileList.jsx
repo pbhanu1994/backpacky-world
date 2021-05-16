@@ -30,7 +30,6 @@ export default function ProfileList() {
   const classes = useStyles();
 
   // TODO: Make List disappear after mouse click outside - refer Ref?
-  // TODO: Refactor - ProfileList to ProfileItem (atoms) & ProfileList (Molecules)
   return (
     <Paper elevation={3} className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">

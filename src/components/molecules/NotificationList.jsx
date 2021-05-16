@@ -24,7 +24,6 @@ export default function NotificationList() {
   const classes = useStyles();
 
   // TODO: Make List disappear after mouse click outside - refer Ref?
-  // TODO: Refactor - NotificationList to NotificationItem (atoms) & NotificationList (Molecules)
   return (
     <Paper elevation={3} className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">

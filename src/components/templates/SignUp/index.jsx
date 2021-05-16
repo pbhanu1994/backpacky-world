@@ -105,6 +105,7 @@ export default function SignUp() {
     setToast({ ...toast, open: false, message: "" });
   };
 
+  // TODO: Set Loading 3 dots... while submitting
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
