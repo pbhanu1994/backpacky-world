@@ -22,7 +22,7 @@ export default function Sidebar() {
     router.push(item);
   };
 
-  const icons = {
+  const sidebarIcons = {
     Home: HomeIcon,
     Journal: JournalIcon,
     Messages: MessagesIcon,
@@ -47,7 +47,7 @@ export default function Sidebar() {
               item.label !== "Settings" && (
                 <SidebarOption
                   key={item.label}
-                  Icon={icons[item.label]}
+                  Icon={sidebarIcons[item.label]}
                   text={item.label}
                   selectedItem={selectedItem}
                   item={item.value}
@@ -64,7 +64,7 @@ export default function Sidebar() {
               item.label === "Settings" && (
                 <SidebarOption
                   key={item.label}
-                  Icon={icons[item.label]}
+                  Icon={sidebarIcons[item.label]}
                   text={item.label}
                   selectedItem={selectedItem}
                   item={item.value}
