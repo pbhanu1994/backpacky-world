@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
 import App from "next/app";
 import Head from "next/head";
-import withRedux from "next-redux-wrapper";
+import { Provider } from "react-redux";
+import { createWrapper } from "next-redux-wrapper";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import initStore from "../src/redux/store";
+import store from "../src/store/store";
 import theme from "../src/theme";
 import { AuthProvider } from "../src/handlers/auth";
 import "../styles/globals.css";
 
-function MyApp({ Component, pageProps, store, ...rest }) {
+function MyApp({ Component, pageProps, ...rest }) {
   useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
@@ -27,15 +28,15 @@ function MyApp({ Component, pageProps, store, ...rest }) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      {/* // <Provider store={initStore}> */}
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <AuthProvider>
-          <Component {...pageProps} />
-        </AuthProvider>
-      </ThemeProvider>
-      {/* // </Provider> */}
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <AuthProvider>
+            <Component {...pageProps} />
+          </AuthProvider>
+        </ThemeProvider>
+      </Provider>
     </React.Fragment>
   );
 }
@@ -47,4 +48,6 @@ MyApp.getInitialProps = async (appContext) => {
   return { ...appProps };
 };
 
-export default withRedux(initStore)(MyApp);
+const makeStore = () => store;
+const wrapper = createWrapper(makeStore);
+export default wrapper.withRedux(MyApp);

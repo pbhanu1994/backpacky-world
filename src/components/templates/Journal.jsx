@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 import {
   Avatar,
   Button,
@@ -17,9 +18,18 @@ import {
 } from "@material-ui/core";
 import Sidebar from "../molecules/Sidebar";
 import Navbar from "../molecules/Navbar";
+import addItem from "../../store/actions/journal/addItem";
 
 export default function Journal({ userId }) {
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const item = {
+    id: 1,
+    dateCreated: new Date().toLocaleDateString(),
+    name: "Shampoo",
+  };
+
   return (
     <>
       <Navbar />
@@ -31,6 +41,7 @@ export default function Journal({ userId }) {
           <h1>Welcome to Journal</h1>
           <h3>Make a wonderful list</h3>
           <h2>UID: {userId}</h2>
+          <Button onClick={() => dispatch(addItem(item))}>Add Item</Button>
         </Grid>
       </Grid>
     </>
