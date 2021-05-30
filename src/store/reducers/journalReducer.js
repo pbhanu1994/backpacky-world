@@ -13,5 +13,3 @@ export const journalReducer = (state = initialState, action) => {
       return { ...state };
   }
 };
-
-// export default journalReducer;

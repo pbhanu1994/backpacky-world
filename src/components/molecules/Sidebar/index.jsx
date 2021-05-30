@@ -2,9 +2,13 @@ import React from "react";
 import { useRouter } from "next/router";
 import { List, Divider, Grid } from "@material-ui/core";
 import {
+  Home as HomeActiveIcon,
   HomeOutlined as HomeIcon,
+  Book as JournalActiveIcon,
   BookOutlined as JournalIcon,
+  Message as MessageActiveIcon,
   MessageOutlined as MessagesIcon,
+  Settings as SettingsActiveIcon,
   SettingsOutlined as SettingsIcon,
 } from "@material-ui/icons";
 import SidebarOption from "./SidebarOption";
@@ -23,10 +27,10 @@ export default function Sidebar() {
   };
 
   const sidebarIcons = {
-    Home: HomeIcon,
-    Journal: JournalIcon,
-    Messages: MessagesIcon,
-    Settings: SettingsIcon,
+    Home: selectedItem === "/home" ? HomeActiveIcon : HomeIcon,
+    Journal: selectedItem === "/journal" ? JournalActiveIcon : JournalIcon,
+    Messages: selectedItem === "/messages" ? MessageActiveIcon : MessagesIcon,
+    Settings: selectedItem === "/settings" ? SettingsActiveIcon : SettingsIcon,
   };
 
   return (
