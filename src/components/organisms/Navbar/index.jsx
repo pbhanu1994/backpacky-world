@@ -5,8 +5,8 @@ import {
   Search as SearchIcon,
   ArrowDropDown as ArrowDownwardIcon,
 } from "@material-ui/icons";
-import ProfileList from "../ProfileList";
-import NotificationList from "../NotificationList";
+import ProfileList from "../../molecules/ProfileList";
+import NotificationList from "../../molecules/NotificationList";
 import { navbarStyles } from "./navbarStyles";
 
 export default function Navbar() {

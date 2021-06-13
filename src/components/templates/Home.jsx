@@ -17,8 +17,8 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { signOut } from "../../handlers/auth";
-import Sidebar from "../molecules/Sidebar";
-import Navbar from "../molecules/Navbar";
+import Sidebar from "../organisms/Sidebar";
+import Navbar from "../organisms/Navbar";
 
 const useStyles = makeStyles((theme) => ({
   welcomeText: {

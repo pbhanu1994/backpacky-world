@@ -27,10 +27,16 @@ export default function Sidebar() {
   };
 
   const sidebarIcons = {
-    Home: selectedItem === "/home" ? HomeActiveIcon : HomeIcon,
-    Journal: selectedItem === "/journal" ? JournalActiveIcon : JournalIcon,
-    Messages: selectedItem === "/messages" ? MessageActiveIcon : MessagesIcon,
-    Settings: selectedItem === "/settings" ? SettingsActiveIcon : SettingsIcon,
+    Home: selectedItem.includes("/home") ? HomeActiveIcon : HomeIcon,
+    Journal: selectedItem.includes("/journal")
+      ? JournalActiveIcon
+      : JournalIcon,
+    Messages: selectedItem.includes("/messages")
+      ? MessageActiveIcon
+      : MessagesIcon,
+    Settings: selectedItem.includes("/settings")
+      ? SettingsActiveIcon
+      : SettingsIcon,
   };
 
   return (

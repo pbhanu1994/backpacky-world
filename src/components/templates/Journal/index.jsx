@@ -16,9 +16,9 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
-import Sidebar from "../molecules/Sidebar";
-import Navbar from "../molecules/Navbar";
-import addItem from "../../store/actions/journal/addItem";
+import Sidebar from "../../organisms/Sidebar";
+import Navbar from "../../organisms/Navbar";
+import addItem from "../../../store/actions/journal/addItem";
 
 export default function Journal({ userId }) {
   const router = useRouter();

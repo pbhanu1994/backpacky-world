@@ -9,8 +9,8 @@ export default function SidebarOption({
   item,
   onHandleListItemClick,
 }) {
-  const classes = sidebarStyles({ selectedItem, item });
-  const active = selectedItem === item;
+  const active = selectedItem.includes(item);
+  const classes = sidebarStyles({ active });
 
   return (
     <ListItem

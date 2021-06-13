@@ -2,6 +2,7 @@ export const PAGE_PATH = {
   HOME: "/home",
   PROFILE: "/profile",
   JOURNAL: "/journal",
+  PACK: "/journal/pack",
   MESSAGES: "/messages",
   SETTINGS: "/settings",
 };

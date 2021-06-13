@@ -37,8 +37,8 @@ export const sidebarStyles = makeStyles((theme) => ({
     backgroundColor: `${theme.palette.primary.extraLight} !important`,
   },
   icon: {
-    color: ({ selectedItem, item }) => {
-      return selectedItem === item ? theme.palette.primary.main : "";
+    color: ({ active }) => {
+      return active ? theme.palette.primary.main : "";
     },
   },
   text: {
