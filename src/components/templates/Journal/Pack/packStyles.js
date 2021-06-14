@@ -13,9 +13,9 @@ export const packStyles = makeStyles((theme) => ({
   checkbox: {
     color: theme.palette.secondary.main,
   },
-  checkboxChecked: {
-    color: `${theme.palette.grey[500]} !important`,
-  },
+  // checkboxChecked: {
+  //   color: `${theme.palette.grey[500]} !important`,
+  // },
   listItemText: {
     color: ({ checkboxChecked }) => {
       return checkboxChecked ? theme.palette.grey[500] : "";

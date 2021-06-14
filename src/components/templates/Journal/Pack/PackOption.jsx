@@ -53,7 +53,7 @@ export default function CheckboxList() {
                   tabIndex={-1}
                   classes={{
                     root: classes.checkbox,
-                    checked: classes.checkboxChecked,
+                    // checked: classes.checkboxChecked,
                   }}
                   inputProps={{ "aria-labelledby": labelId }}
                 />
