@@ -13,6 +13,20 @@ export const packStyles = makeStyles((theme) => ({
   checkbox: {
     color: theme.palette.secondary.main,
   },
+  checkboxChecked: {
+    color: `${theme.palette.grey[500]} !important`,
+  },
+  listItemText: {
+    color: ({ checkboxChecked }) => {
+      return checkboxChecked ? theme.palette.grey[500] : "";
+    },
+    textDecorationLine: ({ checkboxChecked }) => {
+      return checkboxChecked ? "line-through" : "";
+    },
+  },
+  listItemTextPrimary: {
+    fontWeight: "bold",
+  },
   inputText: {
     width: "100%",
     margin: "0.4rem 4.5rem",

@@ -12,7 +12,6 @@ import CommentIcon from "@material-ui/icons/Comment";
 import { packStyles } from "./packStyles";
 
 export default function CheckboxList() {
-  const classes = packStyles();
   const [checked, setChecked] = React.useState([0]);
 
   const handleToggle = (value) => () => {
@@ -32,6 +31,8 @@ export default function CheckboxList() {
     <List>
       {[0, 1, 2, 3].map((value) => {
         const labelId = `checkbox-list-label-${value}`;
+        const checkboxChecked = checked.indexOf(value) !== -1;
+        const classes = packStyles({ checkboxChecked });
 
         return (
           <>
@@ -48,17 +49,20 @@ export default function CheckboxList() {
               <ListItemIcon>
                 <Checkbox
                   edge="start"
-                  checked={checked.indexOf(value) !== -1}
+                  checked={checkboxChecked}
                   tabIndex={-1}
-                  classes={{ root: classes.checkbox }}
+                  classes={{
+                    root: classes.checkbox,
+                    checked: classes.checkboxChecked,
+                  }}
                   inputProps={{ "aria-labelledby": labelId }}
                 />
               </ListItemIcon>
               <ListItemText
                 id={labelId}
-                style={{
-                  textDecorationLine:
-                    checked.indexOf(value) !== -1 && "line-through",
+                classes={{
+                  root: classes.listItemText,
+                  primary: classes.listItemTextPrimary,
                 }}
                 primary={`Line item ${value + 1}`}
               />
