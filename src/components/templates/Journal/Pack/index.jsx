@@ -58,8 +58,8 @@ export default function Pack() {
               justify="space-between"
               style={{ padding: "0 1rem" }}
             >
-              <h3>Completed: 7 Items</h3>
-              <h3>Total: 31 Items</h3>
+              <h3 style={{ fontWeight: 400 }}>Completed: 7 Items</h3>
+              <h3 style={{ fontWeight: 400 }}>Total: 31 Items</h3>
             </Grid>
             <Divider />
             <PackOption />

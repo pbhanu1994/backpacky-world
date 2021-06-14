@@ -16,13 +16,17 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
+import { Book as JournalIcon } from "@material-ui/icons";
 import Sidebar from "../../organisms/Sidebar";
 import Navbar from "../../organisms/Navbar";
+import JournalCard from "../../atoms/JournalCard";
 import addItem from "../../../store/actions/journal/addItem";
+import { journalStyles } from "./journalStyles";
 
 export default function Journal({ userId }) {
   const router = useRouter();
   const dispatch = useDispatch();
+  const classes = journalStyles();
 
   const item = {
     id: 1,
@@ -38,8 +42,27 @@ export default function Journal({ userId }) {
           <Sidebar />
         </Grid>
         <Grid item xs={10} md={9}>
-          <h1>Welcome to Journal</h1>
-          <h3>Make a wonderful list</h3>
+          <Typography
+            component="h1"
+            variant="h3"
+            align="center"
+            color="textPrimary"
+            gutterBottom
+            style={{
+              display: "flex",
+              marginTop: "2rem",
+            }}
+          >
+            <JournalIcon className={classes.journalIcon} />
+            <span className={classes.journalTitle}>Journal Entries..</span>
+          </Typography>
+          <JournalCard
+            image="https://images.unsplash.com/photo-1499803270242-467f7311582d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2031&q=80"
+            imageTitle="Things to pack"
+            title="Things to pack"
+            path="/journal/pack"
+            completed={0}
+          />
           <h2>UID: {userId}</h2>
           <Button onClick={() => dispatch(addItem(item))}>Add Item</Button>
         </Grid>
