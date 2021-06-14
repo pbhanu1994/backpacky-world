@@ -6,13 +6,14 @@ export const packStyles = makeStyles((theme) => ({
   },
   listPaper: {
     maxWidth: 1000,
+    borderRadius: "1rem",
   },
   listItem: {
     background: "none !important",
   },
-  checkbox: {
-    color: theme.palette.secondary.main,
-  },
+  // checkbox: {
+  //   color: theme.palette.secondary.main,
+  // },
   // checkboxChecked: {
   //   color: `${theme.palette.grey[500]} !important`,
   // },

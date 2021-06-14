@@ -51,10 +51,10 @@ export default function CheckboxList() {
                   edge="start"
                   checked={checkboxChecked}
                   tabIndex={-1}
-                  classes={{
-                    root: classes.checkbox,
-                    // checked: classes.checkboxChecked,
-                  }}
+                  // classes={{
+                  // root: classes.checkbox,
+                  // checked: classes.checkboxChecked,
+                  // }}
                   inputProps={{ "aria-labelledby": labelId }}
                 />
               </ListItemIcon>
