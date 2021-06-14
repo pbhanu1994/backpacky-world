@@ -28,7 +28,7 @@ export const packStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   inputText: {
-    width: "100%",
+    width: "80%",
     margin: "0.4rem 4.5rem",
   },
 }));

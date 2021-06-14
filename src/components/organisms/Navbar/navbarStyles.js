@@ -33,6 +33,7 @@ export const navbarStyles = makeStyles((theme) => ({
     borderRadius: 20,
   },
   profileAndNotificationList: {
+    zIndex: 1,
     position: "fixed",
     right: 0,
     marginRight: "1.2rem",

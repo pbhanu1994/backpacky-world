@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
-import JournalComponent from "../../src/components/templates/Journal/";
+import JournalComponent from "../../src/components/templates/Journal";
 import { parseCookies } from "../../src/helpers/parseCookies";
 import { verifyIdToken } from "../../src/handlers/firebaseAdmin";
 
