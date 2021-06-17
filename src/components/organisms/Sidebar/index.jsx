@@ -19,7 +19,7 @@ import { sidebarStyles } from "./sidebarStyles";
 export const Sidebar = () => {
   const router = useRouter();
   const classes = sidebarStyles();
-  const [selectedItem, setSelectedItem] = React.useState(router.pathname);
+  const [selectedItem, setSelectedItem] = React.useState(router.asPath);
 
   const handleListItemClick = (event, item) => {
     setSelectedItem(item);

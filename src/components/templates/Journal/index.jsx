@@ -21,6 +21,7 @@ import { Sidebar } from "../../organisms/Sidebar";
 import { Navbar } from "../../organisms/Navbar";
 import { JournalCard } from "../../atoms/JournalCard";
 import addItem from "../../../store/actions/journal/addItem";
+import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { journalStyles } from "./journalStyles";
 
 export default function Journal({ userId }) {
@@ -60,7 +61,7 @@ export default function Journal({ userId }) {
             image="https://images.unsplash.com/photo-1499803270242-467f7311582d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2031&q=80"
             imageTitle="Things to pack"
             title="Things to pack"
-            path="/journal/pack"
+            path={PAGE_PATH.JOURNAL_PACK}
             completed={0}
           />
           <h2>UID: {userId}</h2>

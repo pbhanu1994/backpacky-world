@@ -1,10 +1,10 @@
 export const PAGE_PATH = {
-  HOME: "/home",
-  PROFILE: "/profile",
-  JOURNAL: "/journal",
-  PACK: "/journal/pack",
-  MESSAGES: "/messages",
-  SETTINGS: "/settings",
+  HOME: "/home/",
+  PROFILE: "/profile/",
+  JOURNAL: "/journal/",
+  JOURNAL_PACK: "/journal/pack/",
+  MESSAGES: "/messages/",
+  SETTINGS: "/settings/",
 };
 
 export const SIDEBAR_NAVIGATIONS = [
