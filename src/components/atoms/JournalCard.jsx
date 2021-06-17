@@ -18,13 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function MediaCard({
-  image,
-  imageTitle,
-  title,
-  path,
-  completed,
-}) {
+export const JournalCard = ({ image, imageTitle, title, path, completed }) => {
   const router = useRouter();
   const classes = useStyles();
 
@@ -50,4 +44,4 @@ export default function MediaCard({
       </CardActionArea>
     </Card>
   );
-}
+};

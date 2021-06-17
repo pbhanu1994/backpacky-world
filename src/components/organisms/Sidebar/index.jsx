@@ -11,12 +11,12 @@ import {
   Settings as SettingsActiveIcon,
   SettingsOutlined as SettingsIcon,
 } from "@material-ui/icons";
-import SidebarOption from "./SidebarOption";
-import ViewProfile from "../../atoms/ViewProfile";
+import { SidebarOption } from "./SidebarOption";
+import { ViewProfile } from "../../atoms/ViewProfile";
 import { SIDEBAR_NAVIGATIONS } from "../../../constants/navigationConstants";
 import { sidebarStyles } from "./sidebarStyles";
 
-export default function Sidebar() {
+export const Sidebar = () => {
   const router = useRouter();
   const classes = sidebarStyles();
   const [selectedItem, setSelectedItem] = React.useState(router.pathname);
@@ -85,4 +85,4 @@ export default function Sidebar() {
       </Grid>
     </Grid>
   );
-}
+};

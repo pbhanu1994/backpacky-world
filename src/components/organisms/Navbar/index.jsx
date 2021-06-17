@@ -5,11 +5,11 @@ import {
   Search as SearchIcon,
   ArrowDropDown as ArrowDownwardIcon,
 } from "@material-ui/icons";
-import ProfileList from "../../molecules/ProfileList";
-import NotificationList from "../../molecules/NotificationList";
+import { ProfileList } from "../../molecules/ProfileList";
+import { NotificationList } from "../../molecules/NotificationList";
 import { navbarStyles } from "./navbarStyles";
 
-export default function Navbar() {
+export const Navbar = () => {
   const [showProfileList, setShowProfileList] = useState(false);
   const [showNotificationList, setShowNotificationList] = useState(false);
 
@@ -76,4 +76,4 @@ export default function Navbar() {
       )}
     </>
   );
-}
+};

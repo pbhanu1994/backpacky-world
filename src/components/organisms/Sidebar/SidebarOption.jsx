@@ -2,13 +2,13 @@ import React from "react";
 import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import { sidebarStyles } from "./sidebarStyles";
 
-export default function SidebarOption({
+export const SidebarOption = ({
   Icon,
   text,
   selectedItem,
   item,
   onHandleListItemClick,
-}) {
+}) => {
   const active = selectedItem.includes(item);
   const classes = sidebarStyles({ active });
 
@@ -28,4 +28,4 @@ export default function SidebarOption({
       <ListItemText classes={{ root: classes.text }} primary={text} />
     </ListItem>
   );
-}
+};

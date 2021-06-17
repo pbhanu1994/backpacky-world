@@ -20,7 +20,7 @@ import {
 } from "@material-ui/core";
 import { packStyles } from "./packStyles";
 
-export default function PackInput() {
+export const PackInput = () => {
   const classes = packStyles();
   return (
     <InputBase
@@ -29,4 +29,4 @@ export default function PackInput() {
       inputProps={{ "aria-label": "naked" }}
     />
   );
-}
+};

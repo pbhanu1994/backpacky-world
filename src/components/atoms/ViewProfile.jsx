@@ -15,12 +15,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ViewProfile({
+export const ViewProfile = ({
   variant,
   profileAvatar,
   profileName,
   textSecondary,
-}) {
+}) => {
   const router = useRouter();
   const classes = useStyles();
 
@@ -46,4 +46,4 @@ export default function ViewProfile({
       </Grid>
     </Paper>
   );
-}
+};

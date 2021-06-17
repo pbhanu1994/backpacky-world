@@ -20,10 +20,10 @@ import {
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import { GiLightBackpack } from "react-icons/gi";
-import Sidebar from "../../../organisms/Sidebar";
-import Navbar from "../../../organisms/Navbar";
-import PackOption from "./PackOption";
-import PackInput from "./PackInput";
+import { Sidebar } from "../../../organisms/Sidebar";
+import { Navbar } from "../../../organisms/Navbar";
+import { PackOption } from "./PackOption";
+import { PackInput } from "./PackInput";
 import { packStyles } from "./packStyles";
 
 export default function Pack() {

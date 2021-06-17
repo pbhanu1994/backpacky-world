@@ -17,9 +17,9 @@ import {
   Container,
 } from "@material-ui/core";
 import { Book as JournalIcon } from "@material-ui/icons";
-import Sidebar from "../../organisms/Sidebar";
-import Navbar from "../../organisms/Navbar";
-import JournalCard from "../../atoms/JournalCard";
+import { Sidebar } from "../../organisms/Sidebar";
+import { Navbar } from "../../organisms/Navbar";
+import { JournalCard } from "../../atoms/JournalCard";
 import addItem from "../../../store/actions/journal/addItem";
 import { journalStyles } from "./journalStyles";
 

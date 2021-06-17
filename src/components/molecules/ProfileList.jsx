@@ -14,7 +14,7 @@ import {
   ExitToApp as LogoutIcon,
 } from "@material-ui/icons";
 import { signOut } from "../../handlers/auth";
-import ViewProfile from "../atoms/ViewProfile";
+import { ViewProfile } from "../atoms/ViewProfile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProfileList() {
+export const ProfileList = () => {
   const router = useRouter();
   const classes = useStyles();
 
@@ -57,4 +57,4 @@ export default function ProfileList() {
       </List>
     </Paper>
   );
-}
+};

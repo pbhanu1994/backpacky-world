@@ -11,7 +11,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CommentIcon from "@material-ui/icons/Comment";
 import { packStyles } from "./packStyles";
 
-export default function CheckboxList() {
+export const PackOption = () => {
   const [checked, setChecked] = React.useState([0]);
 
   const handleToggle = (value) => () => {
@@ -73,4 +73,4 @@ export default function CheckboxList() {
       })}
     </List>
   );
-}
+};

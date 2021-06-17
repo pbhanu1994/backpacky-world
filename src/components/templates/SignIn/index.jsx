@@ -24,9 +24,9 @@ import Joi from "joi-browser";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { validate, validateProperty } from "../../../helpers/validate";
+import { Toast } from "../../atoms/Toast";
+import { Copyright } from "../../atoms/Copyright";
 import { signInStyles } from "./signInStyles";
-import Toast from "../../atoms/Toast";
-import Copyright from "../../atoms/Copyright";
 
 export default function SignIn() {
   const [signInDetails, setSignInDetails] = useState({});

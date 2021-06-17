@@ -10,6 +10,6 @@ export const journalReducer = (state = initialState, action) => {
       return { ...state, items: [...state.items, action.payload] };
 
     default:
-      return { ...state };
+      return state;
   }
 };

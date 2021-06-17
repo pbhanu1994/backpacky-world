@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NotificationList() {
+export const NotificationList = () => {
   const classes = useStyles();
 
   // TODO: Make List disappear after mouse click outside - refer Ref?
@@ -49,4 +49,4 @@ export default function NotificationList() {
       </List>
     </Paper>
   );
-}
+};

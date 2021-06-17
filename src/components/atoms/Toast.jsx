@@ -7,12 +7,12 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default function Toast({
+export const Toast = ({
   toastOpen,
   toastColor,
   toastMessage,
   onHandleClose,
-}) {
+}) => {
   return (
     <Snackbar open={toastOpen} autoHideDuration={5000} onClose={onHandleClose}>
       <Alert onClose={onHandleClose} severity={toastColor}>
@@ -20,7 +20,7 @@ export default function Toast({
       </Alert>
     </Snackbar>
   );
-}
+};
 
 Toast.propTypes = {
   toastOpen: PropTypes.bool.isRequired,
