@@ -41,7 +41,7 @@ export const Navbar = () => {
           </Grid>
           <Grid item classes={{ item: classes.notificationAndAccount }}>
             <IconButton
-              aria-label="search"
+              aria-label="Notifications"
               color="inherit"
               onClick={() => setShowNotificationList(!showNotificationList)}
             >

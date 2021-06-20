@@ -1,76 +1,80 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
+import Grid from "@material-ui/core/Grid";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import Checkbox from "@material-ui/core/Checkbox";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import CommentIcon from "@material-ui/icons/Comment";
+import {
+  Delete as DeleteIcon,
+  DeleteOutline as DeleteOutlineIcon,
+} from "@material-ui/icons";
 import { packStyles } from "./packStyles";
 
-export const PackOption = () => {
-  const [checked, setChecked] = React.useState([0]);
-
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
+export const PackOption = ({
+  packItem,
+  checked,
+  onHandleToggle,
+  onDeleteItem,
+}) => {
+  const [mouseHover, setMouseHover] = useState(false);
+  const labelId = `checkbox-list-label-${packItem.name}`;
+  const checkboxChecked = checked !== false;
+  const classes = packStyles({ checkboxChecked });
 
   return (
-    <List>
-      {[0, 1, 2, 3].map((value) => {
-        const labelId = `checkbox-list-label-${value}`;
-        const checkboxChecked = checked.indexOf(value) !== -1;
-        const classes = packStyles({ checkboxChecked });
-
-        return (
-          <>
-            <ListItem
-              key={value}
-              role={undefined}
-              dense
-              disableRipple
-              disableTouchRipple
-              classes={{ root: classes.listItem }}
-              button
-              onClick={handleToggle(value)}
-            >
-              <ListItemIcon>
-                <Checkbox
-                  edge="start"
-                  checked={checkboxChecked}
-                  tabIndex={-1}
-                  // classes={{
-                  // root: classes.checkbox,
-                  // checked: classes.checkboxChecked,
-                  // }}
-                  inputProps={{ "aria-labelledby": labelId }}
-                />
-              </ListItemIcon>
-              <ListItemText
-                id={labelId}
-                classes={{
-                  root: classes.listItemText,
-                  primary: classes.listItemTextPrimary,
-                }}
-                primary={`Line item ${value + 1}`}
-              />
-            </ListItem>
-            <Divider />
-          </>
-        );
-      })}
-    </List>
+    <>
+      <ListItem
+        key={packItem.id}
+        role={undefined}
+        dense
+        disableRipple
+        disableTouchRipple
+        classes={{ root: classes.listItem }}
+        button
+      >
+        <Grid
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+          onClick={() => onHandleToggle(packItem)}
+        >
+          <ListItemIcon>
+            <Checkbox
+              edge="start"
+              checked={checkboxChecked}
+              tabIndex={-1}
+              // classes={{
+              // root: classes.checkbox,
+              // checked: classes.checkboxChecked,
+              // }}
+              inputProps={{ "aria-labelledby": labelId }}
+            />
+          </ListItemIcon>
+          <ListItemText
+            id={labelId}
+            classes={{
+              root: classes.listItemText,
+              primary: classes.listItemTextPrimary,
+            }}
+            primary={packItem.name}
+          />
+        </Grid>
+        <IconButton
+          aria-label="search"
+          onClick={() => onDeleteItem(packItem)}
+          onMouseOver={() => setMouseHover(true)}
+          onMouseLeave={() => setMouseHover(false)}
+        >
+          {/* TODO: Check the colors of error or black on hover with a designer */}
+          {mouseHover ? <DeleteIcon color="error" /> : <DeleteOutlineIcon />}
+        </IconButton>
+      </ListItem>
+      <Divider />
+    </>
   );
 };

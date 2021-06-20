@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import {
@@ -20,13 +20,25 @@ import {
 } from "@material-ui/core";
 import { packStyles } from "./packStyles";
 
-export const PackInput = () => {
+export const PackInput = ({ onAddItem }) => {
+  const [text, setText] = useState("");
   const classes = packStyles();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onAddItem(text);
+    setText("");
+  };
+
   return (
-    <InputBase
-      classes={{ root: classes.inputText }}
-      placeholder="Add Item.. e.g. Running shoes"
-      inputProps={{ "aria-label": "naked" }}
-    />
+    <form onSubmit={handleSubmit}>
+      <InputBase
+        classes={{ root: classes.inputText }}
+        placeholder="Add Item.. e.g. Running shoes"
+        inputProps={{ "aria-label": "naked" }}
+        onChange={(e) => setText(e.target.value)}
+        value={text}
+      />
+    </form>
   );
 };
