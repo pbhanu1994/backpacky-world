@@ -1,9 +1,12 @@
 import { UPDATE_PACK_ITEM } from "../../../actionTypes/journal";
 
-const updatePackItem = (item) => (dispatch, getState) => {
+const updatePackItem = (sectionId, packItem) => (dispatch, getState) => {
   dispatch({
     type: UPDATE_PACK_ITEM,
-    payload: item,
+    payload: {
+      sectionId,
+      packItem,
+    },
   });
 };
 

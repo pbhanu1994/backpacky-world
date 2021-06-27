@@ -15,6 +15,7 @@ import {
 import { packStyles } from "./packStyles";
 
 export const PackOption = ({
+  sectionId,
   packItem,
   checked,
   onHandleToggle,
@@ -41,7 +42,7 @@ export const PackOption = ({
           direction="row"
           justify="space-between"
           alignItems="center"
-          onClick={() => onHandleToggle(packItem)}
+          onClick={() => onHandleToggle(sectionId, packItem)}
         >
           <ListItemIcon>
             <Checkbox
@@ -65,8 +66,8 @@ export const PackOption = ({
           />
         </Grid>
         <IconButton
-          aria-label="search"
-          onClick={() => onDeleteItem(packItem)}
+          aria-label="Delete Item"
+          onClick={() => onDeleteItem(sectionId, packItem)}
           onMouseOver={() => setMouseHover(true)}
           onMouseLeave={() => setMouseHover(false)}
         >

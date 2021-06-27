@@ -26,16 +26,16 @@ export default function Pack() {
     dispatch(getPackItems());
   }, []);
 
-  const handleToggle = (packItem) => {
-    dispatch(updatePackItem(packItem));
+  const handleToggle = (sectionId, packItem) => {
+    dispatch(updatePackItem(sectionId, packItem));
   };
 
-  const handleAddItem = (packItem) => {
-    dispatch(addPackItem(packItem));
+  const handleAddItem = (sectionId, packItem) => {
+    dispatch(addPackItem(sectionId, packItem));
   };
 
-  const handleDeleteItem = (packItem) => {
-    dispatch(deletePackItem(packItem));
+  const handleDeleteItem = (sectionId, packItem) => {
+    dispatch(deletePackItem(sectionId, packItem));
   };
 
   return (
@@ -60,34 +60,57 @@ export default function Pack() {
             <GiLightBackpack color={theme.palette.primary.main} />
             <span className={classes.packHeadingText}>Things to pack..</span>
           </Typography>
-          <Paper variant="outlined" classes={{ root: classes.listPaper }}>
-            <Grid
-              container
-              justify="space-between"
-              style={{ padding: "0 1rem" }}
+          {packItems.map((packItem) => (
+            <Paper
+              variant="outlined"
+              classes={{ root: classes.listPaper }}
+              key={packItem.id}
             >
-              <h3 style={{ fontWeight: 400 }}>Completed: 7 Items</h3>
-              <h3 style={{ fontWeight: 400 }}>Total: 31 Items</h3>
-            </Grid>
-            <Divider />
-            <List>
-              {packItems.map((packItem) => (
-                <PackOption
-                  key={packItem.name}
-                  packItem={packItem}
-                  checked={packItem.checked}
-                  onHandleToggle={handleToggle}
-                  onDeleteItem={handleDeleteItem}
-                />
-              ))}
-              {packItems.length === 0 && (
-                <h3 style={{ fontWeight: 400, textAlign: "center" }}>
-                  No items found
+              <Grid
+                container
+                justify="space-between"
+                style={{ padding: "0 1rem" }}
+              >
+                <h3
+                  style={{
+                    fontWeight: 800,
+                    // color: `${theme.palette.primary.main}`,
+                  }}
+                >
+                  {packItem.sectionTitle}
                 </h3>
-              )}
-            </List>
-            <PackInput onAddItem={handleAddItem} />
-          </Paper>
+                <h3 style={{ fontWeight: 400 }}>
+                  Completed:{" "}
+                  {packItem.sectionItems.filter((item) => item.checked).length}{" "}
+                  /{packItem.sectionItems?.length}
+                </h3>
+                {/* <h3 style={{ fontWeight: 400 }}>Total: 31 Items</h3> */}
+              </Grid>
+              <Divider />
+              <List>
+                {packItem.sectionItems?.map((sectionItem) => (
+                  <PackOption
+                    key={sectionItem.name}
+                    sectionId={packItem.sectionId}
+                    packItem={sectionItem}
+                    checked={sectionItem.checked}
+                    onHandleToggle={handleToggle}
+                    onDeleteItem={handleDeleteItem}
+                  />
+                ))}
+                {packItem.sectionItems?.length === 0 && (
+                  <h3 style={{ fontWeight: 400, textAlign: "center" }}>
+                    No items found
+                  </h3>
+                )}
+              </List>
+              <PackInput
+                sectionId={packItem.sectionId}
+                placeholderText={packItem.placeholderText}
+                onAddItem={handleAddItem}
+              />
+            </Paper>
+          ))}
         </Grid>
       </Grid>
     </>

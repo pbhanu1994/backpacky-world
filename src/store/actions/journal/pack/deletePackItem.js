@@ -1,9 +1,12 @@
 import { DELETE_PACK_ITEM } from "../../../actionTypes/journal";
 
-const deletePackItem = (item) => (dispatch, getState) => {
+const deletePackItem = (sectionId, packItem) => (dispatch, getState) => {
   dispatch({
     type: DELETE_PACK_ITEM,
-    payload: item,
+    payload: {
+      sectionId,
+      packItem,
+    },
   });
 };
 

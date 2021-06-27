@@ -5,6 +5,7 @@ export const navbarStyles = makeStyles((theme) => ({
     position: "sticky",
     top: 0,
     padding: "1rem",
+    zIndex: 1,
   },
   logo: {
     paddingLeft: "2rem",

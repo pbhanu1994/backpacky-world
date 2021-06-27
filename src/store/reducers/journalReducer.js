@@ -7,6 +7,8 @@ import {
 } from "../actionTypes/journal";
 
 const initialState = {
+  total: 0,
+  completed: 0,
   packItems: [],
 };
 
@@ -17,26 +19,39 @@ export const journalReducer = (state = initialState, action) => {
       return { ...state, packItems: action.payload };
 
     case ADD_PACK_ITEM: {
+      const { sectionId, packItem } = action.payload;
       const items = cloneDeep(state.packItems);
-      items.push(action.payload);
+      const sectionIndex = items.findIndex(
+        (item) => item.sectionId === sectionId
+      );
+      items[sectionIndex].sectionItems.push(packItem);
       return { ...state, packItems: items };
     }
 
     case UPDATE_PACK_ITEM: {
+      const { sectionId, packItem } = action.payload;
       const items = cloneDeep(state.packItems);
-      const itemIndex = items.findIndex(
-        (item) => item.name === action.payload.name
+      const sectionIndex = items.findIndex(
+        (item) => item.sectionId === sectionId
       );
-      items[itemIndex].checked = !items[itemIndex].checked;
+      const itemIndex = items[sectionIndex].sectionItems.findIndex(
+        (sectionItem) => sectionItem.id === packItem.id
+      );
+      items[sectionIndex].sectionItems[itemIndex].checked =
+        !items[sectionIndex].sectionItems[itemIndex].checked;
       return { ...state, packItems: items };
     }
 
     case DELETE_PACK_ITEM: {
+      const { sectionId, packItem } = action.payload;
       const items = cloneDeep(state.packItems);
-      const itemIndex = items.findIndex(
-        (item) => item.name === action.payload.name
+      const sectionIndex = items.findIndex(
+        (item) => item.sectionId === sectionId
       );
-      items.splice(itemIndex, 1);
+      const itemIndex = items[sectionIndex].sectionItems.findIndex(
+        (sectionItem) => sectionItem.id === packItem.id
+      );
+      items[sectionIndex].sectionItems.splice(itemIndex, 1);
       return { ...state, packItems: items };
     }
 

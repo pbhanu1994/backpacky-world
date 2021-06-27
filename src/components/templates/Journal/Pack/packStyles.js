@@ -7,6 +7,7 @@ export const packStyles = makeStyles((theme) => ({
   listPaper: {
     maxWidth: 1000,
     borderRadius: "1rem",
+    marginBottom: "1rem",
   },
   listItem: {
     background: "none !important",

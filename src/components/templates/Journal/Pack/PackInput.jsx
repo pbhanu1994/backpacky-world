@@ -20,13 +20,13 @@ import {
 } from "@material-ui/core";
 import { packStyles } from "./packStyles";
 
-export const PackInput = ({ onAddItem }) => {
+export const PackInput = ({ sectionId, placeholderText, onAddItem }) => {
   const [text, setText] = useState("");
   const classes = packStyles();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddItem(text);
+    onAddItem(sectionId, text);
     setText("");
   };
 
@@ -34,7 +34,7 @@ export const PackInput = ({ onAddItem }) => {
     <form onSubmit={handleSubmit}>
       <InputBase
         classes={{ root: classes.inputText }}
-        placeholder="Add Item.. e.g. Running shoes"
+        placeholder={placeholderText}
         inputProps={{ "aria-label": "naked" }}
         onChange={(e) => setText(e.target.value)}
         value={text}
