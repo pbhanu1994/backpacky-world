@@ -19,12 +19,11 @@ export const packStyles = makeStyles((theme) => ({
   //   color: `${theme.palette.grey[500]} !important`,
   // },
   listItemText: {
-    color: ({ checkboxChecked }) => {
-      return checkboxChecked ? theme.palette.grey[500] : "";
-    },
-    textDecorationLine: ({ checkboxChecked }) => {
-      return checkboxChecked ? "line-through" : "";
-    },
+    color: ({ checkboxChecked }) => checkboxChecked && theme.palette.grey[500],
+    textDecorationLine: ({ checkboxChecked }) =>
+      checkboxChecked && "line-through",
+    textDecorationColor: ({ checkboxChecked }) =>
+      checkboxChecked && theme.palette.secondary.main,
   },
   listItemTextPrimary: {
     fontWeight: "bold",

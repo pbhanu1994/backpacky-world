@@ -35,7 +35,7 @@ export const journalReducer = (state = initialState, action) => {
         (item) => item.sectionId === sectionId
       );
       const itemIndex = items[sectionIndex].sectionItems.findIndex(
-        (sectionItem) => sectionItem.id === packItem.id
+        (sectionItem) => sectionItem.name === packItem.name
       );
       items[sectionIndex].sectionItems[itemIndex].checked =
         !items[sectionIndex].sectionItems[itemIndex].checked;
@@ -49,7 +49,7 @@ export const journalReducer = (state = initialState, action) => {
         (item) => item.sectionId === sectionId
       );
       const itemIndex = items[sectionIndex].sectionItems.findIndex(
-        (sectionItem) => sectionItem.id === packItem.id
+        (sectionItem) => sectionItem.name === packItem.name
       );
       items[sectionIndex].sectionItems.splice(itemIndex, 1);
       return { ...state, packItems: items };
