@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { Divider, List, Paper, Grid, Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
@@ -8,6 +7,7 @@ import { Sidebar } from "../../../organisms/Sidebar";
 import { Navbar } from "../../../organisms/Navbar";
 import { PackOption } from "./PackOption";
 import { PackInput } from "./PackInput";
+import { AddPackSection } from "./AddPackSection";
 import getPackItems from "../../../../store/actions/journal/pack/getPackItems";
 import addPackItem from "../../../../store/actions/journal/pack/addPackItem";
 import updatePackItem from "../../../../store/actions/journal/pack/updatePackItem";
@@ -17,8 +17,8 @@ import { packStyles } from "./packStyles";
 export default function Pack() {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const classes = packStyles();
   const packItems = useSelector((state) => state.journal.packItems);
+  const classes = packStyles();
 
   console.log("packItems", packItems);
 
@@ -60,6 +60,7 @@ export default function Pack() {
             <GiLightBackpack color={theme.palette.primary.main} />
             <span className={classes.packHeadingText}>Things to pack..</span>
           </Typography>
+          <AddPackSection />
           {packItems.map((packItem) => (
             <Paper
               variant="outlined"

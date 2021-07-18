@@ -1,23 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import {
-  Avatar,
-  Button,
-  CssBaseline,
-  TextField,
-  InputAdornment,
-  IconButton,
-  FormControlLabel,
-  Checkbox,
-  Link,
-  InputBase,
-  Paper,
-  Grid,
-  Box,
-  Typography,
-  Container,
-} from "@material-ui/core";
+import { InputBase } from "@material-ui/core";
 import { packStyles } from "./packStyles";
 
 export const PackInput = ({ sectionId, placeholderText, onAddItem }) => {

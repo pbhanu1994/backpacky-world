@@ -4,6 +4,20 @@ export const packStyles = makeStyles((theme) => ({
   packHeadingText: {
     color: theme.palette.primary.main,
   },
+  addSection: {
+    maxWidth: 1000,
+    borderRadius: "1rem",
+    marginBottom: "0.5rem",
+  },
+  addSectionText: {
+    maxWidth: 400,
+  },
+  confirmButton: {
+    color: theme.palette.success.main,
+  },
+  cancelButton: {
+    color: theme.palette.error.main,
+  },
   listPaper: {
     maxWidth: 1000,
     borderRadius: "1rem",
