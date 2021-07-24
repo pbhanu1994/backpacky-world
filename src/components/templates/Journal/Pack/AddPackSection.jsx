@@ -3,7 +3,7 @@ import { Grid, TextField, Button, IconButton } from "@material-ui/core";
 import { Check as ConfirmIcon, Close as CloseIcon } from "@material-ui/icons";
 import { packStyles } from "./packStyles";
 
-export const AddPackSection = () => {
+export const AddPackSection = ({ onAddSection }) => {
   const [addSection, setAddSection] = useState(false);
   const [addSectionText, setAddSectionText] = useState("");
 
@@ -18,26 +18,27 @@ export const AddPackSection = () => {
           variant="text"
           color="secondary"
           className={classes.addSection}
-          onClick={() => setAddSection(!addSection)}
+          // onClick={() => setAddSection(!addSection)}
+          onClick={onAddSection}
         >
           + Add section
         </Button>
       )}
-      {addSection && (
+      {/* {addSection && (
         <Grid
           container
           direction="row"
           justify="center"
           alignItems="center"
           style={{ maxWidth: 1000 }}
-        >
-          {/* TODO: Check the Text Field UI design here with the designer */}
-          <TextField
+        > */}
+      {/* TODO: Check the Text Field UI design here with the designer */}
+      {/* <TextField
             fullWidth
             classes={{ root: classes.addSectionText }}
             color="secondary"
             label="Section Name"
-            placeholder="Meds/Firsta Aid"
+            placeholder="Meds/First Aid"
             size="small"
             onChange={(e) => setAddSectionText(e.target.value)}
             value={addSectionText}
@@ -59,7 +60,7 @@ export const AddPackSection = () => {
             <CloseIcon color="error" />
           </IconButton>
         </Grid>
-      )}
+      )} */}
     </Grid>
   );
 };

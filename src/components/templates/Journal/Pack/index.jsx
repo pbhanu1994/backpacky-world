@@ -9,6 +9,7 @@ import { PackOption } from "./PackOption";
 import { PackInput } from "./PackInput";
 import { AddPackSection } from "./AddPackSection";
 import getPackItems from "../../../../store/actions/journal/pack/getPackItems";
+import addPackSection from "../../../../store/actions/journal/pack/addPackSection";
 import addPackItem from "../../../../store/actions/journal/pack/addPackItem";
 import updatePackItem from "../../../../store/actions/journal/pack/updatePackItem";
 import deletePackItem from "../../../../store/actions/journal/pack/deletePackItem";
@@ -28,6 +29,10 @@ export default function Pack() {
 
   const handleToggle = (sectionId, packItem) => {
     dispatch(updatePackItem(sectionId, packItem));
+  };
+
+  const handleAddSection = (position) => {
+    dispatch(addPackSection(position));
   };
 
   const handleAddItem = (sectionId, packItem) => {
@@ -60,7 +65,7 @@ export default function Pack() {
             <GiLightBackpack color={theme.palette.primary.main} />
             <span className={classes.packHeadingText}>Things to pack..</span>
           </Typography>
-          <AddPackSection />
+          <AddPackSection onAddSection={() => handleAddSection("start")} />
           {packItems.map((packItem) => (
             <Paper
               variant="outlined"
@@ -112,6 +117,7 @@ export default function Pack() {
               />
             </Paper>
           ))}
+          <AddPackSection onAddSection={() => handleAddSection("end")} />
         </Grid>
       </Grid>
     </>

@@ -1,6 +1,7 @@
 import { cloneDeep } from "lodash";
 import {
   GET_PACK_ITEMS,
+  ADD_PACK_SECTION,
   ADD_PACK_ITEM,
   UPDATE_PACK_ITEM,
   DELETE_PACK_ITEM,
@@ -17,6 +18,16 @@ export const journalReducer = (state = initialState, action) => {
     // -- PACK -- //
     case GET_PACK_ITEMS:
       return { ...state, packItems: action.payload };
+
+    case ADD_PACK_SECTION: {
+      const { section, position } = action.payload;
+      const items = cloneDeep(state.packItems);
+      position === "start" ? items.unshift(section) : items.push(section);
+      return {
+        ...state,
+        packItems: items,
+      };
+    }
 
     case ADD_PACK_ITEM: {
       const { sectionId, packItem } = action.payload;
