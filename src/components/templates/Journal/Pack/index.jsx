@@ -55,7 +55,7 @@ export default function Pack() {
             component="h1"
             variant="h3"
             align="center"
-            color="textPrimary"
+            color="primary"
             gutterBottom
             style={{
               display: "flex",
@@ -63,7 +63,7 @@ export default function Pack() {
             }}
           >
             <GiLightBackpack color={theme.palette.primary.main} />
-            <span className={classes.packHeadingText}>Things to pack..</span>
+            Things to pack..
           </Typography>
           <AddPackSection onAddSection={() => handleAddSection("start")} />
           {packItems.map((packItem) => (
@@ -75,21 +75,31 @@ export default function Pack() {
               <Grid
                 container
                 justify="space-between"
-                style={{ padding: "0 1rem" }}
+                style={{ padding: "0.8rem 1rem" }}
               >
-                <h3
+                <Typography
+                  component="h6"
+                  variant="h6"
+                  color="secondary"
                   style={{
-                    fontWeight: 800,
-                    // color: `${theme.palette.primary.main}`,
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
                   {packItem.sectionTitle}
-                </h3>
-                <h3 style={{ fontWeight: 400 }}>
+                </Typography>
+                <Typography
+                  component="h6"
+                  variant="body1"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
                   Completed:{" "}
                   {packItem.sectionItems.filter((item) => item.checked).length}{" "}
                   /{packItem.sectionItems?.length}
-                </h3>
+                </Typography>
                 {/* <h3 style={{ fontWeight: 400 }}>Total: 31 Items</h3> */}
               </Grid>
               <Divider />

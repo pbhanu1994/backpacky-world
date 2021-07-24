@@ -5,7 +5,4 @@ export const journalStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
     fontSize: "3rem",
   },
-  journalTitle: {
-    color: theme.palette.primary.main,
-  },
 }));

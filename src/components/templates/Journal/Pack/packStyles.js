@@ -1,9 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export const packStyles = makeStyles((theme) => ({
-  packHeadingText: {
-    color: theme.palette.primary.main,
-  },
   addSection: {
     maxWidth: 1000,
     borderRadius: "1rem",

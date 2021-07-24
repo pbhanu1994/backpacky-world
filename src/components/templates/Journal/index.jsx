@@ -47,7 +47,7 @@ export default function Journal({ userId }) {
             component="h1"
             variant="h3"
             align="center"
-            color="textPrimary"
+            color="primary"
             gutterBottom
             style={{
               display: "flex",
@@ -55,7 +55,7 @@ export default function Journal({ userId }) {
             }}
           >
             <JournalIcon className={classes.journalIcon} />
-            <span className={classes.journalTitle}>Journal Entries..</span>
+            Journal Entries..
           </Typography>
           <JournalCard
             image="https://images.unsplash.com/photo-1499803270242-467f7311582d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2031&q=80"
