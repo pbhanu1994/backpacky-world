@@ -6,8 +6,10 @@ export const packStyles = makeStyles((theme) => ({
     borderRadius: "1rem",
     marginBottom: "0.5rem",
   },
-  addSectionText: {
-    maxWidth: 400,
+  sectionTitle: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   confirmButton: {
     color: theme.palette.success.main,
@@ -41,6 +43,9 @@ export const packStyles = makeStyles((theme) => ({
   },
   inputText: {
     width: "80%",
-    margin: "0.4rem 4.5rem",
+    margin: ({ edit }) => !edit && "0.4rem 4.5rem",
+  },
+  deleteSectionButton: {
+    color: theme.palette.error.main,
   },
 }));

@@ -2,6 +2,8 @@ import { cloneDeep } from "lodash";
 import {
   GET_PACK_ITEMS,
   ADD_PACK_SECTION,
+  UPDATE_PACK_SECTION,
+  DELETE_PACK_SECTION,
   ADD_PACK_ITEM,
   UPDATE_PACK_ITEM,
   DELETE_PACK_ITEM,
@@ -29,6 +31,26 @@ export const journalReducer = (state = initialState, action) => {
       };
     }
 
+    case UPDATE_PACK_SECTION: {
+      const { sectionId, sectionTitle } = action.payload;
+      const items = cloneDeep(state.packItems);
+      const sectionIndex = items.findIndex(
+        (item) => item.sectionId === sectionId
+      );
+      items[sectionIndex].sectionTitle = sectionTitle;
+      return { ...state, packItems: items };
+    }
+
+    case DELETE_PACK_SECTION: {
+      const { sectionId } = action.payload;
+      const items = cloneDeep(state.packItems);
+      const sectionIndex = items.findIndex(
+        (item) => item.sectionId === sectionId
+      );
+      items.splice(sectionIndex, 1);
+      return { ...state, packItems: items };
+    }
+
     case ADD_PACK_ITEM: {
       const { sectionId, packItem } = action.payload;
       const items = cloneDeep(state.packItems);
@@ -40,7 +62,7 @@ export const journalReducer = (state = initialState, action) => {
     }
 
     case UPDATE_PACK_ITEM: {
-      const { sectionId, packItem } = action.payload;
+      const { sectionId, packItem, toggle, editItemName } = action.payload;
       const items = cloneDeep(state.packItems);
       const sectionIndex = items.findIndex(
         (item) => item.sectionId === sectionId
@@ -48,8 +70,15 @@ export const journalReducer = (state = initialState, action) => {
       const itemIndex = items[sectionIndex].sectionItems.findIndex(
         (sectionItem) => sectionItem.name === packItem.name
       );
-      items[sectionIndex].sectionItems[itemIndex].checked =
-        !items[sectionIndex].sectionItems[itemIndex].checked;
+
+      if (toggle)
+        items[sectionIndex].sectionItems[itemIndex].checked =
+          !items[sectionIndex].sectionItems[itemIndex].checked;
+
+      if (editItemName)
+        items[sectionIndex].sectionItems[itemIndex].name =
+          editItemName && editItemName;
+
       return { ...state, packItems: items };
     }
 
