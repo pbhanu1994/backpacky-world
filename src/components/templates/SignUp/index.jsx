@@ -14,87 +14,78 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
-import { useRouter } from "next/router";
 import {
   LockOutlined as LockOutlinedIcon,
   Visibility,
   VisibilityOff,
 } from "@material-ui/icons";
-import Joi from "joi-browser";
+import { useFormik, Form, FormikProvider } from "formik";
+import * as Yup from "yup";
+import _ from "lodash";
 import firebase from "firebase/app";
 import "firebase/auth";
-import { validate, validateProperty } from "../../../helpers/validate";
 import { Toast } from "../../atoms/Toast";
 import { Copyright } from "../../atoms/Copyright";
 import { signUpStyles } from "./signUpStyles";
 
 export default function SignUp() {
-  const [userDetails, setUserDetails] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({});
   const [toast, setToast] = useState({
     open: false,
     color: "error",
     message: "",
   });
   const classes = signUpStyles();
-  const router = useRouter();
 
   // Validation Schema
-  const schema = {
-    firstName: Joi.string().required().label("First Name"),
-    lastName: Joi.string().required().label("Last Name"),
-    email: Joi.string().email().required().label("Email"),
-    password: Joi.string().min(5).required().label("Password"),
-  };
+  const signUpSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("First name required"),
+    lastName: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Last name required"),
+    email: Yup.string()
+      .email("Email must be a valid email address")
+      .required("Email is required"),
+    password: Yup.string().required("Password is required"),
+  });
 
-  const handleUserDetails = ({ currentTarget }) => {
-    // Validating the field
-    const errorMessage = validateProperty(
-      schema,
-      currentTarget.name,
-      currentTarget.value
-    );
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    },
+    validationSchema: signUpSchema,
+    onSubmit: async (values) => {
+      const { firstName, lastName, email, password } = values;
 
-    setErrors({
-      ...errors,
-      [currentTarget.name]: errorMessage && errorMessage,
-    });
+      if (_.isEmpty(errors)) {
+        try {
+          const { user } = await firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password);
+          await user.updateProfile({ displayName: firstName });
 
-    setUserDetails({
-      ...userDetails,
-      [currentTarget.name]: currentTarget.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { firstName, email, password } = userDetails;
-
-    const resultError = validate(userDetails, schema);
-    resultError && setErrors(resultError);
-
-    if (resultError === null) {
-      setErrors({});
-
-      try {
-        const { user } = await firebase
-          .auth()
-          .createUserWithEmailAndPassword(email, password);
-        await user.updateProfile({ displayName: firstName });
-
-        window.location.href = `${user && "/home"}`;
-      } catch (err) {
-        console.log("Error Signing up", err);
-        setToast({
-          ...toast,
-          open: true,
-          color: "error",
-          message: err.message,
-        });
+          window.location.href = `${user && "/home"}`;
+        } catch (err) {
+          console.log("Error Signing up", err);
+          setToast({
+            ...toast,
+            open: true,
+            color: "error",
+            message: err.message,
+          });
+        }
       }
-    }
-  };
+    },
+  });
+
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
   // On Toast Close
   const handleClose = (event, reason) => {
@@ -124,101 +115,110 @@ export default function SignUp() {
             Create Account
           </Typography>
         </Grid>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                onChange={(e) => handleUserDetails(e)}
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-                error={errors["firstName"]}
-                helperText={errors["firstName"]}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                onChange={(e) => handleUserDetails(e)}
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                error={errors["lastName"]}
-                helperText={errors["lastName"]}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                onChange={(e) => handleUserDetails(e)}
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                error={errors["email"]}
-                helperText={errors["email"]}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                onChange={(e) => handleUserDetails(e)}
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                id="password"
-                autoComplete="current-password"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setShowPassword(!showPassword)}
-                        onMouseDown={(e) => e.preventDefault()}
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                error={errors["password"]}
-                helperText={errors["password"]}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive updates via email."
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            size="large"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
+        <FormikProvider value={formik}>
+          <Form
+            className={classes.form}
+            autoComplete="off"
+            noValidate
+            onSubmit={handleSubmit}
           >
-            Sign Up
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              Already have an account?{" "}
-              <Link href="/signin" variant="body2">
-                Sign in
-              </Link>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="fname"
+                  name="firstName"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  {...getFieldProps("firstName")}
+                  autoFocus
+                  error={Boolean(touched.firstName && errors.firstName)}
+                  helperText={touched.firstName && errors.firstName}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  {...getFieldProps("lastName")}
+                  name="lastName"
+                  autoComplete="lname"
+                  error={Boolean(touched.lastName && errors.lastName)}
+                  helperText={touched.lastName && errors.lastName}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  {...getFieldProps("email")}
+                  name="email"
+                  autoComplete="email"
+                  error={Boolean(touched.email && errors.email)}
+                  helperText={touched.email && errors.email}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  {...getFieldProps("password")}
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  autoComplete="current-password"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword(!showPassword)}
+                          onMouseDown={(e) => e.preventDefault()}
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  error={Boolean(touched.password && errors.password)}
+                  helperText={touched.password && errors.password}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox value="allowExtraEmails" color="primary" />
+                  }
+                  label="I want to receive updates via email."
+                />
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
+            <Button
+              type="submit"
+              fullWidth
+              size="large"
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign Up
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                Already have an account?{" "}
+                <Link href="/signin" variant="body2">
+                  Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </Form>
+        </FormikProvider>
       </div>
       <Box mt={5}>
         <Copyright />

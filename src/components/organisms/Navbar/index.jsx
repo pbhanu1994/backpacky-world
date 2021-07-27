@@ -21,7 +21,7 @@ export const Navbar = () => {
         <Grid
           container
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="center"
         >
           <Grid item classes={{ item: classes.logo }}>

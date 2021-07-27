@@ -98,7 +98,7 @@ export default function Pack() {
             >
               <Grid
                 container
-                justify="space-between"
+                justifyContent="space-between"
                 style={{ padding: "0.8rem 1rem" }}
                 onMouseOver={() => {
                   setSelectedHoverSectionId(packItem.sectionId);

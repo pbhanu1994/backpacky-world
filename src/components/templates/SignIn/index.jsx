@@ -20,79 +20,65 @@ import {
   Visibility,
   VisibilityOff,
 } from "@material-ui/icons";
-import Joi from "joi-browser";
+import { useFormik, Form, FormikProvider } from "formik";
+import * as Yup from "yup";
+import _ from "lodash";
 import firebase from "firebase/app";
 import "firebase/auth";
-import { validate, validateProperty } from "../../../helpers/validate";
 import { Toast } from "../../atoms/Toast";
 import { Copyright } from "../../atoms/Copyright";
 import { signInStyles } from "./signInStyles";
 
 export default function SignIn() {
-  const [signInDetails, setSignInDetails] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({});
   const [toast, setToast] = useState({
     open: false,
     color: "error",
     message: "",
   });
   const classes = signInStyles();
-  const router = useRouter();
 
   // Validation Schema
-  const schema = {
-    email: Joi.string().email().required().label("Email"),
-    password: Joi.string().required().label("Password"),
-  };
+  const signInSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Email must be a valid email address")
+      .required("Email is required"),
+    password: Yup.string().required("Password is required"),
+  });
 
-  const handleSignInDetails = ({ currentTarget }) => {
-    // Validating the field
-    const errorMessage = validateProperty(
-      schema,
-      currentTarget.name,
-      currentTarget.value
-    );
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      remember: true,
+    },
+    validationSchema: signInSchema,
+    onSubmit: async (values) => {
+      const { email, password } = values;
 
-    setErrors({
-      ...errors,
-      [currentTarget.name]: errorMessage && errorMessage,
-    });
+      if (_.isEmpty(errors)) {
+        try {
+          const { user } = await firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password);
 
-    setSignInDetails({
-      ...signInDetails,
-      [currentTarget.name]: currentTarget.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { email, password } = signInDetails;
-
-    const resultError = validate(signInDetails, schema);
-    resultError && setErrors(resultError);
-
-    if (resultError === null) {
-      setErrors({});
-
-      try {
-        const { user } = await firebase
-          .auth()
-          .signInWithEmailAndPassword(email, password);
-
-        window.location.href = `${user && "/home"}`;
-        // router.replace(user && '/home');
-      } catch (err) {
-        console.log("Error Signing up", err);
-        setToast({
-          ...toast,
-          open: true,
-          color: "error",
-          message: err.message,
-        });
+          window.location.href = `${user && "/home"}`;
+          // router.replace(user && '/home');
+        } catch (err) {
+          console.log("Error Signing up", err);
+          setToast({
+            ...toast,
+            open: true,
+            color: "error",
+            message: err.message,
+          });
+        }
       }
-    }
-  };
+    },
+  });
+
+  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } =
+    formik;
 
   // On Toast Close
   const handleClose = (event, reason) => {
@@ -122,75 +108,82 @@ export default function SignIn() {
             Welcome
           </Typography>
         </Grid>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
-          {/* TODO: Add Icons for Email & Password */}
-          <TextField
-            onChange={(e) => handleSignInDetails(e)}
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            error={errors["email"]}
-            helperText={errors["email"]}
-          />
-          <TextField
-            onChange={(e) => handleSignInDetails(e)}
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            id="password"
-            autoComplete="current-password"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setShowPassword(!showPassword)}
-                    onMouseDown={(e) => e.preventDefault()}
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            error={errors["password"]}
-            helperText={errors["password"]}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            size="large"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
+        <FormikProvider value={formik}>
+          <Form
+            className={classes.form}
+            autoComplete="off"
+            noValidate
+            onSubmit={handleSubmit}
           >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+            {/* TODO: Add Icons for Email & Password */}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              {...getFieldProps("email")}
+              error={Boolean(touched.email && errors.email)}
+              helperText={touched.email && errors.email}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              id="password"
+              autoComplete="current-password"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      onMouseDown={(e) => e.preventDefault()}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              {...getFieldProps("password")}
+              error={Boolean(touched.password && errors.password)}
+              helperText={touched.password && errors.password}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              size="large"
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                Don't have an account?{" "}
+                <Link href="/signup" variant="body2">
+                  Sign Up
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              Don't have an account?{" "}
-              <Link href="/signup" variant="body2">
-                Sign Up
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
+          </Form>
+        </FormikProvider>
       </div>
       <Box mt={5}>
         <Copyright />
