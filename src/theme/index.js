@@ -12,6 +12,10 @@ import typography from "./typography";
 import shape from "./shape";
 import shadows, { customShadows } from "./shadows";
 
+ThemeConfig.propTypes = {
+  children: PropTypes.node,
+};
+
 export default function ThemeConfig({ children }) {
   const themeOptions = useMemo(
     () => ({
