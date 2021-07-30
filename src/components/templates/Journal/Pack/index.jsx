@@ -77,16 +77,14 @@ export default function Pack() {
         <Grid item xs={10} md={9}>
           <Typography
             component="h1"
-            variant="h3"
-            align="center"
-            color="primary"
+            variant="h4"
             gutterBottom
             style={{
               display: "flex",
+              alignItems: "baseline",
               marginTop: "2rem",
             }}
           >
-            <GiLightBackpack color={theme.palette.primary.main} />
             Things to pack..
           </Typography>
           <AddPackSection onAddSection={() => handleAddSection("start")} />
@@ -99,7 +97,7 @@ export default function Pack() {
               <Grid
                 container
                 justifyContent="space-between"
-                style={{ padding: "0.8rem 1rem" }}
+                style={{ padding: "0.8rem 1rem", height: "3.4rem" }}
                 onMouseOver={() => {
                   setSelectedHoverSectionId(packItem.sectionId);
                   setMouseHoverOnSection(true);
@@ -184,7 +182,7 @@ export default function Pack() {
                       packItem.sectionItems.filter((item) => item.checked)
                         .length
                     }{" "}
-                    /{packItem.sectionItems?.length}
+                    / {packItem.sectionItems?.length}
                   </Typography>
                 )}
                 {/* <h3 style={{ fontWeight: 400 }}>Total: 31 Items</h3> */}

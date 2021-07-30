@@ -21,6 +21,8 @@ export const packStyles = makeStyles((theme) => ({
     maxWidth: 1000,
     borderRadius: "1rem",
     marginBottom: "1rem",
+    // TODO: Remove rgb color later and replace it with own grey from theme
+    boxShadow: theme.customShadows.z16,
   },
   listItem: {
     background: "none !important",
@@ -44,6 +46,12 @@ export const packStyles = makeStyles((theme) => ({
   inputText: {
     width: "80%",
     margin: ({ edit }) => !edit && "0.4rem 4.5rem",
+    fontSize: "unset",
+    fontWeight: ({ edit }) => edit && "bold",
+  },
+  inputElement: {
+    padding: 0,
+    margin: 0,
   },
   deleteSectionButton: {
     color: theme.palette.error.main,

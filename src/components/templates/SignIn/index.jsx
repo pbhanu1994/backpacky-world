@@ -12,6 +12,7 @@ import {
   Grid,
   Box,
   Typography,
+  Divider,
   Container,
 } from "@material-ui/core";
 import { useRouter } from "next/router";
@@ -25,6 +26,7 @@ import * as Yup from "yup";
 import _ from "lodash";
 import firebase from "firebase/app";
 import "firebase/auth";
+import { AuthSocial } from "../../molecules/AuthSocial";
 import { Toast } from "../../atoms/Toast";
 import { Copyright } from "../../atoms/Copyright";
 import { signInStyles } from "./signInStyles";
@@ -108,6 +110,7 @@ export default function SignIn() {
             Welcome
           </Typography>
         </Grid>
+        <AuthSocial />
         <FormikProvider value={formik}>
           <Form
             className={classes.form}
@@ -120,6 +123,7 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
+              variant="outlined"
               id="email"
               label="Email Address"
               name="email"
@@ -133,6 +137,7 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
+              variant="outlined"
               name="password"
               label="Password"
               type={showPassword ? "text" : "password"}

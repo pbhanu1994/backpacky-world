@@ -123,7 +123,7 @@ export const PackOption = ({
           </IconButton>
         </span>
       </ListItem>
-      <Divider />
+      <Divider light />
     </>
   );
 };

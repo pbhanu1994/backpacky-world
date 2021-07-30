@@ -45,7 +45,7 @@ export default function Journal({ userId }) {
         <Grid item xs={10} md={9}>
           <Typography
             component="h1"
-            variant="h3"
+            variant="h4"
             align="center"
             color="primary"
             gutterBottom
@@ -54,7 +54,6 @@ export default function Journal({ userId }) {
               marginTop: "2rem",
             }}
           >
-            <JournalIcon className={classes.journalIcon} />
             Journal Entries..
           </Typography>
           <JournalCard

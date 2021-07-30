@@ -15,7 +15,7 @@ export const navbarStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: "0.5rem",
     borderRadius: 30,
-    background: "#f5f5f5",
+    background: theme.palette.grey[500_8],
   },
   searchFieldInput: {
     paddingLeft: "0.5rem",

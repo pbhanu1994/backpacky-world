@@ -3,10 +3,8 @@ import App from "next/app";
 import Head from "next/head";
 import { Provider } from "react-redux";
 import { createWrapper } from "next-redux-wrapper";
-import { ThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import store from "../src/store/store";
-import theme from "../src/theme";
+import ThemeConfig from "../src/theme";
 import { AuthProvider } from "../src/handlers/auth";
 import "../styles/globals.css";
 
@@ -29,13 +27,11 @@ function MyApp({ Component, pageProps, ...rest }) {
         />
       </Head>
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
+        <ThemeConfig>
           <AuthProvider>
             <Component {...pageProps} />
           </AuthProvider>
-        </ThemeProvider>
+        </ThemeConfig>
       </Provider>
     </React.Fragment>
   );

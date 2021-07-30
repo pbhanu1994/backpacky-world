@@ -25,7 +25,10 @@ export const PackInput = ({
     <form style={{ display: "flex" }} onSubmit={handleSubmit}>
       <InputBase
         autoFocus={edit}
-        classes={{ root: classes.inputText }}
+        classes={{
+          root: classes.inputText,
+          input: edit && classes.inputElement,
+        }}
         placeholder={placeholderText}
         inputProps={{ "aria-label": "naked" }}
         onChange={(e) => setText(e.target.value)}

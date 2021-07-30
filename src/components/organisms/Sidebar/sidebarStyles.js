@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, alpha } from "@material-ui/core/styles";
 
 export const sidebarStyles = makeStyles((theme) => ({
   root: {
@@ -11,6 +11,7 @@ export const sidebarStyles = makeStyles((theme) => ({
     },
     padding: "1rem",
     backgroundColor: theme.palette.background.paper,
+    borderRight: `1px solid ${theme.palette.divider}`,
     borderRadius: 20,
     marginLeft: "1rem",
   },
@@ -23,7 +24,10 @@ export const sidebarStyles = makeStyles((theme) => ({
       return item === "/logout" && "1rem";
     },
     "&:hover": {
-      backgroundColor: theme.palette.primary.extraLight,
+      backgroundColor: alpha(
+        theme.palette.primary.main,
+        theme.palette.action.selectedOpacity
+      ),
       borderRadius: 20,
       color: theme.palette.primary.main,
     },
@@ -34,7 +38,10 @@ export const sidebarStyles = makeStyles((theme) => ({
   selected: {
     borderRadius: 20,
     color: theme.palette.primary.main,
-    backgroundColor: `${theme.palette.primary.extraLight} !important`,
+    backgroundColor: `${alpha(
+      theme.palette.primary.main,
+      theme.palette.action.selectedOpacity
+    )} !important`,
   },
   icon: {
     color: ({ active }) => {

@@ -24,6 +24,7 @@ import * as Yup from "yup";
 import _ from "lodash";
 import firebase from "firebase/app";
 import "firebase/auth";
+import { AuthSocial } from "../../molecules/AuthSocial";
 import { Toast } from "../../atoms/Toast";
 import { Copyright } from "../../atoms/Copyright";
 import { signUpStyles } from "./signUpStyles";
@@ -115,6 +116,7 @@ export default function SignUp() {
             Create Account
           </Typography>
         </Grid>
+        <AuthSocial />
         <FormikProvider value={formik}>
           <Form
             className={classes.form}
@@ -129,6 +131,7 @@ export default function SignUp() {
                   name="firstName"
                   required
                   fullWidth
+                  variant="outlined"
                   id="firstName"
                   label="First Name"
                   {...getFieldProps("firstName")}
@@ -141,6 +144,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
+                  variant="outlined"
                   id="lastName"
                   label="Last Name"
                   {...getFieldProps("lastName")}
@@ -154,6 +158,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
+                  variant="outlined"
                   id="email"
                   label="Email Address"
                   {...getFieldProps("email")}
@@ -167,6 +172,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
+                  variant="outlined"
                   name="password"
                   label="Password"
                   {...getFieldProps("password")}
