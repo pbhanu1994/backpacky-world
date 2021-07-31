@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Paper, Grid, IconButton, Avatar, InputBase } from "@material-ui/core";
 import {
   NotificationsOutlined as NotificationsIcon,
   Search as SearchIcon,
   ArrowDropDown as ArrowDownwardIcon,
 } from "@material-ui/icons";
+import { MenuPopover } from "../../atoms/MenuPopover";
 import { ProfileList } from "../../molecules/ProfileList";
 import { NotificationList } from "../../molecules/NotificationList";
 import { navbarStyles } from "./navbarStyles";
@@ -12,6 +13,9 @@ import { navbarStyles } from "./navbarStyles";
 export const Navbar = () => {
   const [showProfileList, setShowProfileList] = useState(false);
   const [showNotificationList, setShowNotificationList] = useState(false);
+
+  const anchorProfileListRef = useRef(null);
+  const anchorNotificationListRef = useRef(null);
 
   const classes = navbarStyles();
 
@@ -44,12 +48,14 @@ export const Navbar = () => {
               aria-label="Notifications"
               color="inherit"
               onClick={() => setShowNotificationList(!showNotificationList)}
+              ref={anchorNotificationListRef}
             >
               <NotificationsIcon />
             </IconButton>
             <button
               className={classes.profileListButton}
               onClick={() => setShowProfileList(!showProfileList)}
+              ref={anchorProfileListRef}
             >
               <Avatar
                 alt="Remy Sharp"
@@ -61,19 +67,21 @@ export const Navbar = () => {
         </Grid>
       </Paper>
 
-      {showProfileList && (
-        <div className={classes.profileAndNotificationList}>
-          <ProfileList />
-        </div>
-      )}
-      {showNotificationList && (
-        <div
-          className={classes.profileAndNotificationList}
-          style={{ marginRight: "6.5rem" }}
-        >
-          <NotificationList />
-        </div>
-      )}
+      <MenuPopover
+        open={showProfileList}
+        onClose={() => setShowProfileList(!showProfileList)}
+        anchorEl={anchorProfileListRef.current}
+      >
+        <ProfileList />
+      </MenuPopover>
+
+      <MenuPopover
+        open={showNotificationList}
+        onClose={() => setShowNotificationList(!showNotificationList)}
+        anchorEl={anchorNotificationListRef.current}
+      >
+        <NotificationList />
+      </MenuPopover>
     </>
   );
 };
