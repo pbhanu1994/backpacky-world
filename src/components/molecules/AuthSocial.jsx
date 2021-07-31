@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { FaGoogle, FaFacebookF } from "react-icons/fa";
+import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa";
 import { Grid, Button, Divider, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +25,7 @@ export const AuthSocial = () => {
         spacing={2}
         style={{ margin: "1rem 0" }}
       >
-        <Grid item xs={6}>
+        <Grid item xs={4}>
           <Button
             size="large"
             fullWidth
@@ -36,7 +36,7 @@ export const AuthSocial = () => {
             <FaFacebookF color="#1877F2" height={24} />
           </Button>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={4}>
           <Button
             size="large"
             fullWidth
@@ -45,6 +45,17 @@ export const AuthSocial = () => {
             className={classes.root}
           >
             <FaGoogle color="#DF3E30" height={24} />
+          </Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button
+            size="large"
+            fullWidth
+            color="inherit"
+            variant="outlined"
+            className={classes.root}
+          >
+            <FaTwitter color="#1C9CEA" height={24} />
           </Button>
         </Grid>
       </Grid>

@@ -99,7 +99,7 @@ export default function SignUp() {
 
   // TODO: Set Loading 3 dots... while submitting
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" className={classes.root}>
       <CssBaseline />
       <Toast
         toastOpen={toast.open}
