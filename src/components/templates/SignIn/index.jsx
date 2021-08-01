@@ -24,8 +24,7 @@ import {
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
 import _ from "lodash";
-import firebase from "firebase/app";
-import "firebase/auth";
+import { signInWithEmailAndPassword } from "../../../handlers/auth";
 import { AuthSocial } from "../../molecules/AuthSocial";
 import { Toast } from "../../atoms/Toast";
 import { Copyright } from "../../atoms/Copyright";
@@ -60,12 +59,7 @@ export default function SignIn() {
 
       if (_.isEmpty(errors)) {
         try {
-          const { user } = await firebase
-            .auth()
-            .signInWithEmailAndPassword(email, password);
-
-          window.location.href = `${user && "/home"}`;
-          // router.replace(user && '/home');
+          await signInWithEmailAndPassword(email, password);
         } catch (err) {
           console.log("Error Signing up", err);
           setToast({
