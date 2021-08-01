@@ -61,7 +61,7 @@ export default function SignIn() {
         try {
           await signInWithEmailAndPassword(email, password);
         } catch (err) {
-          console.log("Error Signing up", err);
+          console.log("Error Signing in", err);
           setToast({
             ...toast,
             open: true,
