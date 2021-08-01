@@ -3,12 +3,15 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Getting Started
 
 First, install the dependencies
+
 ```bash
 npm install
 # or
 yarn install
 ```
+
 and then, run the development server:
+
 ```bash
 npm run dev
 # or
@@ -16,6 +19,12 @@ yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## TODO: Separating the Project into 2 parts (Development & Production)
+
+- Implement CI/CD Pipeline (develop branch for development & master (main) for Production)
+- Make another firebase Project in Firebase console for production (Real Live Product App)
+- BOOM -> When a code is pushed to develop branch, the develop firebase project should build & host and vice-versa with Production
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 

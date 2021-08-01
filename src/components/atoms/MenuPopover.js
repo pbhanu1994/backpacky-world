@@ -41,7 +41,7 @@ export const MenuPopover = ({ children, sx, ...other }) => {
       // }}
       {...other}
     >
-      {/* TODO: Fix the arrow down */}
+      {/* FIXME: Fix the arrow down */}
       <div className={classes.arrow}></div>
 
       {children}

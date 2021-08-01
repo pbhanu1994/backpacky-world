@@ -21,7 +21,6 @@ export const packStyles = makeStyles((theme) => ({
     maxWidth: 1000,
     borderRadius: "1rem",
     marginBottom: "1rem",
-    // TODO: Remove rgb color later and replace it with own grey from theme
     boxShadow: theme.customShadows.z16,
   },
   listItem: {
