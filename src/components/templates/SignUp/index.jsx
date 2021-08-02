@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   Avatar,
   Button,
@@ -26,15 +27,12 @@ import { signUpWithEmailAndPassword } from "../../../handlers/auth";
 import { AuthSocial } from "../../molecules/AuthSocial";
 import { Toast } from "../../atoms/Toast";
 import { Copyright } from "../../atoms/Copyright";
+import setAndShowToastMessage from "../../../store/actions/config/setAndShowToastMessage";
 import { signUpStyles } from "./signUpStyles";
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
-  const [toast, setToast] = useState({
-    open: false,
-    color: "error",
-    message: "",
-  });
+  const dispatch = useDispatch();
   const classes = signUpStyles();
 
   // Validation Schema
@@ -69,12 +67,7 @@ export default function SignUp() {
           await signUpWithEmailAndPassword(email, password, firstName);
         } catch (err) {
           console.log("Error Signing up", err);
-          setToast({
-            ...toast,
-            open: true,
-            color: "error",
-            message: err.message,
-          });
+          dispatch(setAndShowToastMessage(true, "error", err.message));
         }
       }
     },
@@ -82,25 +75,11 @@ export default function SignUp() {
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
-  // On Toast Close
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setToast({ ...toast, open: false, message: "" });
-  };
-
   // TODO: Set Loading 3 dots... while submitting
   return (
     <Container component="main" className={classes.root}>
       <CssBaseline />
-      <Toast
-        toastOpen={toast.open}
-        toastColor={toast.color}
-        toastMessage={toast.message}
-        onHandleClose={handleClose}
-      />
+      <Toast />
       <div className={classes.paper}>
         <Grid container direction="column" alignItems="center">
           <Avatar className={classes.avatar}>

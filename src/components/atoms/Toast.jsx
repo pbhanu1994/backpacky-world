@@ -1,30 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
-import PropTypes from "prop-types";
+import setAndShowToastMessage from "../../store/actions/config/setAndShowToastMessage";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export const Toast = ({
-  toastOpen,
-  toastColor,
-  toastMessage,
-  onHandleClose,
-}) => {
+// TODO: Try to put the Toast in App.js (ask the experienced dev about that if that's a good approach)
+export const Toast = () => {
+  const { toast } = useSelector((state) => state.config);
+  const dispatch = useDispatch();
+
+  // On Toast Close
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    dispatch(setAndShowToastMessage(false));
+  };
+
   return (
-    <Snackbar open={toastOpen} autoHideDuration={5000} onClose={onHandleClose}>
-      <Alert onClose={onHandleClose} severity={toastColor}>
-        {toastMessage}
+    <Snackbar open={toast.open} autoHideDuration={5000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity={toast.color}>
+        {toast.message}
       </Alert>
     </Snackbar>
   );
-};
-
-Toast.propTypes = {
-  toastOpen: PropTypes.bool.isRequired,
-  toastColor: PropTypes.string.isRequired,
-  toastMessage: PropTypes.string.isRequired,
-  onHandleClose: PropTypes.func.isRequired,
 };

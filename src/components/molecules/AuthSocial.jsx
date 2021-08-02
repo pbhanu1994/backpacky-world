@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa";
 import { Grid, Button, Divider, Typography } from "@material-ui/core";
@@ -9,6 +10,7 @@ import {
   googleProvider,
   twitterProvider,
 } from "../../handlers/firebaseClient";
+import setAndShowToastMessage from "../../store/actions/config/setAndShowToastMessage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,13 +22,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// TODO: Implement the Social Auth (facebook, Google) with Firebase
 export const AuthSocial = () => {
-  const [toast, setToast] = useState({
-    open: false,
-    color: "error",
-    message: "",
-  });
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   const handleFacebookAuth = async () => {
@@ -34,12 +31,7 @@ export const AuthSocial = () => {
       await socialMediaAuth(facebookProvider);
     } catch (err) {
       console.log("Error Signing in", err);
-      setToast({
-        ...toast,
-        open: true,
-        color: "error",
-        message: err.message,
-      });
+      dispatch(setAndShowToastMessage(true, "error", err.message));
     }
   };
 
@@ -48,12 +40,7 @@ export const AuthSocial = () => {
       await socialMediaAuth(googleProvider);
     } catch (err) {
       console.log("Error Signing in", err);
-      setToast({
-        ...toast,
-        open: true,
-        color: "error",
-        message: err.message,
-      });
+      dispatch(setAndShowToastMessage(true, "error", err.message));
     }
   };
 
@@ -62,22 +49,8 @@ export const AuthSocial = () => {
       await socialMediaAuth(twitterProvider);
     } catch (err) {
       console.log("Error Signing in", err);
-      setToast({
-        ...toast,
-        open: true,
-        color: "error",
-        message: err.message,
-      });
+      dispatch(setAndShowToastMessage(true, "error", err.message));
     }
-  };
-
-  // On Toast Close
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setToast({ ...toast, open: false, message: "" });
   };
 
   return (
@@ -89,12 +62,7 @@ export const AuthSocial = () => {
         spacing={2}
         style={{ margin: "1rem 0" }}
       >
-        <Toast
-          toastOpen={toast.open}
-          toastColor={toast.color}
-          toastMessage={toast.message}
-          onHandleClose={handleClose}
-        />
+        <Toast />
         <Grid item xs={4}>
           <Button
             size="large"
