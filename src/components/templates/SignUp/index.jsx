@@ -25,7 +25,6 @@ import * as Yup from "yup";
 import _ from "lodash";
 import { signUpWithEmailAndPassword } from "../../../handlers/auth";
 import { AuthSocial } from "../../molecules/AuthSocial";
-import { Toast } from "../../atoms/Toast";
 import { Copyright } from "../../atoms/Copyright";
 import setAndShowToastMessage from "../../../store/actions/config/setAndShowToastMessage";
 import { signUpStyles } from "./signUpStyles";
@@ -79,7 +78,6 @@ export default function SignUp() {
   return (
     <Container component="main" className={classes.root}>
       <CssBaseline />
-      <Toast />
       <div className={classes.paper}>
         <Grid container direction="column" alignItems="center">
           <Avatar className={classes.avatar}>

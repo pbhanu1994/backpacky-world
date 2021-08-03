@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
+import Portal from "../../hoc/Portal";
 import setAndShowToastMessage from "../../store/actions/config/setAndShowToastMessage";
 
 function Alert(props) {
@@ -22,10 +23,13 @@ export const Toast = () => {
   };
 
   return (
-    <Snackbar open={toast.open} autoHideDuration={5000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity={toast.color}>
-        {toast.message}
-      </Alert>
-    </Snackbar>
+    //TODO: I think passing as children to the Portal is unnecessary - Check with the experienced dev
+    <Portal selector="#toast">
+      <Snackbar open={toast.open} autoHideDuration={5000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={toast.color}>
+          {toast.message}
+        </Alert>
+      </Snackbar>
+    </Portal>
   );
 };

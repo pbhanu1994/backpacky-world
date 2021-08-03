@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa";
 import { Grid, Button, Divider, Typography } from "@material-ui/core";
-import { Toast } from "../atoms/Toast";
 import { socialMediaAuth } from "../../handlers/auth";
 import {
   facebookProvider,
@@ -62,7 +61,6 @@ export const AuthSocial = () => {
         spacing={2}
         style={{ margin: "1rem 0" }}
       >
-        <Toast />
         <Grid item xs={4}>
           <Button
             size="large"

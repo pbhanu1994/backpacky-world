@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import dynamic from "next/dynamic";
 import App from "next/app";
 import Head from "next/head";
 import { Provider } from "react-redux";
@@ -7,6 +8,14 @@ import store from "../src/store/store";
 import ThemeConfig from "../src/theme";
 import { AuthProvider } from "../src/handlers/auth";
 import "../styles/globals.css";
+
+// Importing the component dynamic (Chunk) with no SSR (Only Client Side)
+const Toast = dynamic(
+  () => import("../src/components/atoms/Toast").then((mod) => mod.Toast),
+  {
+    ssr: false,
+  }
+);
 
 function MyApp({ Component, pageProps, ...rest }) {
   useEffect(() => {
@@ -30,6 +39,8 @@ function MyApp({ Component, pageProps, ...rest }) {
         <ThemeConfig>
           <AuthProvider>
             <Component {...pageProps} />
+            {/* Adding the Toast, dialog box - modals, etc. */}
+            <Toast />
           </AuthProvider>
         </ThemeConfig>
       </Provider>
