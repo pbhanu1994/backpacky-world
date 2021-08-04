@@ -23,10 +23,9 @@ import {
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
 import _ from "lodash";
-import { signUpWithEmailAndPassword } from "../../../handlers/auth";
 import { AuthSocial } from "../../molecules/AuthSocial";
 import { Copyright } from "../../atoms/Copyright";
-import setAndShowToastMessage from "../../../store/actions/config/setAndShowToastMessage";
+import signUpUser from "../../../store/actions/auth/signUpUser";
 import { signUpStyles } from "./signUpStyles";
 
 export default function SignUp() {
@@ -62,12 +61,7 @@ export default function SignUp() {
       const { firstName, lastName, email, password } = values;
 
       if (_.isEmpty(errors)) {
-        try {
-          await signUpWithEmailAndPassword(email, password, firstName);
-        } catch (err) {
-          console.log("Error Signing up", err);
-          dispatch(setAndShowToastMessage(true, "error", err.message));
-        }
+        dispatch(signUpUser(email, password, firstName));
       }
     },
   });

@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   List,
@@ -12,11 +13,12 @@ import {
   Settings as SettingsIcon,
   ExitToApp as LogoutIcon,
 } from "@material-ui/icons";
-import { signOut } from "../../handlers/auth";
+import signOutUser from "../../store/actions/auth/signOutUser";
 import { ViewProfile } from "../atoms/ViewProfile";
 
 export const ProfileList = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   return (
     <List component="nav" aria-label="main mailbox folders">
@@ -35,7 +37,7 @@ export const ProfileList = () => {
         <ListItemText primary="Settings" />
       </ListItem>
       <Divider />
-      <ListItem button onClick={signOut}>
+      <ListItem button onClick={() => dispatch(signOutUser())}>
         <ListItemIcon>
           <LogoutIcon />
         </ListItemIcon>

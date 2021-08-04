@@ -3,13 +3,12 @@ import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa";
 import { Grid, Button, Divider, Typography } from "@material-ui/core";
-import { socialMediaAuth } from "../../handlers/auth";
+import signInWithSocialAccount from "../../store/actions/auth/signInWithSocialAccount";
 import {
   facebookProvider,
   googleProvider,
   twitterProvider,
 } from "../../handlers/firebaseClient";
-import setAndShowToastMessage from "../../store/actions/config/setAndShowToastMessage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,30 +25,15 @@ export const AuthSocial = () => {
   const classes = useStyles();
 
   const handleFacebookAuth = async () => {
-    try {
-      await socialMediaAuth(facebookProvider);
-    } catch (err) {
-      console.log("Error Signing in", err);
-      dispatch(setAndShowToastMessage(true, "error", err.message));
-    }
+    dispatch(signInWithSocialAccount(facebookProvider));
   };
 
   const handleGoogleAuth = async () => {
-    try {
-      await socialMediaAuth(googleProvider);
-    } catch (err) {
-      console.log("Error Signing in", err);
-      dispatch(setAndShowToastMessage(true, "error", err.message));
-    }
+    dispatch(signInWithSocialAccount(googleProvider));
   };
 
   const handleTwitterAuth = async () => {
-    try {
-      await socialMediaAuth(twitterProvider);
-    } catch (err) {
-      console.log("Error Signing in", err);
-      dispatch(setAndShowToastMessage(true, "error", err.message));
-    }
+    dispatch(signInWithSocialAccount(twitterProvider));
   };
 
   return (

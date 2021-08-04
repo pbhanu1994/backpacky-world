@@ -25,10 +25,9 @@ import {
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
 import _ from "lodash";
-import { signInWithEmailAndPassword } from "../../../handlers/auth";
 import { AuthSocial } from "../../molecules/AuthSocial";
 import { Copyright } from "../../atoms/Copyright";
-import setAndShowToastMessage from "../../../store/actions/config/setAndShowToastMessage";
+import signInUser from "../../../store/actions/auth/signInUser";
 import { signInStyles } from "./signInStyles";
 
 export default function SignIn() {
@@ -55,12 +54,7 @@ export default function SignIn() {
       const { email, password } = values;
 
       if (_.isEmpty(errors)) {
-        try {
-          await signInWithEmailAndPassword(email, password);
-        } catch (err) {
-          console.log("Error Signing in", err);
-          dispatch(setAndShowToastMessage(true, "error", err.message));
-        }
+        dispatch(signInUser(email, password));
       }
     },
   });
@@ -78,7 +72,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Welcome
+            Welcome Back
           </Typography>
         </Grid>
         <AuthSocial />

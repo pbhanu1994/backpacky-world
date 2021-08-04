@@ -16,7 +16,6 @@ import {
   Container,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { signOut } from "../../handlers/auth";
 import { Sidebar } from "../organisms/Sidebar";
 import { Navbar } from "../organisms/Navbar";
 
@@ -51,7 +50,6 @@ export default function Home({ userId }) {
           <h1>Welcome to Dashboard</h1>
           <h3>Have a Safe Travel!</h3>
           <h2>UID: {userId}</h2>
-          <button onClick={signOut}>Signout</button>
         </Grid>
       </Grid>
     </>

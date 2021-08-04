@@ -10,12 +10,9 @@ import { AuthProvider } from "../src/handlers/auth";
 import "../styles/globals.css";
 
 // Importing the component dynamic (Chunk) with no SSR (Only Client Side)
-const Toast = dynamic(
-  () => import("../src/components/atoms/Toast").then((mod) => mod.Toast),
-  {
-    ssr: false,
-  }
-);
+const Toast = dynamic(() => import("../src/components/atoms/Toast"), {
+  ssr: false,
+});
 
 function MyApp({ Component, pageProps, ...rest }) {
   useEffect(() => {
@@ -40,7 +37,7 @@ function MyApp({ Component, pageProps, ...rest }) {
           <AuthProvider>
             <Component {...pageProps} />
             {/* Adding the Toast, dialog box - modals, etc. */}
-            <Toast />
+            <Toast selector="#toast" />
           </AuthProvider>
         </ThemeConfig>
       </Provider>

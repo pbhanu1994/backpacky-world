@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
-import Portal from "../../hoc/Portal";
+import withPortal from "../../hoc/withPortal";
 import setAndShowToastMessage from "../../store/actions/config/setAndShowToastMessage";
 
 function Alert(props) {
@@ -23,13 +23,13 @@ export const Toast = () => {
   };
 
   return (
-    //TODO: I think passing as children to the Portal is unnecessary - Check with the experienced dev
-    <Portal selector="#toast">
-      <Snackbar open={toast.open} autoHideDuration={5000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={toast.color}>
-          {toast.message}
-        </Alert>
-      </Snackbar>
-    </Portal>
+    //TODO: I think using Portal is unnecessary for Toast - Check with the experienced dev
+    <Snackbar open={toast.open} autoHideDuration={5000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity={toast.color}>
+        {toast.message}
+      </Alert>
+    </Snackbar>
   );
 };
+
+export default withPortal(Toast);
