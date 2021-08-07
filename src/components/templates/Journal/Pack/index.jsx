@@ -149,7 +149,7 @@ export default function Pack() {
                             dispatch(
                               setAndShowDeleteDialog(
                                 packItem.sectionTitle,
-                                () => handleDeleteSection(packItem.sectionId)
+                                () => handleDeleteSection(packItem.sectionId) // Storing function reference (callback?) in the store to use later
                               )
                             );
                           }}
