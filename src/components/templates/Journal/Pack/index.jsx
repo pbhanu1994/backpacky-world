@@ -12,7 +12,6 @@ import {
   EditOutlined as EditIcon,
   DeleteOutline as DeleteOutlineIcon,
 } from "@material-ui/icons";
-import { useTheme } from "@material-ui/core/styles";
 import { GiLightBackpack } from "react-icons/gi";
 import { Sidebar } from "../../../organisms/Sidebar";
 import { Navbar } from "../../../organisms/Navbar";
@@ -26,6 +25,7 @@ import deletePackSection from "../../../../store/actions/journal/pack/deletePack
 import addPackItem from "../../../../store/actions/journal/pack/addPackItem";
 import updatePackItem from "../../../../store/actions/journal/pack/updatePackItem";
 import deletePackItem from "../../../../store/actions/journal/pack/deletePackItem";
+import setAndShowDeleteDialog from "../../../../store/actions/config/dialog/setAndShowDeleteDialog";
 import { packStyles } from "./packStyles";
 
 export default function Pack() {
@@ -35,7 +35,6 @@ export default function Pack() {
   const [showSectionUpdateInput, setShowSectionUpdateInput] = useState(false);
   const packItems = useSelector((state) => state.journal.packItems);
 
-  const theme = useTheme();
   const dispatch = useDispatch();
   const classes = packStyles();
 
@@ -147,7 +146,12 @@ export default function Pack() {
                           size="small"
                           className={classes.deleteSectionButton}
                           onClick={() => {
-                            handleDeleteSection(packItem.sectionId);
+                            dispatch(
+                              setAndShowDeleteDialog(
+                                packItem.sectionTitle,
+                                () => handleDeleteSection(packItem.sectionId)
+                              )
+                            );
                           }}
                         >
                           <DeleteOutlineIcon color="error" />

@@ -1,6 +1,6 @@
 import { SIGNUP_USER } from "../../actionTypes/auth";
 import { auth } from "../../../handlers/firebaseClient";
-import setAndShowToastMessage from "../../actions/config/setAndShowToastMessage";
+import setAndShowErrorToast from "../../actions/config/toast/setAndShowErrorToast";
 
 const signUpUser =
   (userEmail, userPassword, userFirstName) => async (dispatch, getState) => {
@@ -33,7 +33,7 @@ const signUpUser =
       });
     } catch (err) {
       console.log("Error Signing up", err);
-      dispatch(setAndShowToastMessage(true, "error", err.message));
+      dispatch(setAndShowErrorToast(err.message));
     }
   };
 

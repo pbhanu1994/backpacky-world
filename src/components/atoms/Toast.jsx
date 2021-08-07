@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import withPortal from "../../hoc/withPortal";
-import setAndShowToastMessage from "../../store/actions/config/setAndShowToastMessage";
+import closeToast from "../../store/actions/config/toast/closeToast";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 // TODO: Try to put the Toast in App.js (ask the experienced dev about that if that's a good approach)
-export const Toast = () => {
+const Toast = () => {
   const { toast } = useSelector((state) => state.config);
   const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ export const Toast = () => {
     if (reason === "clickaway") {
       return;
     }
-    dispatch(setAndShowToastMessage(false));
+    dispatch(closeToast());
   };
 
   return (

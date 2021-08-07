@@ -11,6 +11,7 @@ export default class MyDocument extends Document {
           <Main />
           {/* Portal div(s) */}
           <div id="toast" />
+          <div id="dialog" />
           <NextScript />
         </body>
       </Html>

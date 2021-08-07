@@ -1,6 +1,6 @@
 import { SIGNIN_WITH_SOCIAL_ACCOUNT } from "../../actionTypes/auth";
 import { auth } from "../../../handlers/firebaseClient";
-import setAndShowToastMessage from "../../actions/config/setAndShowToastMessage";
+import setAndShowErrorToast from "../../actions/config/toast/setAndShowErrorToast";
 
 const signInWithSocialAccount = (provider) => async (dispatch, getState) => {
   try {
@@ -28,7 +28,7 @@ const signInWithSocialAccount = (provider) => async (dispatch, getState) => {
     });
   } catch (err) {
     console.log("Error Signing in", err);
-    dispatch(setAndShowToastMessage(true, "error", err.message));
+    dispatch(setAndShowErrorToast(err.message));
   }
 };
 

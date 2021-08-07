@@ -14,6 +14,10 @@ const Toast = dynamic(() => import("../src/components/atoms/Toast"), {
   ssr: false,
 });
 
+const Dialog = dynamic(() => import("../src/components/atoms/DialogBox"), {
+  ssr: false,
+});
+
 function MyApp({ Component, pageProps, ...rest }) {
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -38,6 +42,7 @@ function MyApp({ Component, pageProps, ...rest }) {
             <Component {...pageProps} />
             {/* Adding the Toast, dialog box - modals, etc. */}
             <Toast selector="#toast" />
+            <Dialog selector="#dialog" />
           </AuthProvider>
         </ThemeConfig>
       </Provider>

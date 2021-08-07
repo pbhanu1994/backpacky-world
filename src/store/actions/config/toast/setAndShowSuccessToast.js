@@ -1,0 +1,16 @@
+import { SET_AND_SHOW_TOAST_MESSAGE } from "../../../actionTypes/config";
+
+const setAndShowSuccessToast = (message) => (dispatch, getState) => {
+  const toast = {
+    open: true,
+    color: "success",
+    message,
+  };
+
+  dispatch({
+    type: SET_AND_SHOW_TOAST_MESSAGE,
+    payload: toast,
+  });
+};
+
+export default setAndShowSuccessToast;
