@@ -36,8 +36,9 @@ export const packStyles = makeStyles((theme) => ({
     color: ({ checkboxChecked }) => checkboxChecked && theme.palette.grey[500],
     textDecorationLine: ({ checkboxChecked }) =>
       checkboxChecked && "line-through",
-    textDecorationColor: ({ checkboxChecked }) =>
-      checkboxChecked && theme.palette.secondary.main,
+    // Uncomment below property to make the strike color secondary
+    // textDecorationColor: ({ checkboxChecked }) =>
+    //   checkboxChecked && theme.palette.secondary.main,
   },
   listItemTextPrimary: {
     fontWeight: "bold",
