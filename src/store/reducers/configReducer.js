@@ -2,6 +2,7 @@ import { cloneDeep } from "lodash";
 import {
   SET_AND_SHOW_TOAST_MESSAGE,
   CLOSE_TOAST,
+  SET_AND_SHOW_PLAIN_DIALOG,
   SET_AND_SHOW_DELETE_DIALOG,
   CLOSE_DIALOG,
 } from "../actionTypes/config";
@@ -14,11 +15,12 @@ const initialState = {
   },
   dialog: {
     open: false,
+    type: "plain",
     color: "primary",
     title: "",
     body: "",
     buttonText: {
-      cancel: "",
+      close: "",
       confirm: "",
     },
     onConfirm: null,
@@ -39,6 +41,10 @@ export const configReducer = (state = initialState, action) => {
     }
 
     // -- DIALOG -- //
+    case SET_AND_SHOW_PLAIN_DIALOG: {
+      return { ...state, dialog: action.payload };
+    }
+
     case SET_AND_SHOW_DELETE_DIALOG: {
       return { ...state, dialog: action.payload };
     }

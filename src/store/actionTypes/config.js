@@ -4,7 +4,7 @@ export const CLOSE_TOAST = "CLOSE_TOAST";
 
 // -- DIALOG -- //
 // TODO: Clean & organize the Dialog Actions
-// export const SET_AND_SHOW_CONFIRM_DIALOG = "SET_AND_SHOW_CONFIRM_DIALOG";
+export const SET_AND_SHOW_PLAIN_DIALOG = "SET_AND_SHOW_PLAIN_DIALOG";
 // export const SET_AND_SHOW_ERROR_DIALOG = "SET_AND_SHOW_DIALOG";
 export const SET_AND_SHOW_DELETE_DIALOG = "SET_AND_SHOW_DIALOG";
 // export const SET_AND_SHOW_DISCARD_DIALOG = "SET_AND_SHOW_DIALOG";

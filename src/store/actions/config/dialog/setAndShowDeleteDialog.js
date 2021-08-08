@@ -4,11 +4,12 @@ const setAndShowDeleteDialog =
   (deleteIemText, onConfirm) => (dispatch, getState) => {
     const dialog = {
       open: true,
+      type: "delete",
       color: "error",
       title: "Are you sure?",
       body: `Are you sure you want to delete ${deleteIemText}?`,
       buttonText: {
-        cancel: "Cancel",
+        close: "Cancel",
         confirm: "Delete",
       },
       onConfirm,

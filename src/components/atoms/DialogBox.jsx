@@ -41,19 +41,21 @@ const DialogBox = () => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>{dialog.buttonText.cancel}</Button>
-        <Button
-          onClick={handleConfirm}
-          // color={theme.palette[dialog.color].main}
-          style={{
-            background: theme.palette[dialog.color].main,
-            color: "#fff",
-          }}
-          variant="contained"
-          autoFocus
-        >
-          {dialog.buttonText.confirm}
-        </Button>
+        <Button onClick={handleClose}>{dialog.buttonText.close}</Button>
+        {dialog.type !== "plain" && (
+          <Button
+            onClick={handleConfirm}
+            // color={theme.palette[dialog.color].main}
+            style={{
+              background: theme.palette[dialog.color].main,
+              color: "#fff",
+            }}
+            variant="contained"
+            autoFocus
+          >
+            {dialog.buttonText.confirm}
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );
