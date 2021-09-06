@@ -63,7 +63,6 @@ export default function Journal({ userId }) {
             path={PAGE_PATH.JOURNAL_PACK}
             completed={0}
           />
-          <h2>UID: {userId}</h2>
           <Button onClick={() => dispatch(addItem(item))}>Add Item</Button>
         </Grid>
       </Grid>
