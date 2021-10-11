@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import {
@@ -20,7 +20,6 @@ import { Book as JournalIcon } from "@material-ui/icons";
 import { Sidebar } from "../../organisms/Sidebar";
 import { Navbar } from "../../organisms/Navbar";
 import { JournalCard } from "../../atoms/JournalCard";
-import addItem from "../../../store/actions/journal/addItem";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { journalStyles } from "./journalStyles";
 
@@ -28,12 +27,6 @@ export default function Journal({ userId }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const classes = journalStyles();
-
-  const item = {
-    id: 1,
-    dateCreated: new Date().toLocaleDateString(),
-    name: "Shampoo",
-  };
 
   return (
     <>
@@ -63,7 +56,6 @@ export default function Journal({ userId }) {
             path={PAGE_PATH.JOURNAL_PACK}
             completed={0}
           />
-          <Button onClick={() => dispatch(addItem(item))}>Add Item</Button>
         </Grid>
       </Grid>
     </>

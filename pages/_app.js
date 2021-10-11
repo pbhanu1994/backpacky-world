@@ -4,7 +4,8 @@ import App from "next/app";
 import Head from "next/head";
 import { Provider } from "react-redux";
 import { createWrapper } from "next-redux-wrapper";
-import store from "../src/store/store";
+import { PersistGate } from "redux-persist/integration/react";
+import store, { persistor } from "../src/store/store";
 import ThemeConfig from "../src/theme";
 import { AuthProvider } from "../src/handlers/auth";
 import "../styles/globals.css";
@@ -37,14 +38,16 @@ function MyApp({ Component, pageProps, ...rest }) {
         />
       </Head>
       <Provider store={store}>
-        <ThemeConfig>
-          <AuthProvider>
-            <Component {...pageProps} />
-            {/* Adding the Toast, dialog box - modals, etc. */}
-            <Toast selector="#toast" />
-            <Dialog selector="#dialog" />
-          </AuthProvider>
-        </ThemeConfig>
+        <PersistGate loading={null} persistor={persistor}>
+          <ThemeConfig>
+            <AuthProvider>
+              <Component {...pageProps} />
+              {/* Adding the Toast, dialog box - modals, etc. */}
+              <Toast selector="#toast" />
+              <Dialog selector="#dialog" />
+            </AuthProvider>
+          </ThemeConfig>
+        </PersistGate>
       </Provider>
     </React.Fragment>
   );

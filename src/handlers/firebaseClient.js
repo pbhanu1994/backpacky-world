@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 import FIREBASE_CONFIG from "../config/firebase.json";
 
 // Initialize Firebase
@@ -8,9 +9,11 @@ if (!firebase.apps.length) {
 } else {
   firebase.app(); // if already initialized, use that one
 }
+
 // firebase.analytics();
 
-// export const firestore = firebase.firestore();
+// Database
+export const db = firebase.firestore();
 
 // Authentication
 export const auth = firebase.auth();

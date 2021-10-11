@@ -183,7 +183,7 @@ export default function Pack() {
                   >
                     Completed:{" "}
                     {
-                      packItem.sectionItems.filter((item) => item.checked)
+                      packItem.sectionItems?.filter((item) => item.checked)
                         .length
                     }{" "}
                     / {packItem.sectionItems?.length}

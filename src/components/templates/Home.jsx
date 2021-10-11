@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import {
   Avatar,
@@ -18,6 +19,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { Sidebar } from "../organisms/Sidebar";
 import { Navbar } from "../organisms/Navbar";
+import getPackItems from "../../store/actions/journal/pack/getPackItems";
 
 const useStyles = makeStyles((theme) => ({
   welcomeText: {
@@ -27,7 +29,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home({ userId }) {
   const router = useRouter();
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  useEffect(() => {
+    // Journal - Pack items
+    dispatch(getPackItems());
+  }, []);
 
   return (
     <>

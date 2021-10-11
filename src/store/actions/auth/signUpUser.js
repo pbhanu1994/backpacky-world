@@ -1,6 +1,7 @@
 import { SIGNUP_USER } from "../../actionTypes/auth";
 import { auth } from "../../../handlers/firebaseClient";
 import setAndShowErrorToast from "../../actions/config/toast/setAndShowErrorToast";
+import loadPackItems from "../journal/pack/loadPackItems";
 
 const signUpUser =
   (userEmail, userPassword, userFirstName) => async (dispatch, getState) => {
@@ -31,6 +32,8 @@ const signUpUser =
           },
         },
       });
+
+      dispatch(loadPackItems());
     } catch (err) {
       console.log("Error Signing up", err);
       dispatch(setAndShowErrorToast(err.message));
