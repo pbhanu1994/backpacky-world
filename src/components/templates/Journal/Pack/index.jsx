@@ -66,6 +66,8 @@ export default function Pack() {
     dispatch(deletePackItem(sectionId, packItem));
   };
 
+  // FIXME: Add the Unique Id for Pack Items
+  // FIXME: Fix the empty seciton (with no pack items) in backend side (How to reproduce: empty the section and refresh)
   return (
     <>
       <Navbar />
