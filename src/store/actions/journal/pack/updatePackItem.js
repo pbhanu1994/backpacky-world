@@ -29,16 +29,17 @@ const updatePackItem =
 
       const item = await packSectionItems
         .where("uid", "==", uid)
-        .where("name", "==", packItem.name)
+        .where("id", "==", packItem.id)
         .get();
 
-      const itemId = item.docs[0].id;
       const itemData = item.docs[0].data();
       toggle &&
-        packSectionItems.doc(itemId).update({ checked: !itemData.checked });
+        packSectionItems
+          .doc(packItem.id)
+          .update({ checked: !itemData.checked });
 
       editItemName &&
-        packSectionItems.doc(itemId).update({ name: editItemName });
+        packSectionItems.doc(packItem.id).update({ name: editItemName });
     } catch (err) {
       console.log("error", err);
       const errorMessage = `Whoops! Could not update the item ${packItem.name}. Please try again.`;

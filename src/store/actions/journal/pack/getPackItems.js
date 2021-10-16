@@ -1,7 +1,8 @@
 import _ from "lodash";
 import { db } from "../../../../handlers/firebaseClient";
-import { GET_PACK_ITEMS } from "../../../actionTypes/journal";
+import deletePackSection from "./deletePackSection";
 import setAndShowErrorToast from "../../config/toast/setAndShowErrorToast";
+import { GET_PACK_ITEMS } from "../../../actionTypes/journal";
 
 const getPackItems = () => async (dispatch, getState) => {
   const uid = getState().auth.user.uid;
@@ -45,9 +46,23 @@ const getPackItems = () => async (dispatch, getState) => {
     // Converting the Object to Array
     const packSectionItemsGroupedArray = _.values(packSectionItemsGrouped);
 
+    // Deleting the Sections with no Pack Items.
+    const sectionsWithoutItems = packSectionItemsGroupedArray.filter(
+      (packSectionItem) => !packSectionItem.sectionItems
+    );
+    sectionsWithoutItems.length > 0 &&
+      sectionsWithoutItems.map((sectionWithoutItems) =>
+        dispatch(deletePackSection(sectionWithoutItems.sectionId))
+      );
+
+    // Taking only the sections with packItems available
+    const sectionsWithItems = packSectionItemsGroupedArray.filter(
+      (packSectionItem) => packSectionItem.sectionItems
+    );
+
     dispatch({
       type: GET_PACK_ITEMS,
-      payload: packSectionItemsGroupedArray,
+      payload: sectionsWithItems,
     });
   } catch (err) {
     console.log("error", err);

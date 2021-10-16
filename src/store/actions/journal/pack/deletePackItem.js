@@ -15,22 +15,15 @@ const deletePackItem = (sectionId, packItem) => async (dispatch, getState) => {
       },
     });
 
-    const packSectionItems = db
-      .collection("journal")
+    db.collection("journal")
       .doc(uid)
       .collection("pack")
       .doc(uid)
       .collection("packSections")
       .doc(sectionId)
-      .collection("packSectionItems");
-
-    const item = await packSectionItems
-      .where("uid", "==", uid)
-      .where("name", "==", packItem.name)
-      .get();
-
-    const itemId = item.docs[0].id;
-    packSectionItems.doc(itemId).delete();
+      .collection("packSectionItems")
+      .doc(packItem.id)
+      .delete();
   } catch (err) {
     console.log("error", err);
     const errorMessage = `Whoops! Could not delete the item ${packItem.name}. Please try again.`;

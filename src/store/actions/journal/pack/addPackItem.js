@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { db } from "../../../../handlers/firebaseClient";
 import { GET_PACK_ITEMS, ADD_PACK_ITEM } from "../../../actionTypes/journal";
 import setAndShowErrorToast from "../../config/toast/setAndShowErrorToast";
@@ -7,6 +8,7 @@ const addPackItem = (sectionId, item) => (dispatch, getState) => {
   const oldState = getState().journal.packItems;
 
   const packItem = {
+    id: uuidv4(),
     uid,
     sectionId,
     name: item,
@@ -29,7 +31,7 @@ const addPackItem = (sectionId, item) => (dispatch, getState) => {
       .collection("packSections")
       .doc(sectionId)
       .collection("packSectionItems")
-      .doc()
+      .doc(packItem.id)
       .set(packItem);
   } catch (err) {
     console.log("error", err);

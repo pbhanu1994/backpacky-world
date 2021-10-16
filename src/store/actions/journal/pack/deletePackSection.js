@@ -34,9 +34,10 @@ const deletePackSection = (sectionId) => async (dispatch, getState) => {
 
     const packSectionItems = await packSectionItemsRef.get();
     // First, deleting the subcollection docs
-    packSectionItems.docs.map((doc) =>
-      packSectionItemsRef.doc(doc.id).delete()
-    );
+    packSectionItems.docs.length > 0 &&
+      packSectionItems.docs.map((doc) =>
+        packSectionItemsRef.doc(doc.id).delete()
+      );
     // Second, deleting the document itself
     packSectionRef.delete();
   } catch (err) {

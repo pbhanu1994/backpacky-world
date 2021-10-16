@@ -15,6 +15,7 @@ const addPackSection = (position) => (dispatch, getState) => {
   };
 
   const addItem = {
+    id: uuidv4(),
     uid,
     sectionId: addSection.sectionId,
     name: "Add new item",
@@ -39,7 +40,7 @@ const addPackSection = (position) => (dispatch, getState) => {
       .doc(addSection.sectionId);
 
     sectionRef.set(addSection);
-    sectionRef.collection("packSectionItems").add(addItem);
+    sectionRef.collection("packSectionItems").doc(addItem.id).set(addItem);
   } catch (err) {
     console.log("error", err);
     const errorMessage = `Whoops! Could not add the Section. Please try again.`;

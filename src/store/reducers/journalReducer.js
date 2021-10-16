@@ -68,7 +68,7 @@ export const journalReducer = (state = initialState, action) => {
         (item) => item.sectionId === sectionId
       );
       const itemIndex = items[sectionIndex].sectionItems.findIndex(
-        (sectionItem) => sectionItem.name === packItem.name
+        (sectionItem) => sectionItem.id === packItem.id
       );
 
       if (toggle)
@@ -89,7 +89,7 @@ export const journalReducer = (state = initialState, action) => {
         (item) => item.sectionId === sectionId
       );
       const itemIndex = items[sectionIndex].sectionItems.findIndex(
-        (sectionItem) => sectionItem.name === packItem.name
+        (sectionItem) => sectionItem.id === packItem.id
       );
       items[sectionIndex].sectionItems.splice(itemIndex, 1);
       return { ...state, packItems: items };

@@ -66,9 +66,6 @@ export default function Pack() {
     dispatch(deletePackItem(sectionId, packItem));
   };
 
-  // FIXME: Add the Unique Id for Pack Items
-  // FIXME: Fix the item with the same name when deleting (maybe resolves by having uniqueId)
-  // FIXME: Fix the empty section (with no pack items) in backend side (How to reproduce: empty the section and refresh)
   return (
     <>
       <Navbar />
@@ -92,9 +89,9 @@ export default function Pack() {
           <AddPackSection onAddSection={() => handleAddSection("start")} />
           {packItems.map((packItem) => (
             <Paper
+              key={packItem.sectionId}
               variant="outlined"
               classes={{ root: classes.listPaper }}
-              key={packItem.sectionId}
             >
               <Grid
                 container
@@ -198,7 +195,7 @@ export default function Pack() {
               <List>
                 {packItem.sectionItems?.map((sectionItem) => (
                   <PackOption
-                    key={sectionItem.name}
+                    key={sectionItem.id}
                     sectionId={packItem.sectionId}
                     packItem={sectionItem}
                     checked={sectionItem.checked}
