@@ -67,7 +67,8 @@ export default function Pack() {
   };
 
   // FIXME: Add the Unique Id for Pack Items
-  // FIXME: Fix the empty seciton (with no pack items) in backend side (How to reproduce: empty the section and refresh)
+  // FIXME: Fix the item with the same name when deleting (maybe resolves by having uniqueId)
+  // FIXME: Fix the empty section (with no pack items) in backend side (How to reproduce: empty the section and refresh)
   return (
     <>
       <Navbar />
