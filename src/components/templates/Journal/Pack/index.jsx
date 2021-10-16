@@ -86,137 +86,152 @@ export default function Pack() {
           >
             Things to pack..
           </Typography>
-          <AddPackSection onAddSection={() => handleAddSection("start")} />
-          {packItems.map((packItem) => (
-            <Paper
-              key={packItem.sectionId}
-              variant="outlined"
-              classes={{ root: classes.listPaper }}
-            >
-              <Grid
-                container
-                justifyContent="space-between"
-                style={{ padding: "0.8rem 1rem", height: "3.4rem" }}
-                onMouseOver={() => {
-                  setSelectedHoverSectionId(packItem.sectionId);
-                  setMouseHoverOnSection(true);
-                }}
-                onMouseLeave={() => {
-                  setSelectedHoverSectionId(null);
-                  setMouseHoverOnSection(false);
-                }}
-              >
-                {(!showSectionUpdateInput ||
-                  editSectionId !== packItem.sectionId) && (
-                  <Typography
-                    component="h6"
-                    variant="h6"
-                    color="secondary"
-                    className={classes.sectionTitle}
-                    style={{
-                      width:
-                        mouseHoverOnSection &&
-                        selectedHoverSectionId === packItem.sectionId
-                          ? "100%"
-                          : "fit-content", // TODO: Check with the experienced dev if it's a good approach
+          {packItems.length === 0 && (
+            <div style={{ maxWidth: 1000, marginTop: "5rem" }}>
+              <Typography align="center" component="h3" gutterBottom>
+                No items available.
+              </Typography>
+              <AddPackSection onAddSection={() => handleAddSection("start")} />
+            </div>
+          )}
+          {packItems.length > 0 && (
+            <>
+              <AddPackSection onAddSection={() => handleAddSection("start")} />
+              {packItems.map((packItem) => (
+                <Paper
+                  key={packItem.sectionId}
+                  variant="outlined"
+                  classes={{ root: classes.listPaper }}
+                >
+                  <Grid
+                    container
+                    justifyContent="space-between"
+                    style={{ padding: "0.8rem 1rem", height: "3.4rem" }}
+                    onMouseOver={() => {
+                      setSelectedHoverSectionId(packItem.sectionId);
+                      setMouseHoverOnSection(true);
+                    }}
+                    onMouseLeave={() => {
+                      setSelectedHoverSectionId(null);
+                      setMouseHoverOnSection(false);
                     }}
                   >
-                    {packItem.sectionTitle} &nbsp;
-                    {selectedHoverSectionId === packItem.sectionId && (
-                      <span
+                    {(!showSectionUpdateInput ||
+                      editSectionId !== packItem.sectionId) && (
+                      <Typography
+                        component="h6"
+                        variant="h6"
+                        color="secondary"
+                        className={classes.sectionTitle}
                         style={{
-                          display: "flex",
+                          width:
+                            mouseHoverOnSection &&
+                            selectedHoverSectionId === packItem.sectionId
+                              ? "100%"
+                              : "fit-content", // TODO: Check with the experienced dev if it's a good approach
                         }}
                       >
-                        {/* TODO: Check the colors of Edit & Delete Icons (outlined or filled etc...) */}
-                        <IconButton
-                          aria-label="Edit section name"
-                          size="small"
-                          color="secondary"
-                          onClick={() => {
-                            setShowSectionUpdateInput(true);
-                            setEditSectionId(packItem.sectionId);
-                          }}
-                        >
-                          <EditIcon />
-                        </IconButton>{" "}
-                        &nbsp;
-                        <IconButton
-                          aria-label="Delete section"
-                          size="small"
-                          className={classes.deleteSectionButton}
-                          onClick={() => {
-                            dispatch(
-                              setAndShowDeleteDialog(
-                                packItem.sectionTitle,
-                                () => handleDeleteSection(packItem.sectionId) // Storing function reference (callback?) in the store to use later
-                              )
-                            );
-                          }}
-                        >
-                          <DeleteOutlineIcon color="error" />
-                        </IconButton>
-                      </span>
+                        {packItem.sectionTitle} &nbsp;
+                        {selectedHoverSectionId === packItem.sectionId && (
+                          <span
+                            style={{
+                              display: "flex",
+                            }}
+                          >
+                            {/* TODO: Check the colors of Edit & Delete Icons (outlined or filled etc...) */}
+                            <IconButton
+                              aria-label="Edit section name"
+                              size="small"
+                              color="secondary"
+                              onClick={() => {
+                                setShowSectionUpdateInput(true);
+                                setEditSectionId(packItem.sectionId);
+                              }}
+                            >
+                              <EditIcon />
+                            </IconButton>{" "}
+                            &nbsp;
+                            <IconButton
+                              aria-label="Delete section"
+                              size="small"
+                              className={classes.deleteSectionButton}
+                              onClick={() => {
+                                dispatch(
+                                  setAndShowDeleteDialog(
+                                    packItem.sectionTitle,
+                                    () =>
+                                      handleDeleteSection(packItem.sectionId) // Storing function reference (callback?) in the store to use later
+                                  )
+                                );
+                              }}
+                            >
+                              <DeleteOutlineIcon color="error" />
+                            </IconButton>
+                          </span>
+                        )}
+                      </Typography>
                     )}
-                  </Typography>
-                )}
-                {showSectionUpdateInput &&
-                  editSectionId === packItem.sectionId && (
-                    <PackInput
-                      sectionId={packItem.sectionId}
-                      inputText={packItem.sectionTitle}
-                      onAddItem={handleUpdateSectionTitle}
-                      edit={showSectionUpdateInput}
-                      onHandleEdit={(edit) => setShowSectionUpdateInput(edit)}
-                    />
-                  )}
-                {/* TODO: Check with the designer if hiding the completed items on hover is a good idea */}
-                {(!mouseHoverOnSection ||
-                  selectedHoverSectionId !== packItem.sectionId) && (
-                  <Typography
-                    component="h6"
-                    variant="body1"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    Completed:{" "}
-                    {
-                      packItem.sectionItems?.filter((item) => item.checked)
-                        .length
-                    }{" "}
-                    / {packItem.sectionItems?.length}
-                  </Typography>
-                )}
-                {/* <h3 style={{ fontWeight: 400 }}>Total: 31 Items</h3> */}
-              </Grid>
-              <Divider />
-              <List>
-                {packItem.sectionItems?.map((sectionItem) => (
-                  <PackOption
-                    key={sectionItem.id}
+                    {showSectionUpdateInput &&
+                      editSectionId === packItem.sectionId && (
+                        <PackInput
+                          sectionId={packItem.sectionId}
+                          inputText={packItem.sectionTitle}
+                          onAddItem={handleUpdateSectionTitle}
+                          edit={showSectionUpdateInput}
+                          onHandleEdit={(edit) =>
+                            setShowSectionUpdateInput(edit)
+                          }
+                        />
+                      )}
+                    {/* TODO: Check with the designer if hiding the completed items on hover is a good idea */}
+                    {(!mouseHoverOnSection ||
+                      selectedHoverSectionId !== packItem.sectionId) && (
+                      <Typography
+                        component="h6"
+                        variant="body1"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        Completed:{" "}
+                        {
+                          packItem.sectionItems?.filter((item) => item.checked)
+                            .length
+                        }{" "}
+                        / {packItem.sectionItems?.length}
+                      </Typography>
+                    )}
+                    {/* <h3 style={{ fontWeight: 400 }}>Total: 31 Items</h3> */}
+                  </Grid>
+                  <Divider />
+                  <List>
+                    {packItem.sectionItems?.map((sectionItem) => (
+                      <PackOption
+                        key={sectionItem.id}
+                        sectionId={packItem.sectionId}
+                        packItem={sectionItem}
+                        checked={sectionItem.checked}
+                        onUpdatePackItem={handleUpdatePackItem}
+                        onDeleteItem={handleDeleteItem}
+                      />
+                    ))}
+                    {packItem.sectionItems?.length === 0 && (
+                      <h3 style={{ fontWeight: 400, textAlign: "center" }}>
+                        No items found
+                      </h3>
+                    )}
+                  </List>
+                  <PackInput
                     sectionId={packItem.sectionId}
-                    packItem={sectionItem}
-                    checked={sectionItem.checked}
-                    onUpdatePackItem={handleUpdatePackItem}
-                    onDeleteItem={handleDeleteItem}
+                    placeholderText={packItem.placeholderText}
+                    onAddItem={handleAddItem}
                   />
-                ))}
-                {packItem.sectionItems?.length === 0 && (
-                  <h3 style={{ fontWeight: 400, textAlign: "center" }}>
-                    No items found
-                  </h3>
-                )}
-              </List>
-              <PackInput
-                sectionId={packItem.sectionId}
-                placeholderText={packItem.placeholderText}
-                onAddItem={handleAddItem}
-              />
-            </Paper>
-          ))}
-          <AddPackSection onAddSection={() => handleAddSection("end")} />
+                </Paper>
+              ))}
+              <AddPackSection onAddSection={() => handleAddSection("end")} />
+            </>
+          )}
         </Grid>
       </Grid>
     </>
