@@ -7,13 +7,13 @@ import {
   Checkbox,
   Divider,
   IconButton,
-} from "@material-ui/core";
+} from "@mui/material";
 import {
   Edit as EditIcon,
   EditOutlined as EditOutlinedIcon,
   Delete as DeleteIcon,
   DeleteOutline as DeleteOutlineIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { PackInput } from "./PackInput";
 import { packStyles } from "./packStyles";
 

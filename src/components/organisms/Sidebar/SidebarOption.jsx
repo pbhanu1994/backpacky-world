@@ -1,5 +1,5 @@
 import React from "react";
-import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { sidebarStyles } from "./sidebarStyles";
 
 export const SidebarOption = ({

@@ -7,17 +7,19 @@ import {
   Grid,
   Typography,
   IconButton,
-} from "@material-ui/core";
+} from "@mui/material";
 import {
   EditOutlined as EditIcon,
   DeleteOutline as DeleteOutlineIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { GiLightBackpack } from "react-icons/gi";
 import { Sidebar } from "../../../organisms/Sidebar";
 import { Navbar } from "../../../organisms/Navbar";
 import { PackOption } from "./PackOption";
 import { PackInput } from "./PackInput";
 import { AddPackSection } from "./AddPackSection";
+import { PAGE_PATH } from "../../../../constants/navigationConstants";
+import HeaderBreadcrumbs from "../../../atoms/HeaderBreadCrumbs";
 import getPackItems from "../../../../store/actions/journal/pack/getPackItems";
 import addPackSection from "../../../../store/actions/journal/pack/addPackSection";
 import updatePackSection from "../../../../store/actions/journal/pack/updatePackSection";
@@ -74,18 +76,13 @@ export default function Pack() {
           <Sidebar />
         </Grid>
         <Grid item xs={10} md={9}>
-          <Typography
-            component="h1"
-            variant="h4"
-            gutterBottom
-            style={{
-              display: "flex",
-              alignItems: "baseline",
-              marginTop: "2rem",
-            }}
-          >
-            Things to pack..
-          </Typography>
+          <HeaderBreadcrumbs
+            heading="Things to pack.."
+            links={[
+              { name: "Journal", href: PAGE_PATH.JOURNAL },
+              { name: "Things to pack" },
+            ]}
+          />
           {packItems.length === 0 && (
             <div style={{ maxWidth: 1000, marginTop: "5rem" }}>
               <Typography align="center" component="h3" gutterBottom>
@@ -106,7 +103,7 @@ export default function Pack() {
                   <Grid
                     container
                     justifyContent="space-between"
-                    style={{ padding: "0.8rem 1rem", height: "3.4rem" }}
+                    style={{ padding: "0.8rem 1rem", height: "3.7rem" }}
                     onMouseOver={() => {
                       setSelectedHoverSectionId(packItem.sectionId);
                       setMouseHoverOnSection(true);

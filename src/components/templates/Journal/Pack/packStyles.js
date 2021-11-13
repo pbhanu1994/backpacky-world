@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 
 export const packStyles = makeStyles((theme) => ({
   addSection: {
@@ -45,7 +45,7 @@ export const packStyles = makeStyles((theme) => ({
   },
   inputText: {
     width: "80%",
-    margin: ({ edit }) => !edit && "0.4rem 4.5rem",
+    margin: ({ edit }) => !edit && "0.4rem 3.7rem",
     fontSize: "unset",
     fontWeight: ({ edit }) => edit && "bold",
   },

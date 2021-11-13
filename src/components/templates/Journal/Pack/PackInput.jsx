@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { InputBase, IconButton } from "@material-ui/core";
-import { Check as ConfirmIcon, Close as CloseIcon } from "@material-ui/icons";
+import { InputBase, IconButton } from "@mui/material";
+import { Check as ConfirmIcon, Close as CloseIcon } from "@mui/icons-material";
 import { packStyles } from "./packStyles";
 
 export const PackInput = ({

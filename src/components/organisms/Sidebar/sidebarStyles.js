@@ -1,4 +1,5 @@
-import { makeStyles, alpha } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
+import { alpha } from "@mui/material/styles";
 
 export const sidebarStyles = makeStyles((theme) => ({
   root: {

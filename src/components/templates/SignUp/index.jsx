@@ -14,12 +14,14 @@ import {
   Box,
   Typography,
   Container,
-} from "@material-ui/core";
+} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import {
   LockOutlined as LockOutlinedIcon,
   Visibility,
   VisibilityOff,
-} from "@material-ui/icons";
+  Create as SignUpIcon,
+} from "@mui/icons-material";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
 import _ from "lodash";
@@ -30,6 +32,7 @@ import { signUpStyles } from "./signUpStyles";
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showLoadingButton, setShowLoadingButton] = useState(false);
   const dispatch = useDispatch();
   const classes = signUpStyles();
 
@@ -61,7 +64,10 @@ export default function SignUp() {
       const { firstName, lastName, email, password } = values;
 
       if (_.isEmpty(errors)) {
-        dispatch(signUpUser(email, password, firstName));
+        setShowLoadingButton(true);
+
+        const result = await dispatch(signUpUser(email, password, firstName));
+        result === "error" && setShowLoadingButton(false);
       }
     },
   });
@@ -170,16 +176,32 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              size="large"
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign Up
-            </Button>
+            {!showLoadingButton && (
+              <Button
+                type="submit"
+                fullWidth
+                size="large"
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign Up
+              </Button>
+            )}
+            {showLoadingButton && (
+              <LoadingButton
+                fullWidth
+                loading
+                size="large"
+                loadingPosition="start"
+                variant="contained"
+                className={classes.submit}
+                style={{ borderRadius: "8px" }}
+                startIcon={<SignUpIcon />}
+              >
+                Signing up...
+              </LoadingButton>
+            )}
             <Grid container justifyContent="flex-end">
               <Grid item>
                 Already have an account?{" "}

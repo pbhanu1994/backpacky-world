@@ -15,13 +15,14 @@ import {
   Typography,
   Divider,
   Container,
-} from "@material-ui/core";
-import { useRouter } from "next/router";
+} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import {
   LockOutlined as LockOutlinedIcon,
   Visibility,
   VisibilityOff,
-} from "@material-ui/icons";
+  Login as LoginIcon,
+} from "@mui/icons-material";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
 import _ from "lodash";
@@ -32,6 +33,7 @@ import { signInStyles } from "./signInStyles";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showLoadingButton, setShowLoadingButton] = useState(false);
   const dispatch = useDispatch();
   const classes = signInStyles();
 
@@ -54,7 +56,10 @@ export default function SignIn() {
       const { email, password } = values;
 
       if (_.isEmpty(errors)) {
-        dispatch(signInUser(email, password));
+        setShowLoadingButton(true);
+
+        const result = await dispatch(signInUser(email, password));
+        result === "error" && setShowLoadingButton(false);
       }
     },
   });
@@ -62,7 +67,6 @@ export default function SignIn() {
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } =
     formik;
 
-  // TODO: Set Loading 3 dots... while submitting
   return (
     <Container component="main" className={classes.root}>
       <CssBaseline />
@@ -129,16 +133,32 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <Button
-              type="submit"
-              fullWidth
-              size="large"
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
+            {!showLoadingButton && (
+              <Button
+                type="submit"
+                fullWidth
+                size="large"
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign In
+              </Button>
+            )}
+            {showLoadingButton && (
+              <LoadingButton
+                fullWidth
+                loading
+                size="large"
+                loadingPosition="start"
+                variant="contained"
+                className={classes.submit}
+                style={{ borderRadius: "8px" }}
+                startIcon={<LoginIcon />}
+              >
+                Signing in...
+              </LoadingButton>
+            )}
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">

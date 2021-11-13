@@ -15,8 +15,8 @@ import {
   Box,
   Typography,
   Container,
-} from "@material-ui/core";
-import { Book as JournalIcon } from "@material-ui/icons";
+} from "@mui/material";
+import { Book as JournalIcon } from "@mui/icons-material";
 import { Sidebar } from "../../organisms/Sidebar";
 import { Navbar } from "../../organisms/Navbar";
 import { JournalCard } from "../../atoms/JournalCard";

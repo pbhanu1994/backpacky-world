@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { List, Divider, Grid } from "@material-ui/core";
+import { List, Divider, Grid } from "@mui/material";
 import {
   Home as HomeActiveIcon,
   HomeOutlined as HomeIcon,
@@ -10,7 +10,7 @@ import {
   MessageOutlined as MessagesIcon,
   Settings as SettingsActiveIcon,
   SettingsOutlined as SettingsIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { SidebarOption } from "./SidebarOption";
 import { ViewProfile } from "../../atoms/ViewProfile";
 import { SIDEBAR_NAVIGATIONS } from "../../../constants/navigationConstants";

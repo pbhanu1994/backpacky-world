@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa";
-import { Grid, Button, Divider, Typography } from "@material-ui/core";
+import { Grid, Button, Divider, Typography } from "@mui/material";
 import signInWithSocialAccount from "../../store/actions/auth/signInWithSocialAccount";
 import {
   facebookProvider,
@@ -82,16 +82,11 @@ export const AuthSocial = () => {
           </Button>
         </Grid>
       </Grid>
-
-      {/* TODO: Add Divider with OR text in between, when the material UI 5 arrives */}
-      <Typography variant="body2" className={classes.separator}>
-        OR
-      </Typography>
-      {/* <Divider sx={{ my: 3 }}>
+      <Divider fullWidth sx={{ width: 1, my: 3 }}>
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
           OR
         </Typography>
-      </Divider> */}
+      </Divider>
     </>
   );
 };

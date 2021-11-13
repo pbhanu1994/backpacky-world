@@ -2,12 +2,16 @@ import React, { useEffect } from "react";
 import dynamic from "next/dynamic";
 import App from "next/app";
 import Head from "next/head";
+import { CacheProvider } from "@emotion/react";
 import { Provider } from "react-redux";
 import { createWrapper } from "next-redux-wrapper";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "../src/store/store";
 import ThemeConfig from "../src/theme";
+import GlobalStyles from "../src/theme/globalStyles";
+import createEmotionCache from "../src/handlers/createEmotionCache";
 import { AuthProvider } from "../src/handlers/auth";
+import ThemePrimaryColor from "../src/components/ThemePrimaryColor";
 import "../styles/globals.css";
 
 // Importing the component dynamic (Chunk) with no SSR (Only Client Side)
@@ -19,37 +23,38 @@ const Dialog = dynamic(() => import("../src/components/atoms/DialogBox"), {
   ssr: false,
 });
 
-function MyApp({ Component, pageProps, ...rest }) {
-  useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector("#jss-server-side");
-    if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
-    }
-  }, []);
+const clientSideEmotionCache = createEmotionCache();
+
+function MyApp(props) {
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   return (
-    <React.Fragment>
-      <Head>
-        <title>My page</title>
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-      </Head>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <ThemeConfig>
-            <AuthProvider>
-              <Component {...pageProps} />
-              {/* Adding the Toast, dialog box - modals, etc. */}
-              <Toast selector="#toast" />
-              <Dialog selector="#dialog" />
-            </AuthProvider>
-          </ThemeConfig>
-        </PersistGate>
-      </Provider>
-    </React.Fragment>
+    <CacheProvider value={emotionCache}>
+      <React.Fragment>
+        <Head>
+          <title>My page</title>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width"
+          />
+        </Head>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <ThemeConfig>
+              <ThemePrimaryColor>
+                <AuthProvider>
+                  <GlobalStyles />
+                  <Component {...pageProps} />
+                  {/* Adding the Toast, dialog box - modals, etc. */}
+                  <Toast selector="#toast" />
+                  <Dialog selector="#dialog" />
+                </AuthProvider>
+              </ThemePrimaryColor>
+            </ThemeConfig>
+          </PersistGate>
+        </Provider>
+      </React.Fragment>
+    </CacheProvider>
   );
 }
 

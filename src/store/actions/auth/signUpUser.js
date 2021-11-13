@@ -37,6 +37,7 @@ const signUpUser =
     } catch (err) {
       console.log("Error Signing up", err);
       dispatch(setAndShowErrorToast(err.message));
+      return "error";
     }
   };
 

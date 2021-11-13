@@ -8,7 +8,7 @@ import {
   DialogContentText,
   DialogTitle,
   useTheme,
-} from "@material-ui/core";
+} from "@mui/material";
 import withPortal from "../../hoc/withPortal";
 import closeDialog from "../../store/actions/config/dialog/closeDialog";
 
@@ -49,6 +49,7 @@ const DialogBox = () => {
             style={{
               background: theme.palette[dialog.color].main,
               color: "#fff",
+              boxShadow: dialog.type === "delete" && theme.customShadows.error,
             }}
             variant="contained"
             autoFocus

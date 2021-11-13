@@ -1,13 +1,13 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import {
   Card,
   CardActionArea,
   CardContent,
   CardMedia,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 const useStyles = makeStyles({
   root: {

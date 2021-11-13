@@ -32,6 +32,7 @@ const signInUser = (userEmail, userPassword) => async (dispatch, getState) => {
   } catch (err) {
     console.log("Error Signing in", err);
     dispatch(setAndShowErrorToast(err.message));
+    return "error";
   }
 };
 

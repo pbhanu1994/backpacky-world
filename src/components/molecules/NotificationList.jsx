@@ -7,7 +7,7 @@ import {
   Avatar,
   ListItemText,
   Divider,
-} from "@material-ui/core";
+} from "@mui/material";
 
 export const NotificationList = () => {
   return (

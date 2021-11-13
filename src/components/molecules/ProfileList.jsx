@@ -1,18 +1,18 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import {
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   Divider,
-} from "@material-ui/core";
+} from "@mui/material";
 import {
   Settings as SettingsIcon,
   ExitToApp as LogoutIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import signOutUser from "../../store/actions/auth/signOutUser";
 import { ViewProfile } from "../atoms/ViewProfile";
 

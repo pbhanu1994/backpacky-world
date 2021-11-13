@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Typography, Container } from "@material-ui/core";
+import { Typography, Container } from "@mui/material";
 
 export default function Landing() {
   return (

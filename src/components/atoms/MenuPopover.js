@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
-import { Popover } from "@material-ui/core";
-import { alpha, makeStyles } from "@material-ui/core/styles";
+import { Popover } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { alpha } from "@mui/material/styles";
 
 const useStyles = makeStyles((theme) => ({
   arrow: {

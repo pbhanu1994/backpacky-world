@@ -1,4 +1,4 @@
-import { alpha } from "@material-ui/core/styles";
+import { alpha } from "@mui/material/styles";
 
 function createGradient(color1, color2) {
   return `linear-gradient(to bottom, ${color1}, ${color2})`;
@@ -83,7 +83,15 @@ const GRADIENTS = {
   error: createGradient(ERROR.light, ERROR.main),
 };
 
-const palette = {
+const CHART_COLORS = {
+  violet: ["#826AF9", "#9E86FF", "#D0AEFF", "#F7D2FF"],
+  blue: ["#2D99FF", "#83CFFF", "#A5F3FF", "#CCFAFF"],
+  green: ["#2CD9C5", "#60F1C8", "#A4F7CC", "#C0F2DC"],
+  yellow: ["#FFE700", "#FFEF5A", "#FFF7AE", "#FFF3D6"],
+  red: ["#FF6C40", "#FF8F6D", "#FFBD98", "#FFF2D4"],
+};
+
+const COMMON = {
   common: { black: "#000", white: "#fff" },
   primary: { ...PRIMARY },
   secondary: { ...SECONDARY },
@@ -93,11 +101,9 @@ const palette = {
   error: { ...ERROR },
   grey: GREY,
   gradients: GRADIENTS,
+  chart: CHART_COLORS,
   divider: GREY[500_24],
-  text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
-  background: { paper: "#fff", default: "#fff", neutral: GREY[200] },
   action: {
-    active: GREY[600],
     hover: GREY[500_8],
     selected: GREY[500_16],
     disabled: GREY[500_80],
@@ -105,6 +111,21 @@ const palette = {
     focus: GREY[500_24],
     hoverOpacity: 0.08,
     disabledOpacity: 0.48,
+  },
+};
+
+const palette = {
+  light: {
+    ...COMMON,
+    text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
+    background: { paper: "#fff", default: "#fff", neutral: GREY[200] },
+    action: { active: GREY[600], ...COMMON.action },
+  },
+  dark: {
+    ...COMMON,
+    text: { primary: "#fff", secondary: GREY[500], disabled: GREY[600] },
+    background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
+    action: { active: GREY[500], ...COMMON.action },
   },
 };
 

@@ -1,10 +1,10 @@
 import React, { useState, useRef } from "react";
-import { Paper, Grid, IconButton, Avatar, InputBase } from "@material-ui/core";
+import { Paper, Grid, IconButton, Avatar, InputBase } from "@mui/material";
 import {
   NotificationsOutlined as NotificationsIcon,
   Search as SearchIcon,
   ArrowDropDown as ArrowDownwardIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { MenuPopover } from "../../atoms/MenuPopover";
 import { ProfileList } from "../../molecules/ProfileList";
 import { NotificationList } from "../../molecules/NotificationList";
