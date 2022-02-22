@@ -20,7 +20,7 @@ export const NotificationList = () => {
         <ListItemIcon>
           <Avatar
             alt="Bhanu Prakash"
-            src="https://material-ui.com/static/images/avatar/2.jpg"
+            src="https://www.w3schools.com/howto/img_avatar.png"
           />
         </ListItemIcon>
         <ListItemText secondary="First Notificaton is commented on your profile blah blah blah..." />

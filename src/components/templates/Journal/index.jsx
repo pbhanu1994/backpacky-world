@@ -1,50 +1,36 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import {
-  Avatar,
-  Button,
-  CssBaseline,
-  TextField,
-  InputAdornment,
-  IconButton,
-  FormControlLabel,
-  Checkbox,
-  Link,
-  Grid,
-  Box,
-  Typography,
-  Container,
-} from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { Book as JournalIcon } from "@mui/icons-material";
 import { Sidebar } from "../../organisms/Sidebar";
 import { Navbar } from "../../organisms/Navbar";
 import { JournalCard } from "../../atoms/JournalCard";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { journalStyles } from "./journalStyles";
+import DashboardLayout from "../../dashboard";
+import useSettings from "../../../hooks/useSettings";
+import Page from "../../atoms/Page";
 
 export default function Journal({ userId }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const classes = journalStyles();
+  const { themeStretch } = useSettings();
 
   return (
-    <>
-      <Navbar />
-      <Grid container spacing={4}>
-        <Grid item xs={2} md={3}>
-          <Sidebar />
-        </Grid>
-        <Grid item xs={10} md={9}>
+    <DashboardLayout>
+      <Page title="Journal | BackpackyWorld">
+        <Container maxWidth={themeStretch ? false : "xl"}>
           <Typography
             component="h1"
             variant="h4"
             align="center"
             color="primary"
             gutterBottom
+            paragraph
             style={{
               display: "flex",
-              marginTop: "2rem",
             }}
           >
             Journal Entries..
@@ -56,8 +42,8 @@ export default function Journal({ userId }) {
             path={PAGE_PATH.JOURNAL_PACK}
             completed={0}
           />
-        </Grid>
-      </Grid>
-    </>
+        </Container>
+      </Page>
+    </DashboardLayout>
   );
 }

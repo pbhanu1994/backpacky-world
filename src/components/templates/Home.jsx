@@ -1,24 +1,15 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import {
-  Avatar,
-  Button,
-  CssBaseline,
-  TextField,
-  InputAdornment,
-  IconButton,
-  FormControlLabel,
-  Checkbox,
-  Link,
-  Grid,
-  Box,
-  Typography,
-  Container,
-} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Sidebar } from "../organisms/Sidebar";
 import { Navbar } from "../organisms/Navbar";
+
+import { Container, Typography } from "@mui/material";
+import DashboardLayout from "../dashboard";
+import useSettings from "../../hooks/useSettings";
+import Page from "../atoms/Page";
+
 import getPackItems from "../../store/actions/journal/pack/getPackItems";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,10 +18,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home({ userId }) {
+const Home = ({ userId }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const classes = useStyles();
+  const { themeStretch } = useSettings();
 
   useEffect(() => {
     // Journal - Pack items
@@ -38,28 +30,37 @@ export default function Home({ userId }) {
   }, []);
 
   return (
-    <>
-      <Navbar />
-      <Grid container spacing={4}>
-        <Grid item xs={2} md={3}>
-          <Sidebar />
-        </Grid>
-        <Grid item xs={10} md={9}>
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            color="textPrimary"
-            gutterBottom
-          >
-            Welcome, <span className={classes.welcomeText}>Bhanu!</span>
+    <DashboardLayout>
+      <Page title="Home | BackpackyWorld">
+        <Container maxWidth={themeStretch ? false : "xl"}>
+          <Typography variant="h3" component="h1" paragraph>
+            Home
           </Typography>
-
-          <h1>Welcome to Dashboard</h1>
-          <h3>Have a Safe Travel!</h3>
-          <h2>UID: {userId}</h2>
-        </Grid>
-      </Grid>
-    </>
+          <Typography gutterBottom>
+            Curabitur turpis. Vestibulum facilisis, purus nec pulvinar iaculis,
+            ligula mi congue nunc, vitae euismod ligula urna in dolor. Nam quam
+            nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Phasellus
+            blandit leo ut odio. Vestibulum ante ipsum primis in faucibus orci
+            luctus et ultrices posuere cubilia Curae; Fusce id purus. Aliquam
+            lorem ante, dapibus in, viverra quis, feugiat a, tellus. In
+            consectetuer turpis ut velit. Aenean posuere, tortor sed cursus
+            feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor
+            sagittis lacus. Vestibulum suscipit nulla quis orci. Nam commodo
+            suscipit quam. Sed a libero.
+          </Typography>
+          <Typography>
+            Praesent ac sem eget est egestas volutpat. Phasellus viverra nulla
+            ut metus varius laoreet. Curabitur ullamcorper ultricies nisi. Ut
+            non enim eleifend felis pretium feugiat. Donec mi odio, faucibus at,
+            scelerisque quis, convallis in, nisi. Fusce vel dui. Quisque libero
+            metus, condimentum nec, tempor a, commodo mollis, magna. In enim
+            justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Cras
+            dapibus.
+          </Typography>
+        </Container>
+      </Page>
+    </DashboardLayout>
   );
-}
+};
+
+export default Home;

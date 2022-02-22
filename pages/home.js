@@ -5,9 +5,9 @@ import { verifyIdToken } from "../src/handlers/firebaseAdmin";
 
 import styles from "../styles/Home.module.css";
 
-export default function Home({ userId }) {
+const Home = ({ userId }) => {
   return <HomeComponent userId={userId} />;
-}
+};
 
 export async function getServerSideProps({ req, res }) {
   try {
@@ -27,3 +27,5 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 }
+
+export default Home;

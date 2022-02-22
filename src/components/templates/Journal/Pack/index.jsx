@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Divider,
-  List,
-  Paper,
-  Grid,
-  Typography,
-  IconButton,
-} from "@mui/material";
+import { Divider, List, Paper, Grid, IconButton } from "@mui/material";
 import {
   EditOutlined as EditIcon,
   DeleteOutline as DeleteOutlineIcon,
 } from "@mui/icons-material";
+import { Container, Typography } from "@mui/material";
 import { GiLightBackpack } from "react-icons/gi";
+import Page from "../../../atoms/Page";
+import DashboardLayout from "../../../dashboard";
+import useSettings from "../../../../hooks/useSettings";
 import { Sidebar } from "../../../organisms/Sidebar";
 import { Navbar } from "../../../organisms/Navbar";
 import { PackOption } from "./PackOption";
@@ -38,6 +35,7 @@ export default function Pack() {
   const packItems = useSelector((state) => state.journal.packItems);
 
   const dispatch = useDispatch();
+  const { themeStretch } = useSettings();
   const classes = packStyles();
 
   useEffect(() => {
@@ -69,22 +67,18 @@ export default function Pack() {
   };
 
   return (
-    <>
-      <Navbar />
-      <Grid container spacing={4}>
-        <Grid item xs={2} md={3}>
-          <Sidebar />
-        </Grid>
-        <Grid item xs={10} md={9}>
+    <DashboardLayout>
+      <Page title="Journal - Pack | BackpackyWorld">
+        <Container maxWidth={themeStretch ? false : "xl"}>
           <HeaderBreadcrumbs
-            heading="Things to pack.."
+            heading="Things to pack"
             links={[
               { name: "Journal", href: PAGE_PATH.JOURNAL },
               { name: "Things to pack" },
             ]}
           />
           {packItems.length === 0 && (
-            <div style={{ maxWidth: 1000, marginTop: "5rem" }}>
+            <div>
               <Typography align="center" component="h3" gutterBottom>
                 No items available.
               </Typography>
@@ -229,8 +223,8 @@ export default function Pack() {
               <AddPackSection onAddSection={() => handleAddSection("end")} />
             </>
           )}
-        </Grid>
-      </Grid>
-    </>
+        </Container>
+      </Page>
+    </DashboardLayout>
   );
 }

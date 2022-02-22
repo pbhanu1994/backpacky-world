@@ -15,11 +15,7 @@ import componentsOverride from "./overrides";
 import shape from "./shape";
 import shadows, { customShadows } from "./shadows";
 
-ThemeConfig.propTypes = {
-  children: PropTypes.node,
-};
-
-export default function ThemeConfig({ children }) {
+const ThemeConfig = ({ children }) => {
   const { themeMode, themeDirection } = useSettings();
   const isLight = themeMode === "light";
 
@@ -50,4 +46,10 @@ export default function ThemeConfig({ children }) {
       </ThemeProvider>
     </StyledEngineProvider>
   );
-}
+};
+
+ThemeConfig.propTypes = {
+  children: PropTypes.node,
+};
+
+export default ThemeConfig;
