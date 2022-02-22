@@ -1,5 +1,5 @@
-import { Icon } from "@iconify/react";
 import { useRef, useState } from "react";
+import { Icon } from "@iconify/react";
 import homeFill from "@iconify/icons-eva/home-fill";
 import personFill from "@iconify/icons-eva/person-fill";
 import settings2Fill from "@iconify/icons-eva/settings-2-fill";
@@ -15,6 +15,8 @@ import {
 } from "@mui/material";
 import { MenuPopover } from "../atoms/MenuPopover";
 import { MIconButton } from "../@material-extend";
+import { useDispatch } from "react-redux";
+import signOutUser from "../../store/actions/auth/signOutUser";
 // import AvatarDefault from "../../assets/images/avatar_default.jpg";
 
 const MENU_OPTIONS = [
@@ -25,6 +27,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const anchorRef = useRef(null);
+  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
 
@@ -104,7 +107,12 @@ export default function AccountPopover() {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth color="inherit" variant="outlined">
+          <Button
+            fullWidth
+            color="inherit"
+            variant="outlined"
+            onClick={() => dispatch(signOutUser())}
+          >
             Logout
           </Button>
         </Box>
