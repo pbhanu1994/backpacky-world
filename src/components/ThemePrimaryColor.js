@@ -7,9 +7,7 @@ import {
   createTheme,
   ThemeProvider,
 } from "@mui/material/styles";
-// hooks
 import useSettings from "../hooks/useSettings";
-//
 import componentsOverride from "../theme/overrides";
 
 ThemePrimaryColor.propTypes = {

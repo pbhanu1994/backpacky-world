@@ -149,17 +149,10 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
         </Stack>
 
         {isCollapse ? (
-          <Avatar
-            alt="My Avatar"
-            src="../../assets/images/avatar_default.jpg"
-            sx={{ mx: "auto", mb: 2 }}
-          />
+          <Avatar alt="My Avatar" src="/images/avatar_default.jpg" />
         ) : (
           <AccountStyle>
-            <Avatar
-              alt="My Avatar"
-              src="../../assets/images/avatar_default.jpg"
-            />
+            <Avatar alt="My Avatar" src="/images/avatar_default.jpg" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
                 Bhanu Prakash

@@ -3,8 +3,6 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Container, Typography } from "@mui/material";
 import { Book as JournalIcon } from "@mui/icons-material";
-import { Sidebar } from "../../organisms/Sidebar";
-import { Navbar } from "../../organisms/Navbar";
 import { JournalCard } from "../../atoms/JournalCard";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { journalStyles } from "./journalStyles";

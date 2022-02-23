@@ -10,8 +10,6 @@ import { GiLightBackpack } from "react-icons/gi";
 import Page from "../../../atoms/Page";
 import DashboardLayout from "../../../dashboard";
 import useSettings from "../../../../hooks/useSettings";
-import { Sidebar } from "../../../organisms/Sidebar";
-import { Navbar } from "../../../organisms/Navbar";
 import { PackOption } from "./PackOption";
 import { PackInput } from "./PackInput";
 import { AddPackSection } from "./AddPackSection";

@@ -17,7 +17,6 @@ import { MenuPopover } from "../atoms/MenuPopover";
 import { MIconButton } from "../@material-extend";
 import { useDispatch } from "react-redux";
 import signOutUser from "../../store/actions/auth/signOutUser";
-// import AvatarDefault from "../../assets/images/avatar_default.jpg";
 
 const MENU_OPTIONS = [
   { label: "Home", icon: homeFill, linkTo: "/" },
@@ -60,12 +59,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Box
-          component="img"
-          alt="User Name"
-          src="https://www.w3schools.com/howto/img_avatar.png"
-          style={{ borderRadius: "50%" }}
-        />
+        <Avatar alt="My Avatar" src="/images/avatar_default.jpg" />
       </MIconButton>
 
       <MenuPopover

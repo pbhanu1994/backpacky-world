@@ -2,9 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { makeStyles } from "@mui/styles";
-import { Sidebar } from "../organisms/Sidebar";
-import { Navbar } from "../organisms/Navbar";
-
 import { Container, Typography } from "@mui/material";
 import DashboardLayout from "../dashboard";
 import useSettings from "../../hooks/useSettings";
