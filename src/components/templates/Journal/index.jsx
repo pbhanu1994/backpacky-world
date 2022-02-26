@@ -6,7 +6,7 @@ import { Book as JournalIcon } from "@mui/icons-material";
 import { JournalCard } from "../../atoms/JournalCard";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { journalStyles } from "./journalStyles";
-import DashboardLayout from "../../dashboard";
+import DashboardLayout from "../../layouts/dashboard";
 import useSettings from "../../../hooks/useSettings";
 import Page from "../../atoms/Page";
 

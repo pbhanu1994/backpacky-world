@@ -4,7 +4,7 @@ import journalIcon from "@iconify/icons-eva/book-outline";
 import messageIcon from "@iconify/icons-eva/message-square-outline";
 import userIcon from "@iconify/icons-eva/person-outline";
 
-import { PAGE_PATH } from "../../constants/navigationConstants";
+import { PAGE_PATH } from "../../../constants/navigationConstants";
 
 const sidebarConfig = [
   {

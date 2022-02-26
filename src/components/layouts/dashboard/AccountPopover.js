@@ -13,10 +13,10 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import { MenuPopover } from "../atoms/MenuPopover";
-import { MIconButton } from "../@material-extend";
+import { MenuPopover } from "../../atoms/MenuPopover";
+import { MIconButton } from "../../@material-extend";
 import { useDispatch } from "react-redux";
-import signOutUser from "../../store/actions/auth/signOutUser";
+import signOutUser from "../../../store/actions/auth/signOutUser";
 
 const MENU_OPTIONS = [
   { label: "Home", icon: homeFill, linkTo: "/" },

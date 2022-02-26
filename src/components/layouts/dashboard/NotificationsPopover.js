@@ -22,9 +22,9 @@ import {
   ListItemButton,
 } from "@mui/material";
 // import mockData from "../../utils/mock-data";
-import Scrollbar from "../atoms/Scrollbar";
-import { MenuPopover } from "../atoms/MenuPopover";
-import { MIconButton } from "../@material-extend";
+import Scrollbar from "../../atoms/Scrollbar";
+import { MenuPopover } from "../../atoms/MenuPopover";
+import { MIconButton } from "../../@material-extend";
 
 const TITLES = [
   "Your order is placed",

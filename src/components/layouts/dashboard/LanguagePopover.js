@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
 import { alpha } from "@mui/material/styles";
 import { Box, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
-import { MenuPopover } from "../atoms/MenuPopover";
-import { MIconButton } from "../@material-extend";
-import EnglishIcon from "../../assets/illustrations/flags/ic_flag_en.svg";
-import GermanIcon from "../../assets/illustrations/flags/ic_flag_de.svg";
-import FrenchIcon from "../../assets/illustrations/flags/ic_flag_fr.svg";
+import { MenuPopover } from "../../atoms/MenuPopover";
+import { MIconButton } from "../../@material-extend";
+import EnglishIcon from "/src/assets/illustrations/flags/ic_flag_en.svg";
+import GermanIcon from "/src/assets/illustrations/flags/ic_flag_de.svg";
+import FrenchIcon from "/src/assets/illustrations/flags/ic_flag_fr.svg";
 
 const LANGS = [
   {

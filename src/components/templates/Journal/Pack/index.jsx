@@ -8,7 +8,7 @@ import {
 import { Container, Typography } from "@mui/material";
 import { GiLightBackpack } from "react-icons/gi";
 import Page from "../../../atoms/Page";
-import DashboardLayout from "../../../dashboard";
+import DashboardLayout from "../../../layouts/dashboard";
 import useSettings from "../../../../hooks/useSettings";
 import { PackOption } from "./PackOption";
 import { PackInput } from "./PackInput";

@@ -12,11 +12,11 @@ import {
   Typography,
   CardActionArea,
 } from "@mui/material";
-import useCollapseDrawer from "../../hooks/useCollapseDrawer";
+import useCollapseDrawer from "../../../hooks/useCollapseDrawer";
 import Logo from "./Logo";
-import Scrollbar from "../atoms/Scrollbar";
-import NavSection from "../atoms/NavSection";
-import { MHidden } from "../@material-extend";
+import Scrollbar from "../../atoms/Scrollbar";
+import NavSection from "../../atoms/NavSection";
+import { MHidden } from "../../@material-extend";
 import sidebarConfig from "./SidebarConfig";
 
 const DRAWER_WIDTH = 280;

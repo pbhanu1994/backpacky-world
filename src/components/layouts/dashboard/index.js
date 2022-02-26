@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
-import useCollapseDrawer from "../../hooks/useCollapseDrawer";
+import useCollapseDrawer from "../../../hooks/useCollapseDrawer";
 import DashboardNavbar from "./DashboardNavbar";
 import DashboardSidebar from "./DashboardSidebar";
 

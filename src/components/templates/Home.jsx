@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { makeStyles } from "@mui/styles";
 import { Container, Typography } from "@mui/material";
-import DashboardLayout from "../dashboard";
+import DashboardLayout from "../layouts/dashboard";
 import useSettings from "../../hooks/useSettings";
 import Page from "../atoms/Page";
 
