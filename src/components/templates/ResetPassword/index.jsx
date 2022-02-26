@@ -54,10 +54,10 @@ export default function ResetPassword() {
               <SentIcon sx={{ mb: 5, mx: "auto", height: 160 }} />
 
               <Typography variant="h3" gutterBottom>
-                Request sent successfully
+                Email sent successfully
               </Typography>
               <Typography>
-                We have sent a confirmation email to &nbsp;
+                We have sent a password reset link to &nbsp;
                 <strong>{email}</strong>
                 <br />
                 Please check your email.
