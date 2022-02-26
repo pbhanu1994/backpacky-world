@@ -28,6 +28,7 @@ import * as Yup from "yup";
 import _ from "lodash";
 import { AuthSocial } from "../../molecules/AuthSocial";
 import { Copyright } from "../../atoms/Copyright";
+import { PAGE_PATH } from "/src/constants/navigationConstants";
 import signInUser from "../../../store/actions/auth/signInUser";
 import { signInStyles } from "./signInStyles";
 
@@ -161,7 +162,7 @@ export default function SignIn() {
             )}
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href={PAGE_PATH.RESET_PASSWORD} variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
