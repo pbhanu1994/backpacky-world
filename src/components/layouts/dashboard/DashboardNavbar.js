@@ -8,6 +8,7 @@ import { MHidden } from "../../@material-extend";
 import Searchbar from "./Searchbar";
 import AccountPopover from "./AccountPopover";
 import LanguagePopover from "./LanguagePopover";
+import ContactsPopover from "./ContactsPopover";
 import NotificationsPopover from "./NotificationsPopover";
 
 const DRAWER_WIDTH = 280;
@@ -65,6 +66,7 @@ const DashboardNavbar = ({ onOpenSidebar }) => {
         >
           <LanguagePopover />
           <NotificationsPopover />
+          <ContactsPopover />
           <AccountPopover />
         </Stack>
       </ToolbarStyle>

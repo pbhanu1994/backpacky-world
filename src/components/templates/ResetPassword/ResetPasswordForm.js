@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Form, FormikProvider, useFormik } from "formik";
 import { TextField, Alert, Stack } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import useIsMountedRef from "/src/hooks/useIsMountedRef";
 import resetPassword from "../../../store/actions/auth/resetPassword";
 
 export const ResetPasswordForm = ({
@@ -13,6 +14,7 @@ export const ResetPasswordForm = ({
   onHandleLoadingButton,
 }) => {
   const dispatch = useDispatch();
+  const isMountedRef = useIsMountedRef();
 
   const ResetPasswordSchema = Yup.object().shape({
     email: Yup.string()
@@ -33,7 +35,7 @@ export const ResetPasswordForm = ({
           onHandleLoadingButton(true);
 
           const result = await dispatch(resetPassword(email));
-          if (result === "success") {
+          if (isMountedRef.current && result === "success") {
             onSent();
             onGetEmail(formik.values.email);
             setSubmitting(false);
@@ -43,8 +45,10 @@ export const ResetPasswordForm = ({
         }
       } catch (error) {
         console.error(error);
-        setErrors({ afterSubmit: error.message });
-        setSubmitting(false);
+        if (isMountedRef.current) {
+          setErrors({ afterSubmit: error.message });
+          setSubmitting(false);
+        }
       }
     },
   });

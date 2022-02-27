@@ -1,8 +1,9 @@
-import PropTypes from "prop-types";
-// import { formatDistanceToNow } from "date-fns";
-// import { noCase } from "change-case";
-import { Icon } from "@iconify/react";
 import { useRef, useState } from "react";
+import PropTypes from "prop-types";
+import { formatDistanceToNow } from "date-fns";
+import { noCase } from "change-case";
+import { Icon } from "@iconify/react";
+import { alpha } from "@mui/material/styles";
 import bellFill from "@iconify/icons-eva/bell-fill";
 import clockFill from "@iconify/icons-eva/clock-fill";
 import doneAllFill from "@iconify/icons-eva/done-all-fill";
@@ -21,6 +22,7 @@ import {
   ListItemAvatar,
   ListItemButton,
 } from "@mui/material";
+import { fToNow } from "/src/utils/formatTime";
 // import mockData from "../../utils/mock-data";
 import Scrollbar from "../../atoms/Scrollbar";
 import { MenuPopover } from "../../atoms/MenuPopover";
@@ -79,7 +81,7 @@ function renderContent(notification) {
         variant="body2"
         sx={{ color: "text.secondary" }}
       >
-        &nbsp; Hello there it's a description
+        &nbsp; {noCase(notification.description)}
       </Typography>
     </Typography>
   );
@@ -178,8 +180,7 @@ function NotificationItem({ notification }) {
                 icon={clockFill}
                 sx={{ mr: 0.5, width: 16, height: 16 }}
               />
-              {/* {formatDistanceToNow(new Date(notification.createdAt))} */}
-              Friday 23rd
+              {fToNow(notification.createdAt)}
             </Typography>
           }
         />
@@ -220,6 +221,15 @@ export default function NotificationsPopover() {
         size="large"
         color={open ? "primary" : "default"}
         onClick={handleOpen}
+        sx={{
+          ...(open && {
+            bgcolor: (theme) =>
+              alpha(
+                theme.palette.primary.main,
+                theme.palette.action.focusOpacity
+              ),
+          }),
+        }}
       >
         <Badge badgeContent={totalUnRead} color="error">
           <Icon icon={bellFill} width={20} height={20} />
@@ -232,7 +242,14 @@ export default function NotificationsPopover() {
         anchorEl={anchorRef.current}
         sx={{ width: 360 }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", py: 2, px: 2.5 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            py: 2,
+            px: 2.5,
+          }}
+        >
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
             <Typography variant="body2" sx={{ color: "text.secondary" }}>
