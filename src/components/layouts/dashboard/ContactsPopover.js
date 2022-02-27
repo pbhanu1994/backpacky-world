@@ -80,7 +80,6 @@ export default function ContactsPopover() {
           Contacts <Typography component="span">({contacts.length})</Typography>
         </Typography>
 
-        {/* FIXME: Fix the Scrollbar for Contact list */}
         <Scrollbar sx={{ height: ITEM_HEIGHT * 8 }}>
           {contacts.map((contact) => {
             const { id, name, avatar, status, lastActivity } = contact;

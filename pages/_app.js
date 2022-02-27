@@ -16,6 +16,8 @@ import ThemePrimaryColor from "../src/components/ThemePrimaryColor";
 import { SettingsProvider } from "../src/contexts/SettingsContext";
 import { CollapseDrawerProvider } from "../src/contexts/CollapseDrawerContext";
 import "../styles/globals.css";
+// Scrollbar
+import "simplebar/dist/simplebar.min.css";
 
 // Importing the component dynamic (Chunk) with no SSR (Only Client Side)
 const Toast = dynamic(() => import("../src/components/atoms/Toast"), {
