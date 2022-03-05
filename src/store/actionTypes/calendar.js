@@ -1,0 +1,10 @@
+export const START_LOADING = "START_LOADING";
+export const HAS_ERROR = "HAS_ERROR";
+export const GET_EVENTS = "GET_EVENTS";
+export const CREATE_EVENT = "CREATE_EVENT";
+export const UPDATE_EVENT = "UPDATE_EVENT";
+export const DELETE_EVENT = "DELETE_EVENT";
+export const SELECT_EVENT = "SELECT_EVENT";
+export const SELECT_RANGE = "SELECT_RANGE";
+export const OPEN_MODAL = "OPEN_MODAL";
+export const CLOSE_MODAL = "CLOSE_MODAL";

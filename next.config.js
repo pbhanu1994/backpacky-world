@@ -1,4 +1,15 @@
-module.exports = {
+const withTM = require("next-transpile-modules")([
+  "@fullcalendar/common",
+  "@babel/preset-react",
+  "@fullcalendar/list",
+  "@fullcalendar/daygrid",
+  "@fullcalendar/interaction",
+  "@fullcalendar/react",
+  "@fullcalendar/timegrid",
+  "@fullcalendar/timeline",
+]);
+
+module.exports = withTM({
   trailingSlash: true,
   future: {
     webpack5: true,
@@ -11,4 +22,4 @@ module.exports = {
     });
     return config;
   },
-};
+});

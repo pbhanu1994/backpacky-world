@@ -1,10 +1,11 @@
 import { Icon } from "@iconify/react";
 import homeIcon from "@iconify/icons-eva/home-outline";
 import journalIcon from "@iconify/icons-eva/book-outline";
-import messageIcon from "@iconify/icons-eva/message-square-outline";
+import chatIcon from "@iconify/icons-eva/message-circle-outline";
+import calendarIcon from "@iconify/icons-eva/calendar-outline";
 import userIcon from "@iconify/icons-eva/person-outline";
 
-import { PAGE_PATH } from "../../../constants/navigationConstants";
+import { PAGE_PATH } from "/src/constants/navigationConstants";
 
 const sidebarConfig = [
   {
@@ -21,9 +22,14 @@ const sidebarConfig = [
         icon: <Icon icon={journalIcon} width={20} height={20} />,
       },
       {
-        title: "Messages",
-        path: PAGE_PATH.MESSAGES,
-        icon: <Icon icon={messageIcon} width={20} height={20} />,
+        title: "Chat",
+        path: PAGE_PATH.CHAT,
+        icon: <Icon icon={chatIcon} width={20} height={20} />,
+      },
+      {
+        title: "Calendar",
+        path: PAGE_PATH.CALENDAR,
+        icon: <Icon icon={calendarIcon} width={20} height={20} />,
       },
     ],
   },
