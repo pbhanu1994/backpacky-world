@@ -27,7 +27,7 @@ export const calendarReducer = (state = initialState, action) => {
       return { ...state, isLoading: true };
 
     case HAS_ERROR:
-      return { ...state, isLoading: true, error: action.payload };
+      return { ...state, isLoading: true };
 
     case OPEN_MODAL:
       return { ...state, isOpenModal: true };
@@ -59,10 +59,10 @@ export const calendarReducer = (state = initialState, action) => {
     }
 
     case UPDATE_EVENT: {
-      const { event } = action.payload;
+      const { eventId, event } = action.payload;
       const updateEvent = map(state.events, (_event) => {
-        if (_event.id === event.id) {
-          return event;
+        if (_event.id === eventId) {
+          return { ..._event, ...event };
         }
         return _event;
       });

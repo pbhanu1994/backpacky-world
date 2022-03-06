@@ -9,16 +9,9 @@ import Page from "../atoms/Page";
 
 import getPackItems from "../../store/actions/journal/pack/getPackItems";
 
-const useStyles = makeStyles((theme) => ({
-  welcomeText: {
-    color: theme.palette.primary.main,
-  },
-}));
-
 const Home = ({ userId }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const classes = useStyles();
   const { themeStretch } = useSettings();
 
   useEffect(() => {
