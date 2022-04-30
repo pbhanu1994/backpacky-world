@@ -11,12 +11,6 @@ export const packStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  confirmButton: {
-    color: theme.palette.success.main,
-  },
-  cancelButton: {
-    color: theme.palette.error.main,
-  },
   listPaper: {
     maxWidth: 1000,
     borderRadius: "1rem",
@@ -42,16 +36,6 @@ export const packStyles = makeStyles((theme) => ({
   },
   listItemTextPrimary: {
     fontWeight: "bold",
-  },
-  inputText: {
-    width: "80%",
-    margin: ({ edit }) => !edit && "0.4rem 3.7rem",
-    fontSize: "unset",
-    fontWeight: ({ edit }) => edit && "bold",
-  },
-  inputElement: {
-    padding: 0,
-    margin: 0,
   },
   deleteSectionButton: {
     color: theme.palette.error.main,

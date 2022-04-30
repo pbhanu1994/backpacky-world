@@ -1,20 +1,25 @@
 import React, { useState } from "react";
 import { InputBase, IconButton } from "@mui/material";
 import { Check as ConfirmIcon, Close as CloseIcon } from "@mui/icons-material";
-import { packStyles } from "./packStyles";
+import { editSectionTextStyles } from "./editSectionTextStyles";
 
-export const PackInput = ({
+export const EditSectionText = ({
   inputText,
   sectionId,
   placeholderText,
   onAddItem,
   edit,
   onHandleEdit,
+  styles,
 }) => {
   const [text, setText] = useState(inputText || "");
-  const classes = packStyles({ edit });
+  const classes = editSectionTextStyles({
+    edit,
+    width: styles.width,
+    margin: styles.margin,
+  });
 
-  const handleSubmit = (e) => {
+  const handleSubmitTitle = (e) => {
     e.preventDefault();
     onAddItem(sectionId, text);
     edit && onHandleEdit(false);
@@ -22,7 +27,7 @@ export const PackInput = ({
   };
 
   return (
-    <form style={{ display: "flex" }} onSubmit={handleSubmit}>
+    <form style={{ display: "flex" }} onSubmit={handleSubmitTitle}>
       <InputBase
         autoFocus={edit}
         classes={{
@@ -37,11 +42,12 @@ export const PackInput = ({
       {edit && (
         <>
           <IconButton
+            type="submit"
             size="small"
             aria-label="Confirm Section"
             className={classes.confirmButton}
             onClick={(e) => {
-              handleSubmit(e), onHandleEdit(false);
+              handleSubmitTitle(e), onHandleEdit(false);
             }}
           >
             <ConfirmIcon color="success" />

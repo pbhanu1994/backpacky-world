@@ -11,7 +11,7 @@ import Page from "../../../atoms/Page";
 import DashboardLayout from "../../../layouts/dashboard";
 import useSettings from "../../../../hooks/useSettings";
 import { PackOption } from "./PackOption";
-import { PackInput } from "./PackInput";
+import { EditSectionText } from "/src/components/atoms/EditSectionText";
 import { AddPackSection } from "./AddPackSection";
 import { PAGE_PATH } from "../../../../constants/navigationConstants";
 import HeaderBreadcrumbs from "../../../atoms/HeaderBreadCrumbs";
@@ -162,7 +162,7 @@ export default function Pack() {
                     )}
                     {showSectionUpdateInput &&
                       editSectionId === packItem.sectionId && (
-                        <PackInput
+                        <EditSectionText
                           sectionId={packItem.sectionId}
                           inputText={packItem.sectionTitle}
                           onAddItem={handleUpdateSectionTitle}
@@ -170,6 +170,7 @@ export default function Pack() {
                           onHandleEdit={(edit) =>
                             setShowSectionUpdateInput(edit)
                           }
+                          styles={{ width: "80%" }}
                         />
                       )}
                     {/* TODO: Check with the designer if hiding the completed items on hover is a good idea */}
@@ -211,10 +212,11 @@ export default function Pack() {
                       </h3>
                     )}
                   </List>
-                  <PackInput
+                  <EditSectionText
                     sectionId={packItem.sectionId}
                     placeholderText={packItem.placeholderText}
                     onAddItem={handleAddItem}
+                    styles={{ width: "80%", margin: "0.4rem 3.7rem" }}
                   />
                 </Paper>
               ))}

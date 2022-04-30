@@ -14,7 +14,7 @@ import {
   Delete as DeleteIcon,
   DeleteOutline as DeleteOutlineIcon,
 } from "@mui/icons-material";
-import { PackInput } from "./PackInput";
+import { EditSectionText } from "/src/components/atoms/EditSectionText";
 import { packStyles } from "./packStyles";
 
 export const PackOption = ({
@@ -79,7 +79,7 @@ export const PackOption = ({
             />
           )}
           {showPackItemInput && packItemId === packItem.id && (
-            <PackInput
+            <EditSectionText
               sectionId={sectionId}
               inputText={packItem.name}
               onAddItem={(sectionId, packItemText) =>
@@ -87,6 +87,7 @@ export const PackOption = ({
               }
               edit={showPackItemInput}
               onHandleEdit={(edit) => setShowPackItemInput(edit)}
+              styles={{ width: "80%" }}
             />
           )}
         </Grid>
