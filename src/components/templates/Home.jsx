@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { makeStyles } from "@mui/styles";
 import { Container, Typography } from "@mui/material";
 import DashboardLayout from "../layouts/dashboard";
 import useSettings from "../../hooks/useSettings";
 import Page from "../atoms/Page";
 
 import getPackItems from "../../store/actions/journal/pack/getPackItems";
+import getBudgetItems from "../../store/actions/travelBudget/getTravelBudgetItems";
 
 const Home = ({ userId }) => {
   const router = useRouter();
@@ -17,6 +17,8 @@ const Home = ({ userId }) => {
   useEffect(() => {
     // Journal - Pack items
     dispatch(getPackItems());
+    // Travel Budget Items
+    dispatch(getBudgetItems());
   }, []);
 
   return (

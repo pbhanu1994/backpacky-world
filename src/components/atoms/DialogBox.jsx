@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
@@ -45,7 +45,6 @@ const DialogBox = () => {
         {dialog.type !== "plain" && (
           <Button
             onClick={handleConfirm}
-            // color={theme.palette[dialog.color].main}
             style={{
               background: theme.palette[dialog.color].main,
               color: "#fff",

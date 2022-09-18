@@ -1,6 +1,6 @@
 import { SET_AND_SHOW_PLAIN_DIALOG } from "../../../actionTypes/config";
 
-const setAndShowDeleteDialog = (title, body) => (dispatch, getState) => {
+const setAndShowPlainDialog = (title, body) => (dispatch) => {
   const dialog = {
     open: true,
     type: "plain",
@@ -18,4 +18,4 @@ const setAndShowDeleteDialog = (title, body) => (dispatch, getState) => {
   });
 };
 
-export default setAndShowDeleteDialog;
+export default setAndShowPlainDialog;

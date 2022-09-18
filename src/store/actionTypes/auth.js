@@ -1,3 +1,4 @@
 export const SIGNUP_USER = "SIGNUP_USER";
 export const SIGNIN_USER = "SIGNIN_USER";
 export const SIGNIN_WITH_SOCIAL_ACCOUNT = "SIGNIN_WITH_SOCIAL_ACCOUNT";
+// export const SIGN_OUT = "SIGN_OUT";

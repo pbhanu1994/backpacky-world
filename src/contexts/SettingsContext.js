@@ -1,11 +1,7 @@
 import PropTypes from "prop-types";
 import { createContext } from "react";
-// hooks
 import useLocalStorage from "../hooks/useLocalStorage";
-// theme
 import palette from "../theme/palette";
-
-// ----------------------------------------------------------------------
 
 const PRIMARY_COLOR = [
   // DEFAULT
