@@ -33,7 +33,8 @@ export default memo(function DestinationSection({
     const total =
       destinationDetails.sectionItems?.length > 0 &&
       destinationDetails.sectionItems.reduce(
-        (prevObject, currentObject) => prevObject + (currentObject.actual || 0),
+        (prevObject, currentObject) =>
+          prevObject + (Number(currentObject.actual) || 0),
         0
       );
     return total;
@@ -264,8 +265,8 @@ export default memo(function DestinationSection({
                 uid,
                 name: "",
                 sectionId: destinationDetails.sectionId,
-                actual: "",
-                budget: "",
+                actual: 0,
+                budget: 0,
               });
               setDestinationDetails({
                 ...destinationDetails,

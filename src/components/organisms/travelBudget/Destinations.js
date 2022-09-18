@@ -27,7 +27,8 @@ export default memo(function Destinations({
 
   const destinationsTotal = () => {
     return destinations.reduce(
-      (prevObject, currentObject) => prevObject + (currentObject.total || 0),
+      (prevObject, currentObject) =>
+        prevObject + (Number(currentObject.total) || 0),
       0
     );
   };
@@ -85,8 +86,8 @@ export default memo(function Destinations({
                   uid,
                   sectionId,
                   name: "",
-                  actual: "",
-                  budget: "",
+                  actual: 0,
+                  budget: 0,
                 },
               ],
             });

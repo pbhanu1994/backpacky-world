@@ -88,88 +88,88 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         uid,
         sectionId: beforeILeaveRef.id,
         name: "Plane Ticket",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       beforeILeaveSectionItemsRef.doc(travelInsuranceUniqueId).set({
         id: travelInsuranceUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
         name: "Travel Insurance",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       beforeILeaveSectionItemsRef.doc(medsVaccinationUniqueId).set({
         id: medsVaccinationUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
         name: "Meds/Vaccination",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       beforeILeaveSectionItemsRef.doc(visaUniqueId).set({
         id: visaUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
         name: "Visa",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       beforeILeaveSectionItemsRef.doc(suitCaseBackpackUniqueId).set({
         id: suitCaseBackpackUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
         name: "Suitcase/Backpack",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       beforeILeaveSectionItemsRef.doc(travelGuideUniqueId).set({
         id: travelGuideUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
         name: "Travel Guide",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       beforeILeaveSectionItemsRef.doc(cameraUniqueId).set({
         id: cameraUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
         name: "Camera",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       beforeILeaveSectionItemsRef.doc(chothingShoesUniqueId).set({
         id: chothingShoesUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
         name: "Clothing/Shoes",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       beforeILeaveSectionItemsRef.doc(passportUniqueId).set({
         id: passportUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
         name: "Passport",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       beforeILeaveSectionItemsRef.doc(phoneChargerUniqueId).set({
         id: phoneChargerUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
         name: "Phone",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       beforeILeaveSectionItemsRef.doc(toiletriesUniqueId).set({
         id: toiletriesUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
         name: "Toiletries",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
 
       //   Destinations
@@ -203,40 +203,40 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         uid,
         sectionId: destinationOneRef.id,
         name: "Meals",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       destinationOneSectionItemsRef.doc(transportUniqueId).set({
         id: transportUniqueId,
         uid,
         sectionId: destinationOneRef.id,
         name: "Transport",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       destinationOneSectionItemsRef.doc(accommodationUniqueId).set({
         id: accommodationUniqueId,
         uid,
         sectionId: destinationOneRef.id,
         name: "Accommodation",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       destinationOneSectionItemsRef.doc(activitiesGoingOutUniqueId).set({
         id: activitiesGoingOutUniqueId,
         uid,
         sectionId: destinationOneRef.id,
         name: "Activities/Going Out",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
       destinationOneSectionItemsRef.doc(purchasesUniqueId).set({
         id: purchasesUniqueId,
         uid,
         sectionId: destinationOneRef.id,
         name: "Purchases",
-        budget: "",
-        actual: "",
+        budget: 0,
+        actual: 0,
       });
     }
   } catch (err) {

@@ -30,7 +30,8 @@ export default memo(function BeforeILeave({
 
   const beforeILeaveTotal = () => {
     return beforeILeaveOptions.reduce(
-      (prevObject, currentObject) => prevObject + (currentObject.actual || 0),
+      (prevObject, currentObject) =>
+        prevObject + (Number(currentObject.actual) || 0),
       0
     );
   };
@@ -173,8 +174,8 @@ export default memo(function BeforeILeave({
               id: uuidv4(),
               sectionId,
               name: "",
-              budget: "",
-              actual: "",
+              budget: 0,
+              actual: 0,
             });
             setBeforeILeaveOptions(beforeILeaveOptionsArr);
             onHandleSaveBtnChange();
