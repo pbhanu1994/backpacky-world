@@ -18,7 +18,8 @@ export default memo(function TravelBudgetBudgetData({
         bgcolor: (theme) =>
           alpha(
             `${
-              beforeILeaveTotal + destinationsTotal <= savingsTotal
+              Number(beforeILeaveTotal) + Number(destinationsTotal) <=
+              Number(savingsTotal)
                 ? theme.palette.primary.main
                 : theme.palette.error.main
             }`,
@@ -32,7 +33,7 @@ export default memo(function TravelBudgetBudgetData({
         name="income"
         label="Income / Savings / Other"
         placeholder="0.00"
-        value={fDecimalNumber(savingsTotal)}
+        value={fDecimalNumber(Number(savingsTotal))}
         InputProps={{
           startAdornment: <InputAdornment position="start">$</InputAdornment>,
         }}
@@ -43,7 +44,7 @@ export default memo(function TravelBudgetBudgetData({
         name="savings"
         label="Before I Leave"
         placeholder="0.00"
-        value={fDecimalNumber(beforeILeaveTotal)}
+        value={fDecimalNumber(Number(beforeILeaveTotal))}
         InputProps={{
           startAdornment: <InputAdornment position="start">$</InputAdornment>,
         }}
@@ -54,7 +55,7 @@ export default memo(function TravelBudgetBudgetData({
         name="destinations"
         label="Destinations"
         placeholder="0.00"
-        value={fDecimalNumber(destinationsTotal)}
+        value={fDecimalNumber(Number(destinationsTotal))}
         InputProps={{
           startAdornment: <InputAdornment position="start">$</InputAdornment>,
         }}
@@ -64,7 +65,9 @@ export default memo(function TravelBudgetBudgetData({
         type="text"
         name="total"
         label="Total (Before I Leave + Destinations)"
-        value={fDecimalNumber(beforeILeaveTotal + destinationsTotal)}
+        value={fDecimalNumber(
+          Number(beforeILeaveTotal) + Number(destinationsTotal)
+        )}
         InputProps={{
           startAdornment: <InputAdornment position="start">$</InputAdornment>,
         }}
