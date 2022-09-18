@@ -46,19 +46,19 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         id: "personalIncomeIncome",
         uid,
         sectionId: personalIncomeRef.id,
-        income: "",
+        income: 0,
       });
       personalIncomeSectionRef.doc("savings").set({
         id: "personalIncomeSavings",
         uid,
         sectionId: personalIncomeRef.id,
-        savings: "",
+        savings: 0,
       });
       personalIncomeSectionRef.doc("other").set({
         id: "personalIncomeOther",
         uid,
         sectionId: personalIncomeRef.id,
-        other: "",
+        other: 0,
       });
 
       // Before I Leave
