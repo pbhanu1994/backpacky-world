@@ -70,7 +70,7 @@ export default memo(function PersonalIncomeSavings({
         name="income"
         label="Income"
         placeholder="0.00"
-        value={personalIncome}
+        value={personalIncome === 0 ? "" : personalIncome}
         onChange={(event) => {
           setPersonalIncome(
             event.target.value ? Number(event.target.value) : ""
@@ -86,7 +86,7 @@ export default memo(function PersonalIncomeSavings({
         name="savings"
         label="Savings"
         placeholder="0.00"
-        value={personalSavings}
+        value={personalSavings === 0 ? "" : personalSavings}
         onChange={(event) => {
           setPersonalSavings(
             event.target.value ? Number(event.target.value) : ""
@@ -102,7 +102,7 @@ export default memo(function PersonalIncomeSavings({
         name="other"
         label="Other"
         placeholder="0.00"
-        value={personalOtherSavings}
+        value={personalOtherSavings === 0 ? "" : personalOtherSavings}
         onChange={(event) => {
           setPersonalOtherSavings(
             event.target.value ? Number(event.target.value) : ""

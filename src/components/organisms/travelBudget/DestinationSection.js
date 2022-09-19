@@ -157,7 +157,7 @@ export default memo(function DestinationSection({
                     name="budget"
                     label="Budget"
                     placeholder="0.00"
-                    value={item.budget}
+                    value={item.budget === 0 ? "" : item.budget}
                     onChange={(event) => {
                       const updateDestinationOptions = map(
                         destinationDetails.sectionItems,
@@ -191,7 +191,7 @@ export default memo(function DestinationSection({
                     name="actual"
                     label="Actual"
                     placeholder="0.00"
-                    value={item.actual}
+                    value={item.actual === 0 ? "" : item.actual}
                     onChange={(event) => {
                       const updateDestinationOptions = map(
                         destinationDetails.sectionItems,

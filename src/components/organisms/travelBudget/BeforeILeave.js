@@ -80,7 +80,7 @@ export default memo(function BeforeILeave({
                 name="budget"
                 label="Budget"
                 placeholder="0.00"
-                value={item.budget}
+                value={item.budget === 0 ? "" : item.budget}
                 onChange={(event) => {
                   const updateBeforeILeaveOptions = map(
                     beforeILeaveOptions,
@@ -111,7 +111,7 @@ export default memo(function BeforeILeave({
                 name="actual"
                 label="Actual"
                 placeholder="0.00"
-                value={item.actual}
+                value={item.actual === 0 ? "" : item.actual}
                 onChange={(event) => {
                   const updateBeforeILeaveOptions = map(
                     beforeILeaveOptions,
