@@ -13,8 +13,9 @@ import createEmotionCache from "../src/handlers/createEmotionCache";
 import { AuthProvider } from "../src/handlers/auth";
 import ThemePrimaryColor from "../src/components/ThemePrimaryColor";
 // material
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from "@mui/x-date-pickers";
+
 // contexts
 import { SettingsProvider } from "../src/contexts/SettingsContext";
 import { CollapseDrawerProvider } from "../src/contexts/CollapseDrawerContext";

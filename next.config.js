@@ -10,9 +10,7 @@ const withTM = require("next-transpile-modules")([
 
 module.exports = withTM({
   trailingSlash: true,
-  future: {
-    webpack5: true,
-  },
+  webpack: true,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
