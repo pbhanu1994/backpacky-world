@@ -12,7 +12,7 @@ export default function Landing() {
         color="textPrimary"
         gutterBottom
       >
-        Backpacky World
+        The Backpacky World
       </Typography>
       <h3>Have a Safe Travel!</h3>
       <Link href="/signin">Sign In</Link>
