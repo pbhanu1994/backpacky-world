@@ -1,5 +1,13 @@
 import { db } from "../../../handlers/firebaseClient";
 import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import {
   START_LOADING,
   HAS_ERROR,
   UPDATE_EVENT,
@@ -22,22 +30,23 @@ const updateEvent =
         },
       });
 
-      const events = db.collection("calendar").doc(uid).collection("events");
-
-      const event = await events
-        .where("uid", "==", uid)
-        .where("id", "==", eventId)
-        .get();
+      const events = collection(db, "calendar", uid, "events");
+      const eventQuery = query(
+        events,
+        where("uid", "==", uid),
+        where("id", "==", eventId)
+      );
+      const event = await getDocs(eventQuery);
 
       const eventData = event.docs[0].data();
       const updateEvent = {
         ...eventData,
         ...updateEventData,
       };
-      events.doc(eventId).update(updateEvent);
+      updateDoc(doc(events, eventId), updateEvent);
     } catch (err) {
       console.log("error", err);
-      const errorMessage = `Whoops! Could not update the event ${event}. Please try again.`;
+      const errorMessage = `Whoops! Could not update the event. Please try again.`;
       dispatch({ type: HAS_ERROR });
       dispatch(setAndShowErrorToast(errorMessage));
       dispatch({

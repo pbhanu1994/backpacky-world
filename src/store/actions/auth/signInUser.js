@@ -1,10 +1,12 @@
 import { SIGNIN_USER } from "../../actionTypes/auth";
 import { auth } from "../../../handlers/firebaseClient";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import setAndShowErrorToast from "../../actions/config/toast/setAndShowErrorToast";
 
 const signInUser = (userEmail, userPassword) => async (dispatch, getState) => {
   try {
-    const { user } = await auth.signInWithEmailAndPassword(
+    const { user } = await signInWithEmailAndPassword(
+      auth,
       userEmail,
       userPassword
     );

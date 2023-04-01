@@ -13,7 +13,7 @@ import createEmotionCache from "../src/handlers/createEmotionCache";
 import { AuthProvider } from "../src/handlers/auth";
 import ThemePrimaryColor from "../src/components/ThemePrimaryColor";
 // material
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 
 // contexts
@@ -21,7 +21,7 @@ import { SettingsProvider } from "../src/contexts/SettingsContext";
 import { CollapseDrawerProvider } from "../src/contexts/CollapseDrawerContext";
 import "../styles/globals.css";
 // Scrollbar
-import "simplebar/dist/simplebar.min.css";
+import "simplebar-react/dist/simplebar.min.css";
 
 // Importing the component dynamic (Chunk) with no SSR (Only Client Side)
 const Toast = dynamic(() => import("../src/components/atoms/Toast"), {

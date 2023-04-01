@@ -1,4 +1,5 @@
 import { db } from "../../../../handlers/firebaseClient";
+import { doc, updateDoc } from "firebase/firestore";
 import { UPDATE_PACK_SECTION } from "../../../actionTypes/journal";
 import setAndShowErrorToast from "../../config/toast/setAndShowErrorToast";
 
@@ -15,13 +16,9 @@ const updatePackSection = (sectionId, sectionTitle) => (dispatch, getState) => {
       },
     });
 
-    db.collection("journal")
-      .doc(uid)
-      .collection("pack")
-      .doc(uid)
-      .collection("packSections")
-      .doc(sectionId)
-      .update({ sectionTitle });
+    updateDoc(doc(db, "journal", uid, "pack", uid, "packSections", sectionId), {
+      sectionTitle,
+    });
   } catch (err) {
     console.log("error", err);
     const errorMessage = `Whoops! Could not update the section. Please try again.`;

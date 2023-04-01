@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { db } from "../../../../handlers/firebaseClient";
+import { collectionGroup, query, where, getDocs } from "firebase/firestore";
 import deletePackSection from "./deletePackSection";
 import setAndShowErrorToast from "../../config/toast/setAndShowErrorToast";
 import { GET_PACK_ITEMS } from "../../../actionTypes/journal";
@@ -9,10 +10,12 @@ const getPackItems = () => async (dispatch, getState) => {
   const packSectionItemsResultArr = [];
 
   try {
-    const packSectionItems = await db
-      .collectionGroup("packSectionItems")
-      .where("uid", "==", uid)
-      .get();
+    const packSectionItemsRef = collectionGroup(db, "packSectionItems");
+    const packSectionItemsQuery = query(
+      packSectionItemsRef,
+      where("uid", "==", uid)
+    );
+    const packSectionItems = await getDocs(packSectionItemsQuery);
 
     packSectionItems.docs.map((doc) =>
       packSectionItemsResultArr.push(doc.data())
@@ -30,10 +33,9 @@ const getPackItems = () => async (dispatch, getState) => {
         })
     );
 
-    const packSections = await db
-      .collectionGroup("packSections")
-      .where("uid", "==", uid)
-      .get();
+    const packSectionsRef = collectionGroup(db, "packSections");
+    const packSectionsQuery = query(packSectionsRef, where("uid", "==", uid));
+    const packSections = await getDocs(packSectionsQuery);
 
     packSections.docs.map(
       (doc) =>

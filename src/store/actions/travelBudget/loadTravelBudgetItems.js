@@ -1,5 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../../handlers/firebaseClient";
+import {
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+  query,
+  where,
+} from "firebase/firestore";
 import setAndShowErrorToast from "../config/toast/setAndShowErrorToast";
 
 // TODO: Check with experienced dev (who knows firebase, firestore) if this is a good approach to load the data
@@ -7,54 +15,55 @@ import setAndShowErrorToast from "../config/toast/setAndShowErrorToast";
 const loadTravelBudgetItems = () => async (dispatch, getState) => {
   const uid = getState().auth.user.uid;
   try {
-    const travelBudget = await db
-      .collection("travelBudget")
-      .where("uid", "==", uid)
-      .get();
+    const travelRef = collection(db, "travelBudget");
+    const travelQuery = query(travelRef, where("uid", "==", uid));
+    const travelBudget = await getDocs(travelQuery);
     const travelBudgetDocsLength = travelBudget.docs.length;
 
     if (travelBudgetDocsLength === 0) {
-      const travelBudgetRef = db.collection("travelBudget").doc(uid);
-      travelBudgetRef.set({
+      const travelBudgetRef = doc(db, "travelBudget", uid);
+      setDoc(travelBudgetRef, {
         uid,
         createdAt: new Date().toISOString(),
         name: "Travel Budget",
       });
-
-      const travelBudgetSectionsRef = travelBudgetRef.collection(
+      const travelBudgetSectionsRef = collection(
+        travelBudgetRef,
         "travelBudgetSections"
       );
 
       //   Adding the Travel Budget Sample Data
       //   Personal Income
-      const personalIncomeRef = travelBudgetSectionsRef.doc("personalIncome");
-      personalIncomeRef.set({
+      const personalIncomeRef = doc(travelBudgetSectionsRef, "personalIncome");
+      setDoc(personalIncomeRef, {
         uid,
         sectionId: personalIncomeRef.id,
         sectionTitle: "Personal Income",
       });
 
-      const personalIncomeSectionRef =
-        personalIncomeRef.collection("travelBudgetItems");
-      personalIncomeSectionRef.doc("date").set({
+      const personalIncomeSectionRef = collection(
+        personalIncomeRef,
+        "travelBudgetItems"
+      );
+      setDoc(doc(personalIncomeSectionRef, "date"), {
         id: "personalIncomeDate",
         uid,
         sectionId: personalIncomeRef.id,
         date: new Date().toISOString(),
       });
-      personalIncomeSectionRef.doc("income").set({
+      setDoc(doc(personalIncomeSectionRef, "income"), {
         id: "personalIncomeIncome",
         uid,
         sectionId: personalIncomeRef.id,
         income: 0,
       });
-      personalIncomeSectionRef.doc("savings").set({
+      setDoc(doc(personalIncomeSectionRef, "savings"), {
         id: "personalIncomeSavings",
         uid,
         sectionId: personalIncomeRef.id,
         savings: 0,
       });
-      personalIncomeSectionRef.doc("other").set({
+      setDoc(doc(personalIncomeSectionRef, "other"), {
         id: "personalIncomeOther",
         uid,
         sectionId: personalIncomeRef.id,
@@ -62,8 +71,8 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
       });
 
       // Before I Leave
-      const beforeILeaveRef = travelBudgetSectionsRef.doc("beforeILeave");
-      beforeILeaveRef.set({
+      const beforeILeaveRef = doc(travelBudgetSectionsRef, "beforeILeave");
+      setDoc(beforeILeaveRef, {
         uid,
         sectionId: beforeILeaveRef.id,
         sectionTitle: "Before I Leave",
@@ -81,9 +90,11 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
       const phoneChargerUniqueId = uuidv4();
       const toiletriesUniqueId = uuidv4();
 
-      const beforeILeaveSectionItemsRef =
-        beforeILeaveRef.collection("travelBudgetItems");
-      beforeILeaveSectionItemsRef.doc(planeTicketUniqueId).set({
+      const beforeILeaveSectionItemsRef = collection(
+        beforeILeaveRef,
+        "travelBudgetItems"
+      );
+      setDoc(doc(beforeILeaveSectionItemsRef, planeTicketUniqueId), {
         id: planeTicketUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
@@ -91,7 +102,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      beforeILeaveSectionItemsRef.doc(travelInsuranceUniqueId).set({
+      setDoc(doc(beforeILeaveSectionItemsRef, travelInsuranceUniqueId), {
         id: travelInsuranceUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
@@ -99,7 +110,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      beforeILeaveSectionItemsRef.doc(medsVaccinationUniqueId).set({
+      setDoc(doc(beforeILeaveSectionItemsRef, medsVaccinationUniqueId), {
         id: medsVaccinationUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
@@ -107,7 +118,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      beforeILeaveSectionItemsRef.doc(visaUniqueId).set({
+      setDoc(doc(beforeILeaveSectionItemsRef, visaUniqueId), {
         id: visaUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
@@ -115,7 +126,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      beforeILeaveSectionItemsRef.doc(suitCaseBackpackUniqueId).set({
+      setDoc(doc(beforeILeaveSectionItemsRef, suitCaseBackpackUniqueId), {
         id: suitCaseBackpackUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
@@ -123,7 +134,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      beforeILeaveSectionItemsRef.doc(travelGuideUniqueId).set({
+      setDoc(doc(beforeILeaveSectionItemsRef, travelGuideUniqueId), {
         id: travelGuideUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
@@ -131,7 +142,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      beforeILeaveSectionItemsRef.doc(cameraUniqueId).set({
+      setDoc(doc(beforeILeaveSectionItemsRef, cameraUniqueId), {
         id: cameraUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
@@ -139,7 +150,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      beforeILeaveSectionItemsRef.doc(chothingShoesUniqueId).set({
+      setDoc(doc(beforeILeaveSectionItemsRef, chothingShoesUniqueId), {
         id: chothingShoesUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
@@ -147,7 +158,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      beforeILeaveSectionItemsRef.doc(passportUniqueId).set({
+      setDoc(doc(beforeILeaveSectionItemsRef, passportUniqueId), {
         id: passportUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
@@ -155,7 +166,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      beforeILeaveSectionItemsRef.doc(phoneChargerUniqueId).set({
+      setDoc(doc(beforeILeaveSectionItemsRef, phoneChargerUniqueId), {
         id: phoneChargerUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
@@ -163,7 +174,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      beforeILeaveSectionItemsRef.doc(toiletriesUniqueId).set({
+      setDoc(doc(beforeILeaveSectionItemsRef, toiletriesUniqueId), {
         id: toiletriesUniqueId,
         uid,
         sectionId: beforeILeaveRef.id,
@@ -173,18 +184,19 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
       });
 
       //   Destinations
-      const destinationsRef = travelBudgetSectionsRef.doc("destinations");
-      destinationsRef.set({
+      const destinationsRef = doc(travelBudgetSectionsRef, "destinations");
+      setDoc(destinationsRef, {
         uid,
         sectionId: destinationsRef.id,
         sectionTitle: "Destinations",
       });
 
-      const destinationSectionsRef = destinationsRef.collection(
+      const destinationSectionsRef = collection(
+        destinationsRef,
         "destinationSections"
       );
-      const destinationOneRef = destinationSectionsRef.doc("destinationOne");
-      destinationOneRef.set({
+      const destinationOneRef = doc(destinationSectionsRef, "destinationOne");
+      setDoc(destinationOneRef, {
         uid,
         sectionId: destinationOneRef.id,
         sectionTitle: "Destination One",
@@ -196,9 +208,11 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
       const activitiesGoingOutUniqueId = uuidv4();
       const purchasesUniqueId = uuidv4();
 
-      const destinationOneSectionItemsRef =
-        destinationOneRef.collection("travelBudgetItems");
-      destinationOneSectionItemsRef.doc(mealsUniqueId).set({
+      const destinationOneSectionItemsRef = collection(
+        destinationOneRef,
+        "travelBudgetItems"
+      );
+      setDoc(doc(destinationOneSectionItemsRef, mealsUniqueId), {
         id: mealsUniqueId,
         uid,
         sectionId: destinationOneRef.id,
@@ -206,7 +220,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      destinationOneSectionItemsRef.doc(transportUniqueId).set({
+      setDoc(doc(destinationOneSectionItemsRef, transportUniqueId), {
         id: transportUniqueId,
         uid,
         sectionId: destinationOneRef.id,
@@ -214,7 +228,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      destinationOneSectionItemsRef.doc(accommodationUniqueId).set({
+      setDoc(doc(destinationOneSectionItemsRef, accommodationUniqueId), {
         id: accommodationUniqueId,
         uid,
         sectionId: destinationOneRef.id,
@@ -222,7 +236,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      destinationOneSectionItemsRef.doc(activitiesGoingOutUniqueId).set({
+      setDoc(doc(destinationOneSectionItemsRef, activitiesGoingOutUniqueId), {
         id: activitiesGoingOutUniqueId,
         uid,
         sectionId: destinationOneRef.id,
@@ -230,7 +244,7 @@ const loadTravelBudgetItems = () => async (dispatch, getState) => {
         budget: 0,
         actual: 0,
       });
-      destinationOneSectionItemsRef.doc(purchasesUniqueId).set({
+      setDoc(doc(destinationOneSectionItemsRef, purchasesUniqueId), {
         id: purchasesUniqueId,
         uid,
         sectionId: destinationOneRef.id,

@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../../../handlers/firebaseClient";
+import { doc, setDoc } from "firebase/firestore";
 import { GET_PACK_ITEMS, ADD_PACK_SECTION } from "../../../actionTypes/journal";
 import setAndShowErrorToast from "../../config/toast/setAndShowErrorToast";
 
@@ -31,16 +32,20 @@ const addPackSection = (position) => (dispatch, getState) => {
       },
     });
 
-    const sectionRef = db
-      .collection("journal")
-      .doc(uid)
-      .collection("pack")
-      .doc(uid)
-      .collection("packSections")
-      .doc(addSection.sectionId);
+    const sectionRef = doc(
+      db,
+      "journal",
+      uid,
+      "pack",
+      uid,
+      "packSections",
+      addSection.sectionId
+    );
 
-    sectionRef.set(addSection);
-    sectionRef.collection("packSectionItems").doc(addItem.id).set(addItem);
+    const sectionItemRef = doc(sectionRef, "packSectionItems", addItem.id);
+
+    setDoc(sectionRef, addSection);
+    setDoc(sectionItemRef, addItem);
   } catch (err) {
     console.log("error", err);
     const errorMessage = `Whoops! Could not add the Section. Please try again.`;

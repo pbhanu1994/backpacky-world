@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { db } from "../../../handlers/firebaseClient";
+import { collectionGroup, getDocs, query, where } from "firebase/firestore";
 import { GET_BUDGET_ITEMS } from "../../actionTypes/travelBudget";
 import setAndShowErrorToast from "../config/toast/setAndShowErrorToast";
 
@@ -8,10 +9,12 @@ const getBudgetItems = () => async (dispatch, getState) => {
   const budgetItemsResultArr = [];
 
   try {
-    const travelBudgetItems = await db
-      .collectionGroup("travelBudgetItems")
-      .where("uid", "==", uid)
-      .get();
+    const travelBudgetItemsRef = collectionGroup(db, "travelBudgetItems");
+    const travelBudgetItemsQuery = query(
+      travelBudgetItemsRef,
+      where("uid", "==", uid)
+    );
+    const travelBudgetItems = await getDocs(travelBudgetItemsQuery);
 
     travelBudgetItems.docs.map((doc) => budgetItemsResultArr.push(doc.data()));
 
@@ -28,10 +31,12 @@ const getBudgetItems = () => async (dispatch, getState) => {
       )
     );
 
-    const destinationSections = await db
-      .collectionGroup("destinationSections")
-      .where("uid", "==", uid)
-      .get();
+    const destinationSectionsRef = collectionGroup(db, "destinationSections");
+    const destinationSectionsQuery = query(
+      destinationSectionsRef,
+      where("uid", "==", uid)
+    );
+    const destinationSections = await getDocs(destinationSectionsQuery);
 
     destinationSections.docs.map(
       (doc) =>

@@ -1,36 +1,41 @@
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../../../handlers/firebaseClient";
+import {
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+  query,
+  where,
+} from "firebase/firestore";
 import setAndShowErrorToast from "../../config/toast/setAndShowErrorToast";
 
 // TODO: Check with experienced dev (who knows firebase, firestore) if this is a good approach to load the data
 const loadPackItems = () => async (dispatch, getState) => {
   const uid = getState().auth.user.uid;
   try {
-    const pack = await db
-      .collection("journal")
-      .doc(uid)
-      .collection("pack")
-      .where("uid", "==", uid)
-      .get();
+    const packRef = collection(db, "journal", uid, "pack");
+    const packQuery = query(packRef, where("uid", "==", uid));
+    const pack = await getDocs(packQuery);
     const packLength = pack.docs.length;
 
     if (packLength === 0) {
-      const journalRef = db.collection("journal").doc(uid);
-      journalRef.set({
+      const journalRef = doc(db, "journal", uid);
+      setDoc(journalRef, {
         uid,
         createdAt: new Date().toISOString(),
         name: "journal",
       });
 
-      const packRef = journalRef.collection("pack").doc(uid);
-      packRef.set({ uid, name: "pack" });
+      const packRef = doc(journalRef, "pack", uid);
+      setDoc(packRef, { uid, name: "pack" });
 
-      const sectionsRef = packRef.collection("packSections");
+      const sectionsRef = collection(packRef, "packSections");
 
-      //   Adding the Pack Sample Data
+      // Adding the Pack Sample Data
       // Documents
-      const documentsRef = sectionsRef.doc("documents");
-      documentsRef.set({
+      const documentsRef = doc(sectionsRef, "documents");
+      setDoc(documentsRef, {
         uid,
         sectionId: documentsRef.id,
         sectionTitle: "Documents",
@@ -43,37 +48,39 @@ const loadPackItems = () => async (dispatch, getState) => {
       const healthRecordsUniqueId = uuidv4();
       const driversLicenseUniqueId = uuidv4();
 
-      const documentSectionItemsRef =
-        documentsRef.collection("packSectionItems");
-      documentSectionItemsRef.doc(passportUniqueId).set({
+      const documentSectionItemsRef = collection(
+        documentsRef,
+        "packSectionItems"
+      );
+      setDoc(doc(documentSectionItemsRef, passportUniqueId), {
         id: passportUniqueId,
         uid,
         sectionId: documentsRef.id,
         name: "Passport",
         checked: false,
       });
-      documentSectionItemsRef.doc(flightTicketUniqueId).set({
+      setDoc(doc(documentSectionItemsRef, flightTicketUniqueId), {
         id: flightTicketUniqueId,
         uid,
         sectionId: documentsRef.id,
         name: "Flight Ticket",
         checked: false,
       });
-      documentSectionItemsRef.doc(visaUniqueId).set({
+      setDoc(doc(documentSectionItemsRef, visaUniqueId), {
         id: visaUniqueId,
         uid,
         sectionId: documentsRef.id,
         name: "Visa",
         checked: true,
       });
-      documentSectionItemsRef.doc(healthRecordsUniqueId).set({
+      setDoc(doc(documentSectionItemsRef, healthRecordsUniqueId), {
         id: healthRecordsUniqueId,
         uid,
         sectionId: documentsRef.id,
         name: "Health Records",
         checked: false,
       });
-      documentSectionItemsRef.doc(driversLicenseUniqueId).set({
+      setDoc(doc(documentSectionItemsRef, driversLicenseUniqueId), {
         id: driversLicenseUniqueId,
         uid,
         sectionId: documentsRef.id,
@@ -82,8 +89,8 @@ const loadPackItems = () => async (dispatch, getState) => {
       });
 
       // Electronics
-      const electronicsRef = sectionsRef.doc("electronics");
-      electronicsRef.set({
+      const electronicsRef = doc(sectionsRef, "electronics");
+      setDoc(electronicsRef, {
         uid,
         sectionId: electronicsRef.id,
         sectionTitle: "Electronics",
@@ -96,37 +103,39 @@ const loadPackItems = () => async (dispatch, getState) => {
       const laptopUniqueId = uuidv4();
       const selfieStickUniqueId = uuidv4();
 
-      const electronicsSectionItemsRef =
-        electronicsRef.collection("packSectionItems");
-      electronicsSectionItemsRef.doc(phoneChargerUniqueId).set({
+      const electronicsSectionItemsRef = collection(
+        electronicsRef,
+        "packSectionItems"
+      );
+      setDoc(doc(electronicsSectionItemsRef, phoneChargerUniqueId), {
         id: phoneChargerUniqueId,
         uid,
         sectionId: electronicsRef.id,
         name: "Phone + Charger",
         checked: false,
       });
-      electronicsSectionItemsRef.doc(cameraChargerUniqueId).set({
+      setDoc(doc(electronicsSectionItemsRef, cameraChargerUniqueId), {
         id: cameraChargerUniqueId,
         uid,
         sectionId: electronicsRef.id,
         name: "Camera + Charger",
         checked: false,
       });
-      electronicsSectionItemsRef.doc(headPhonesUniqueId).set({
+      setDoc(doc(electronicsSectionItemsRef, headPhonesUniqueId), {
         id: headPhonesUniqueId,
         uid,
         sectionId: electronicsRef.id,
         name: "Headphones",
         checked: true,
       });
-      electronicsSectionItemsRef.doc(laptopUniqueId).set({
+      setDoc(doc(electronicsSectionItemsRef, laptopUniqueId), {
         id: laptopUniqueId,
         uid,
         sectionId: electronicsRef.id,
         name: "Laptop",
         checked: false,
       });
-      electronicsSectionItemsRef.doc(selfieStickUniqueId).set({
+      setDoc(doc(electronicsSectionItemsRef, selfieStickUniqueId), {
         id: selfieStickUniqueId,
         uid,
         sectionId: electronicsRef.id,
@@ -135,8 +144,8 @@ const loadPackItems = () => async (dispatch, getState) => {
       });
 
       // Clothing
-      const clothingRef = sectionsRef.doc("clothing");
-      clothingRef.set({
+      const clothingRef = doc(sectionsRef, "clothing");
+      setDoc(clothingRef, {
         uid,
         sectionId: clothingRef.id,
         sectionTitle: "Clothing",
@@ -149,37 +158,39 @@ const loadPackItems = () => async (dispatch, getState) => {
       const rainJacketUniqueId = uuidv4();
       const pajamasUniqueId = uuidv4();
 
-      const clothingSectionItemsRef =
-        clothingRef.collection("packSectionItems");
-      clothingSectionItemsRef.doc(tShirtsUniqueId).set({
+      const clothingSectionItemsRef = collection(
+        clothingRef,
+        "packSectionItems"
+      );
+      setDoc(doc(clothingSectionItemsRef, tShirtsUniqueId), {
         id: tShirtsUniqueId,
         uid,
         sectionId: clothingRef.id,
         name: "T-Shirts",
         checked: false,
       });
-      clothingSectionItemsRef.doc(jeansUniqueId).set({
+      setDoc(doc(clothingSectionItemsRef, jeansUniqueId), {
         id: jeansUniqueId,
         uid,
         sectionId: clothingRef.id,
         name: "Jeans",
         checked: false,
       });
-      clothingSectionItemsRef.doc(scarfUniqueId).set({
+      setDoc(doc(clothingSectionItemsRef, scarfUniqueId), {
         id: scarfUniqueId,
         uid,
         sectionId: clothingRef.id,
         name: "Scarf",
         checked: true,
       });
-      clothingSectionItemsRef.doc(rainJacketUniqueId).set({
+      setDoc(doc(clothingSectionItemsRef, rainJacketUniqueId), {
         id: rainJacketUniqueId,
         uid,
         sectionId: clothingRef.id,
         name: "Rain Jacket",
         checked: false,
       });
-      clothingSectionItemsRef.doc(pajamasUniqueId).set({
+      setDoc(doc(clothingSectionItemsRef, pajamasUniqueId), {
         id: pajamasUniqueId,
         uid,
         sectionId: clothingRef.id,
@@ -188,8 +199,8 @@ const loadPackItems = () => async (dispatch, getState) => {
       });
 
       // Toiletries
-      const toiletriesRef = sectionsRef.doc("toiletries");
-      toiletriesRef.set({
+      const toiletriesRef = doc(sectionsRef, "toiletries");
+      setDoc(toiletriesRef, {
         uid,
         sectionId: toiletriesRef.id,
         sectionTitle: "Toiletries",
@@ -202,37 +213,39 @@ const loadPackItems = () => async (dispatch, getState) => {
       const bodyWashUniqueId = uuidv4();
       const deodrantUniqueId = uuidv4();
 
-      const toiletriesSectionItemsRef =
-        toiletriesRef.collection("packSectionItems");
-      toiletriesSectionItemsRef.doc(shampooConditionerUniqueId).set({
+      const toiletriesSectionItemsRef = collection(
+        toiletriesRef,
+        "packSectionItems"
+      );
+      setDoc(doc(toiletriesSectionItemsRef, shampooConditionerUniqueId), {
         id: shampooConditionerUniqueId,
         uid,
         sectionId: toiletriesRef.id,
         name: "Shampoo + Conditioner",
         checked: false,
       });
-      toiletriesSectionItemsRef.doc(toothPasteBrushUniqueId).set({
+      setDoc(doc(toiletriesSectionItemsRef, toothPasteBrushUniqueId), {
         id: toothPasteBrushUniqueId,
         uid,
         sectionId: toiletriesRef.id,
         name: "Toothpaste + Brush",
         checked: false,
       });
-      toiletriesSectionItemsRef.doc(sunscreenUniqueId).set({
+      setDoc(doc(toiletriesSectionItemsRef, sunscreenUniqueId), {
         id: sunscreenUniqueId,
         uid,
         sectionId: toiletriesRef.id,
         name: "Sunscreen",
         checked: true,
       });
-      toiletriesSectionItemsRef.doc(bodyWashUniqueId).set({
+      setDoc(doc(toiletriesSectionItemsRef, bodyWashUniqueId), {
         id: bodyWashUniqueId,
         uid,
         sectionId: toiletriesRef.id,
         name: "Body Wash",
         checked: false,
       });
-      toiletriesSectionItemsRef.doc(deodrantUniqueId).set({
+      setDoc(doc(toiletriesSectionItemsRef, deodrantUniqueId), {
         id: deodrantUniqueId,
         uid,
         sectionId: toiletriesRef.id,
@@ -241,8 +254,8 @@ const loadPackItems = () => async (dispatch, getState) => {
       });
 
       // Shoes
-      const shoesRef = sectionsRef.doc("shoes");
-      shoesRef.set({
+      const shoesRef = doc(sectionsRef, "shoes");
+      setDoc(shoesRef, {
         uid,
         sectionId: shoesRef.id,
         sectionTitle: "Shoes",
@@ -253,22 +266,22 @@ const loadPackItems = () => async (dispatch, getState) => {
       const tennisShoesUniqueId = uuidv4();
       const ankleBootsUniqueId = uuidv4();
 
-      const shoesSectionItemsRef = shoesRef.collection("packSectionItems");
-      shoesSectionItemsRef.doc(sandalsUniqueId).set({
+      const shoesSectionItemsRef = collection(shoesRef, "packSectionItems");
+      setDoc(doc(shoesSectionItemsRef, sandalsUniqueId), {
         id: sandalsUniqueId,
         uid,
         sectionId: shoesRef.id,
         name: "Sandals",
         checked: false,
       });
-      shoesSectionItemsRef.doc(tennisShoesUniqueId).set({
+      setDoc(doc(shoesSectionItemsRef, tennisShoesUniqueId), {
         id: tennisShoesUniqueId,
         uid,
         sectionId: shoesRef.id,
         name: "Tennis Shoes",
         checked: false,
       });
-      shoesSectionItemsRef.doc(ankleBootsUniqueId).set({
+      setDoc(doc(shoesSectionItemsRef, ankleBootsUniqueId), {
         id: ankleBootsUniqueId,
         uid,
         sectionId: shoesRef.id,

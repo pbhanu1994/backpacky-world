@@ -1,4 +1,5 @@
 import { db } from "../../../handlers/firebaseClient";
+import { doc, deleteDoc } from "firebase/firestore";
 import {
   START_LOADING,
   HAS_ERROR,
@@ -20,11 +21,7 @@ const deleteEvent = (eventId) => (dispatch, getState) => {
       },
     });
 
-    db.collection("calendar")
-      .doc(uid)
-      .collection("events")
-      .doc(eventId)
-      .delete();
+    deleteDoc(doc(db, "calendar", uid, "events", eventId));
   } catch (err) {
     console.log("error", err);
     const errorMessage = `Whoops! Could not delete the event ${event}. Please try again.`;

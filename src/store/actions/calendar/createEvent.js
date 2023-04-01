@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../../handlers/firebaseClient";
+import { doc, setDoc } from "firebase/firestore";
 import {
   START_LOADING,
   HAS_ERROR,
@@ -27,11 +28,7 @@ const createEvent = (eventData) => (dispatch, getState) => {
       },
     });
 
-    db.collection("calendar")
-      .doc(uid)
-      .collection("events")
-      .doc(newEvent.id)
-      .set(newEvent);
+    setDoc(doc(db, "calendar", uid, "events", newEvent.id), newEvent);
   } catch (err) {
     console.log("error", err);
     const errorMessage = `Whoops! Could not create the event ${newEvent.title}. Please try again.`;

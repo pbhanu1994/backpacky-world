@@ -1,23 +1,26 @@
-import firebase from "firebase/app";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import {
+  getAuth,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  TwitterAuthProvider,
+} from "firebase/auth";
 import "firebase/auth";
 import "firebase/firestore";
 import FIREBASE_CONFIG from "../config/firebase.json";
 
 // Initialize Firebase
-if (!firebase.apps.length) {
-  firebase.initializeApp(FIREBASE_CONFIG);
-} else {
-  firebase.app(); // if already initialized, use that one
-}
+const app = initializeApp(FIREBASE_CONFIG);
 
 // firebase.analytics();
 
 // Database
-export const db = firebase.firestore();
+export const db = getFirestore(app);
 
 // Authentication
-export const auth = firebase.auth();
+export const auth = getAuth(app);
 // Social Authentication
-export const facebookProvider = new firebase.auth.FacebookAuthProvider();
-export const googleProvider = new firebase.auth.GoogleAuthProvider();
-export const twitterProvider = new firebase.auth.TwitterAuthProvider();
+export const facebookProvider = new FacebookAuthProvider();
+export const googleProvider = new GoogleAuthProvider();
+export const twitterProvider = new TwitterAuthProvider();

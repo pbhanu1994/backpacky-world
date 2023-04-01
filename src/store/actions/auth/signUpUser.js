@@ -1,5 +1,6 @@
 import { SIGNUP_USER } from "../../actionTypes/auth";
 import { auth } from "../../../handlers/firebaseClient";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import setAndShowErrorToast from "../../actions/config/toast/setAndShowErrorToast";
 import loadPackItems from "../journal/pack/loadPackItems";
 import loadTravelBudgetItems from "../travelBudget/loadTravelBudgetItems";
@@ -7,11 +8,12 @@ import loadTravelBudgetItems from "../travelBudget/loadTravelBudgetItems";
 const signUpUser =
   (userEmail, userPassword, userFirstName) => async (dispatch, getState) => {
     try {
-      const { user } = await auth.createUserWithEmailAndPassword(
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
         userEmail,
         userPassword
       );
-      await user.updateProfile({ displayName: userFirstName });
+      await updateProfile(user, { displayName: userFirstName });
       const {
         uid,
         displayName,

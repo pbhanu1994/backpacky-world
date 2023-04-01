@@ -1,4 +1,5 @@
 import { db } from "../../../../handlers/firebaseClient";
+import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
 import {
   GET_PACK_ITEMS,
   DELETE_PACK_SECTION,
@@ -15,31 +16,36 @@ const deletePackSection = (sectionId) => async (dispatch, getState) => {
       payload: { sectionId },
     });
 
-    const packSectionItemsRef = db
-      .collection("journal")
-      .doc(uid)
-      .collection("pack")
-      .doc(uid)
-      .collection("packSections")
-      .doc(sectionId)
-      .collection("packSectionItems");
+    const packSectionItemsRef = collection(
+      db,
+      "journal",
+      uid,
+      "pack",
+      uid,
+      "packSections",
+      sectionId,
+      "packSectionItems"
+    );
 
-    const packSectionRef = db
-      .collection("journal")
-      .doc(uid)
-      .collection("pack")
-      .doc(uid)
-      .collection("packSections")
-      .doc(sectionId);
+    const packSectionRef = doc(
+      db,
+      "journal",
+      uid,
+      "pack",
+      uid,
+      "packSections",
+      sectionId
+    );
 
-    const packSectionItems = await packSectionItemsRef.get();
+    const packSectionItems = await getDocs(packSectionItemsRef);
+
     // First, deleting the subcollection docs
     packSectionItems.docs.length > 0 &&
-      packSectionItems.docs.map((doc) =>
-        packSectionItemsRef.doc(doc.id).delete()
+      packSectionItems.docs.map((document) =>
+        deleteDoc(doc(packSectionItemsRef, document.id))
       );
     // Second, deleting the document itself
-    packSectionRef.delete();
+    deleteDoc(packSectionRef);
   } catch (err) {
     console.log("error", err);
     const errorMessage = `Whoops! Could not delete the Section. Please try again.`;

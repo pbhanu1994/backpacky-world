@@ -1,4 +1,12 @@
 import { db } from "../../../../handlers/firebaseClient";
+import {
+  collection,
+  query,
+  where,
+  doc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { GET_PACK_ITEMS, UPDATE_PACK_ITEM } from "../../../actionTypes/journal";
 import setAndShowErrorToast from "../../config/toast/setAndShowErrorToast";
 
@@ -18,28 +26,33 @@ const updatePackItem =
         },
       });
 
-      const packSectionItems = db
-        .collection("journal")
-        .doc(uid)
-        .collection("pack")
-        .doc(uid)
-        .collection("packSections")
-        .doc(sectionId)
-        .collection("packSectionItems");
-
-      const item = await packSectionItems
-        .where("uid", "==", uid)
-        .where("id", "==", packItem.id)
-        .get();
+      const packSectionItemsRef = collection(
+        db,
+        "journal",
+        uid,
+        "pack",
+        uid,
+        "packSections",
+        sectionId,
+        "packSectionItems"
+      );
+      const packSectionItemsQuery = query(
+        packSectionItemsRef,
+        where("uid", "==", uid),
+        where("id", "==", packItem.id)
+      );
+      const item = await getDocs(packSectionItemsQuery);
 
       const itemData = item.docs[0].data();
       toggle &&
-        packSectionItems
-          .doc(packItem.id)
-          .update({ checked: !itemData.checked });
+        updateDoc(doc(packSectionItemsRef, packItem.id), {
+          checked: !itemData.checked,
+        });
 
       editItemName &&
-        packSectionItems.doc(packItem.id).update({ name: editItemName });
+        updateDoc(doc(packSectionItemsRef, packItem.id), {
+          name: editItemName,
+        });
     } catch (err) {
       console.log("error", err);
       const errorMessage = `Whoops! Could not update the item ${packItem.name}. Please try again.`;

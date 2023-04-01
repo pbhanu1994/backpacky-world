@@ -1,4 +1,5 @@
 import { db } from "../../../handlers/firebaseClient";
+import { collectionGroup, getDocs, query, where } from "firebase/firestore";
 import setAndShowErrorToast from "../config/toast/setAndShowErrorToast";
 import {
   START_LOADING,
@@ -12,10 +13,9 @@ const getEvents = () => async (dispatch, getState) => {
 
   dispatch({ type: START_LOADING });
   try {
-    const events = await db
-      .collectionGroup("events")
-      .where("uid", "==", uid)
-      .get();
+    const eventsRef = collectionGroup(db, "events");
+    const eventsQuery = query(eventsRef, where("uid", "==", uid));
+    const events = await getDocs(eventsQuery);
     events.docs.map((event) => {
       const eventObj = {
         ...event.data(),

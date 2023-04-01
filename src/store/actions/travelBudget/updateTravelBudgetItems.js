@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { db } from "../../../handlers/firebaseClient";
+import { collection, doc, writeBatch } from "firebase/firestore";
 import { GET_BUDGET_ITEMS } from "../../actionTypes/travelBudget";
 import setAndShowErrorToast from "../config/toast/setAndShowErrorToast";
 
@@ -56,18 +57,21 @@ const updateTravelBudgetItems =
     const destinationsSectionId = "destinations";
 
     try {
-      const batch = db.batch();
-      const personalIncomeSectionRef = db
-        .collection("travelBudget")
-        .doc(uid)
-        .collection("travelBudgetSections")
-        .doc(personalIncomeSectionId)
-        .collection("travelBudgetItems");
+      const batch = writeBatch(db);
 
-      const personalIncomeDateRef = personalIncomeSectionRef.doc("date");
-      const personalIncomeIncomeRef = personalIncomeSectionRef.doc("income");
-      const personalIncomeSavingsRef = personalIncomeSectionRef.doc("savings");
-      const personalIncomeOtherRef = personalIncomeSectionRef.doc("other");
+      const personalIncomeSectionRef = collection(
+        db,
+        "travelBudget",
+        uid,
+        "travelBudgetSections",
+        personalIncomeSectionId,
+        "travelBudgetItems"
+      );
+
+      const personalIncomeDateRef = doc(personalIncomeSectionRef, "date");
+      const personalIncomeIncomeRef = doc(personalIncomeSectionRef, "income");
+      const personalIncomeSavingsRef = doc(personalIncomeSectionRef, "savings");
+      const personalIncomeOtherRef = doc(personalIncomeSectionRef, "other");
 
       batch.set(
         personalIncomeDateRef,
@@ -99,12 +103,14 @@ const updateTravelBudgetItems =
       );
 
       // Before I Leave
-      const beforeILeaveSectionRef = db
-        .collection("travelBudget")
-        .doc(uid)
-        .collection("travelBudgetSections")
-        .doc(beforeILeaveSectionId)
-        .collection("travelBudgetItems");
+      const beforeILeaveSectionRef = collection(
+        db,
+        "travelBudget",
+        uid,
+        "travelBudgetSections",
+        beforeILeaveSectionId,
+        "travelBudgetItems"
+      );
 
       // Delete the deleted beforeIleave items
       const beforeILeaveDeletedItems = _.differenceBy(
@@ -115,7 +121,8 @@ const updateTravelBudgetItems =
 
       beforeILeaveDeletedItems.length > 0 &&
         beforeILeaveDeletedItems.map((beforeILeaveItem) => {
-          const beforeILeaveDeletedDocRef = beforeILeaveSectionRef.doc(
+          const beforeILeaveDeletedDocRef = doc(
+            beforeILeaveSectionRef,
             beforeILeaveItem.id
           );
           batch.delete(beforeILeaveDeletedDocRef);
@@ -123,7 +130,8 @@ const updateTravelBudgetItems =
 
       // Set / Update the beforeILeave items
       beforeILeave.map((beforeILeaveItem) => {
-        const beforeIleaveDocRef = beforeILeaveSectionRef.doc(
+        const beforeIleaveDocRef = doc(
+          beforeILeaveSectionRef,
           beforeILeaveItem.id
         );
 
@@ -131,12 +139,14 @@ const updateTravelBudgetItems =
       });
 
       // Destinations
-      const destinationSectionsRef = db
-        .collection("travelBudget")
-        .doc(uid)
-        .collection("travelBudgetSections")
-        .doc(destinationsSectionId)
-        .collection("destinationSections");
+      const destinationSectionsRef = collection(
+        db,
+        "travelBudget",
+        uid,
+        "travelBudgetSections",
+        destinationsSectionId,
+        "destinationSections"
+      );
 
       // Delete the deleted Destination Sections
       const destinationDeletedSections = _.differenceBy(
@@ -147,17 +157,21 @@ const updateTravelBudgetItems =
 
       destinationDeletedSections.length > 0 &&
         destinationDeletedSections.map((destinationSection) => {
-          const destinationSectionRef = destinationSectionsRef.doc(
+          const destinationSectionRef = doc(
+            destinationSectionsRef,
             destinationSection.sectionId
           );
-          const destinationSectionItemsRef = destinationSectionsRef
-            .doc(destinationSection.sectionId)
-            .collection("travelBudgetItems");
+          const destinationSectionItemsRef = collection(
+            destinationSectionsRef,
+            destinationSection.sectionId,
+            "travelBudgetItems"
+          );
 
           const sectionItems = destinationSection.sectionItems;
           sectionItems &&
             sectionItems.map((sectionItem) => {
-              const deleteSectionItemRef = destinationSectionItemsRef.doc(
+              const deleteSectionItemRef = doc(
+                destinationSectionItemsRef,
                 sectionItem.id
               );
               batch.delete(deleteSectionItemRef);
@@ -176,12 +190,15 @@ const updateTravelBudgetItems =
           sectionItems,
           "id"
         );
-        const destinationSectionRef = destinationSectionsRef.doc(sectionId);
-        const destinationSectionItemsRef =
-          destinationSectionRef.collection("travelBudgetItems");
+        const destinationSectionRef = doc(destinationSectionsRef, sectionId);
+        const destinationSectionItemsRef = collection(
+          destinationSectionRef,
+          "travelBudgetItems"
+        );
 
         destinationDeletedSectionItems.map((sectionItem) => {
-          const destinationItemRef = destinationSectionItemsRef.doc(
+          const destinationItemRef = doc(
+            destinationSectionItemsRef,
             sectionItem.id
           );
           batch.delete(destinationItemRef);
@@ -191,9 +208,11 @@ const updateTravelBudgetItems =
       // Set / Update the destination section & items
       destinationsArray.map((destination) => {
         const { uid, sectionId, sectionTitle, sectionItems } = destination;
-        const destinationSectionRef = destinationSectionsRef.doc(sectionId);
-        const destinationDocRef =
-          destinationSectionRef.collection("travelBudgetItems");
+        const destinationSectionRef = doc(destinationSectionsRef, sectionId);
+        const destinationDocRef = collection(
+          destinationSectionRef,
+          "travelBudgetItems"
+        );
 
         batch.set(
           destinationSectionRef,
@@ -202,7 +221,7 @@ const updateTravelBudgetItems =
         );
 
         sectionItems.map((sectionItem) => {
-          const destinationItemRef = destinationDocRef.doc(sectionItem.id);
+          const destinationItemRef = doc(destinationDocRef, sectionItem.id);
           batch.set(destinationItemRef, { ...sectionItem }, { merge: true });
         });
       });
