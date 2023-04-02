@@ -6,14 +6,17 @@ import loadPackItems from "../journal/pack/loadPackItems";
 import loadTravelBudgetItems from "../travelBudget/loadTravelBudgetItems";
 
 const signUpUser =
-  (userEmail, userPassword, userFirstName) => async (dispatch, getState) => {
+  (userEmail, userPassword, userFirstName, userLastName) =>
+  async (dispatch, getState) => {
     try {
       const { user } = await createUserWithEmailAndPassword(
         auth,
         userEmail,
         userPassword
       );
-      await updateProfile(user, { displayName: userFirstName });
+      await updateProfile(user, {
+        displayName: `${userFirstName} ${userLastName}`,
+      });
       const {
         uid,
         displayName,

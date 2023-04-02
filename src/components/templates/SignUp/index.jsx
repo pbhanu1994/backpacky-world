@@ -66,7 +66,9 @@ export default function SignUp() {
       if (_.isEmpty(errors)) {
         setShowLoadingButton(true);
 
-        const result = await dispatch(signUpUser(email, password, firstName));
+        const result = await dispatch(
+          signUpUser(email, password, firstName, lastName)
+        );
         result === "error" && setShowLoadingButton(false);
       }
     },

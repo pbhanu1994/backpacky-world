@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
 import homeFill from "@iconify/icons-eva/home-fill";
 import personFill from "@iconify/icons-eva/person-fill";
@@ -15,7 +16,6 @@ import {
 } from "@mui/material";
 import { MenuPopover } from "../../atoms/MenuPopover";
 import { MIconButton } from "../../@material-extend";
-import { useDispatch } from "react-redux";
 import signOutUser from "../../../store/actions/auth/signOutUser";
 
 const MENU_OPTIONS = [
@@ -27,6 +27,10 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const anchorRef = useRef(null);
   const dispatch = useDispatch();
+
+  const {
+    user: { displayName, email },
+  } = useSelector((state) => state.auth);
 
   const [open, setOpen] = useState(false);
 
@@ -70,10 +74,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            Bhanu Prakash
+            {displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            pbhanu.1994@gmail.com
+            {email}
           </Typography>
         </Box>
 

@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { alpha, styled } from "@mui/material/styles";
@@ -13,7 +14,7 @@ import {
   CardActionArea,
 } from "@mui/material";
 import useCollapseDrawer from "../../../hooks/useCollapseDrawer";
-import Logo from "./Logo";
+// import Logo from "./Logo";
 import Scrollbar from "../../atoms/Scrollbar";
 import NavSection from "../../atoms/NavSection";
 import { MHidden } from "../../@material-extend";
@@ -84,6 +85,9 @@ function IconCollapse({ onToggleCollapse, collapseClick }) {
 
 const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
   const { pathname } = useRouter();
+  const {
+    user: { displayName },
+  } = useSelector((state) => state.auth);
 
   const {
     isCollapse,
@@ -155,7 +159,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
             <Avatar alt="My Avatar" src="/images/avatar_default.jpg" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-                Bhanu Prakash
+                {displayName}
               </Typography>
               <NextLink href="/profile">
                 <Typography
