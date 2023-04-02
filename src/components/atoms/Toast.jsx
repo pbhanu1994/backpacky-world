@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Snackbar } from "@material-ui/core"; //TODO: REMOVE THIS PACKAGE LATER AND REPLACE WITH @mui/material once the issue (scrollTop) is fixed
-import { Alert } from "@mui/material";
+import { Alert, Slide, Snackbar } from "@mui/material";
 import withPortal from "../../hoc/withPortal";
 import closeToast from "../../store/actions/config/toast/closeToast";
 
@@ -24,10 +23,17 @@ const Toast = () => {
 
   return (
     //TODO: I think using Portal is unnecessary for Toast - Check with the experienced dev
-    <Snackbar open={toast.open} autoHideDuration={5000} onClose={handleClose}>
-      <MuiAlert onClose={handleClose} severity={toast.color}>
-        {toast.message}
-      </MuiAlert>
+    <Snackbar
+      open={toast.open}
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      autoHideDuration={5000}
+      onClose={handleClose}
+    >
+      <div>
+        <MuiAlert onClose={handleClose} severity={toast.color}>
+          {toast.message}
+        </MuiAlert>
+      </div>
     </Snackbar>
   );
 };

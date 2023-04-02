@@ -1,25 +1,24 @@
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/system";
 
-export const signInStyles = makeStyles((theme) => ({
+export const Paper = styled("div")(
+  ({ theme }) => `
+    margin-top: ${theme.spacing(8)};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+);
+export const signInStyles = () => ({
   root: {
     maxWidth: 480,
   },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
   avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    margin: (theme) => theme.spacing(1),
+    backgroundColor: (theme) => theme.palette.secondary.main,
   },
   submit: {
-    margin: `${theme.spacing(3, 0, 2)} !important`,
+    margin: (theme) => `${theme.spacing(3, 0, 2)} !important`,
     textTransform: "capitalize !important",
+    borderRadius: "8px",
   },
-}));
+});

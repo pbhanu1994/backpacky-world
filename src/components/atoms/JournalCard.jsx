@@ -1,6 +1,5 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { makeStyles } from "@mui/styles";
 import {
   Card,
   CardActionArea,
@@ -9,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 
-const useStyles = makeStyles({
+const journalCardStyles = () => ({
   root: {
     maxWidth: 345,
   },
@@ -20,18 +19,14 @@ const useStyles = makeStyles({
 
 export const JournalCard = ({ image, imageTitle, title, path, completed }) => {
   const router = useRouter();
-  const classes = useStyles();
+  const classes = journalCardStyles();
 
   return (
-    <Card className={classes.root} variant="outlined">
+    <Card sx={classes.root} variant="outlined">
       <CardActionArea onClick={() => router.push(path)}>
-        <CardMedia className={classes.media} image={image} title={imageTitle} />
+        <CardMedia sx={classes.media} image={image} title={imageTitle} />
         <CardContent>
-          <Typography
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
+          <Typography color="textSecondary" gutterBottom>
             Journal
           </Typography>
           <Typography gutterBottom variant="h5" component="h2">

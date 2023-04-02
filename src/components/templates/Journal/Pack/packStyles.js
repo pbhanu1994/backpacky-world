@@ -1,6 +1,18 @@
-import { makeStyles } from "@mui/styles";
+import { ListItemText } from "@mui/material";
+import { styled } from "@mui/system";
 
-export const packStyles = makeStyles((theme) => ({
+export const CustomListItemText = styled(ListItemText)(
+  ({ theme, checked }) => `
+  &.MuiListItemText-root {
+    color: ${checked && theme.palette.grey[500]};
+    text-decoration-line: ${checked && "line-through"};
+  }
+  & .MuiListItemText-primary {
+    font-weight: bold;
+  }
+`
+);
+export const packStyles = () => ({
   addSection: {
     maxWidth: 1000,
     borderRadius: "1rem",
@@ -15,7 +27,7 @@ export const packStyles = makeStyles((theme) => ({
     maxWidth: 1000,
     borderRadius: "1rem",
     marginBottom: "1rem",
-    boxShadow: theme.customShadows.z16,
+    boxShadow: (theme) => theme.customShadows.z16,
   },
   listItem: {
     background: "none !important",
@@ -26,18 +38,7 @@ export const packStyles = makeStyles((theme) => ({
   // checkboxChecked: {
   //   color: `${theme.palette.grey[500]} !important`,
   // },
-  listItemText: {
-    color: ({ checkboxChecked }) => checkboxChecked && theme.palette.grey[500],
-    textDecorationLine: ({ checkboxChecked }) =>
-      checkboxChecked && "line-through",
-    // Uncomment below property to make the strike color secondary
-    // textDecorationColor: ({ checkboxChecked }) =>
-    //   checkboxChecked && theme.palette.secondary.main,
-  },
-  listItemTextPrimary: {
-    fontWeight: "bold",
-  },
   deleteSectionButton: {
-    color: theme.palette.error.main,
+    color: (theme) => theme.palette.error.main,
   },
-}));
+});

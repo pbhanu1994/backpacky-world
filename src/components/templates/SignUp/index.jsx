@@ -28,7 +28,7 @@ import _ from "lodash";
 import { AuthSocial } from "../../molecules/AuthSocial";
 import { Copyright } from "../../atoms/Copyright";
 import signUpUser from "../../../store/actions/auth/signUpUser";
-import { signUpStyles } from "./signUpStyles";
+import { signUpStyles, Paper } from "./signUpStyles";
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -76,11 +76,11 @@ export default function SignUp() {
 
   // TODO: Set Loading 3 dots... while submitting
   return (
-    <Container component="main" className={classes.root}>
+    <Container component="main" style={classes.root}>
       <CssBaseline />
-      <div className={classes.paper}>
+      <Paper>
         <Grid container direction="column" alignItems="center">
-          <Avatar className={classes.avatar}>
+          <Avatar sx={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -90,7 +90,7 @@ export default function SignUp() {
         <AuthSocial />
         <FormikProvider value={formik}>
           <Form
-            className={classes.form}
+            style={{ width: "100%", marginTop: 24 }}
             autoComplete="off"
             noValidate
             onSubmit={handleSubmit}
@@ -183,7 +183,7 @@ export default function SignUp() {
                 size="large"
                 variant="contained"
                 color="primary"
-                className={classes.submit}
+                sx={classes.submit}
               >
                 Sign Up
               </Button>
@@ -195,8 +195,7 @@ export default function SignUp() {
                 size="large"
                 loadingPosition="start"
                 variant="contained"
-                className={classes.submit}
-                style={{ borderRadius: "8px" }}
+                sx={classes.submit}
                 startIcon={<SignUpIcon />}
               >
                 Signing up...
@@ -212,7 +211,7 @@ export default function SignUp() {
             </Grid>
           </Form>
         </FormikProvider>
-      </div>
+      </Paper>
       <Box mt={5}>
         <Copyright />
       </Box>

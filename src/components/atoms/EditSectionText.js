@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { InputBase, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { Check as ConfirmIcon, Close as CloseIcon } from "@mui/icons-material";
-import { editSectionTextStyles } from "./editSectionTextStyles";
+import {
+  editSectionTextStyles,
+  CustomInputBase,
+} from "./editSectionTextStyles";
 
 export const EditSectionText = ({
   inputText,
@@ -13,11 +16,7 @@ export const EditSectionText = ({
   styles,
 }) => {
   const [text, setText] = useState(inputText || "");
-  const classes = editSectionTextStyles({
-    edit,
-    width: styles.width,
-    margin: styles.margin,
-  });
+  const classes = editSectionTextStyles();
 
   const handleSubmitTitle = (e) => {
     e.preventDefault();
@@ -28,12 +27,11 @@ export const EditSectionText = ({
 
   return (
     <form style={{ display: "flex" }} onSubmit={handleSubmitTitle}>
-      <InputBase
+      <CustomInputBase
         autoFocus={edit}
-        classes={{
-          root: classes.inputText,
-          input: edit && classes.inputElement,
-        }}
+        width={styles.width}
+        margin={styles.margin}
+        edit={edit}
         placeholder={placeholderText}
         inputProps={{ "aria-label": "naked" }}
         onChange={(e) => setText(e.target.value)}
@@ -45,7 +43,7 @@ export const EditSectionText = ({
             type="submit"
             size="small"
             aria-label="Confirm Section"
-            className={classes.confirmButton}
+            sx={classes.confirmButton}
             onClick={(e) => {
               handleSubmitTitle(e), onHandleEdit(false);
             }}
@@ -56,7 +54,7 @@ export const EditSectionText = ({
           <IconButton
             size="small"
             aria-label="Cancel Section"
-            className={classes.cancelButton}
+            sx={classes.cancelButton}
             onClick={() => onHandleEdit(false)}
           >
             <CloseIcon color="error" />

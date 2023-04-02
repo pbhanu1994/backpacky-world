@@ -12,7 +12,7 @@ export const AddPackSection = ({ onAddSection }) => {
         size="small"
         variant="text"
         color="secondary"
-        className={classes.addSection}
+        sx={classes.addSection}
         onClick={onAddSection}
       >
         + Add section

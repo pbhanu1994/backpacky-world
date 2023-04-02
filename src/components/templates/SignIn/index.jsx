@@ -13,7 +13,6 @@ import {
   Grid,
   Box,
   Typography,
-  Divider,
   Container,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
@@ -30,7 +29,7 @@ import { AuthSocial } from "../../molecules/AuthSocial";
 import { Copyright } from "../../atoms/Copyright";
 import { PAGE_PATH } from "/src/constants/navigationConstants";
 import signInUser from "../../../store/actions/auth/signInUser";
-import { signInStyles } from "./signInStyles";
+import { signInStyles, Paper } from "./signInStyles";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -69,11 +68,11 @@ export default function SignIn() {
     formik;
 
   return (
-    <Container component="main" className={classes.root}>
+    <Container component="main" style={classes.root}>
       <CssBaseline />
-      <div className={classes.paper}>
+      <Paper>
         <Grid container direction="column" alignItems="center">
-          <Avatar className={classes.avatar}>
+          <Avatar sx={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -83,7 +82,7 @@ export default function SignIn() {
         <AuthSocial />
         <FormikProvider value={formik}>
           <Form
-            className={classes.form}
+            style={{ width: "100%", marginTop: 8 }}
             autoComplete="off"
             noValidate
             onSubmit={handleSubmit}
@@ -141,7 +140,7 @@ export default function SignIn() {
                 size="large"
                 variant="contained"
                 color="primary"
-                className={classes.submit}
+                sx={classes.submit}
               >
                 Sign In
               </Button>
@@ -153,8 +152,7 @@ export default function SignIn() {
                 size="large"
                 loadingPosition="start"
                 variant="contained"
-                className={classes.submit}
-                style={{ borderRadius: "8px" }}
+                sx={classes.submit}
                 startIcon={<LoginIcon />}
               >
                 Signing in...
@@ -175,7 +173,7 @@ export default function SignIn() {
             </Grid>
           </Form>
         </FormikProvider>
-      </div>
+      </Paper>
       <Box mt={5}>
         <Copyright />
       </Box>

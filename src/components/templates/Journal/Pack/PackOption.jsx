@@ -3,7 +3,6 @@ import {
   Grid,
   ListItem,
   ListItemIcon,
-  ListItemText,
   Checkbox,
   Divider,
   IconButton,
@@ -15,7 +14,7 @@ import {
   DeleteOutline as DeleteOutlineIcon,
 } from "@mui/icons-material";
 import { EditSectionText } from "/src/components/atoms/EditSectionText";
-import { packStyles } from "./packStyles";
+import { packStyles, CustomListItemText } from "./packStyles";
 
 export const PackOption = ({
   sectionId,
@@ -42,7 +41,7 @@ export const PackOption = ({
         dense
         disableRipple
         disableTouchRipple
-        classes={{ root: classes.listItem }}
+        sx={classes.listItem}
         onMouseOver={() => setMouseHoverOnItem(true)}
         onMouseLeave={() => setMouseHoverOnItem(false)}
         button
@@ -69,12 +68,9 @@ export const PackOption = ({
             />
           </ListItemIcon>
           {(!showPackItemInput || packItemId !== packItem.id) && (
-            <ListItemText
+            <CustomListItemText
               id={labelId}
-              classes={{
-                root: classes.listItemText,
-                primary: classes.listItemTextPrimary,
-              }}
+              checked={checkboxChecked}
               primary={packItem.name}
             />
           )}

@@ -5,7 +5,6 @@ import { Container, Typography } from "@mui/material";
 import { Book as JournalIcon } from "@mui/icons-material";
 import { JournalCard } from "../../atoms/JournalCard";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
-import { journalStyles } from "./journalStyles";
 import DashboardLayout from "../../layouts/dashboard";
 import useSettings from "../../../hooks/useSettings";
 import Page from "../../atoms/Page";
@@ -13,7 +12,6 @@ import Page from "../../atoms/Page";
 export default function Journal({ userId }) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const classes = journalStyles();
   const { themeStretch } = useSettings();
 
   return (

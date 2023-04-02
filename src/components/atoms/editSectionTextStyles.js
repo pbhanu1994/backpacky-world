@@ -1,20 +1,25 @@
-import { makeStyles } from "@mui/styles";
+import { InputBase } from "@mui/material";
+import { styled } from "@mui/system";
 
-export const editSectionTextStyles = makeStyles((theme) => ({
-  inputText: {
-    width: ({ width }) => width,
-    margin: ({ margin }) => margin,
-    fontSize: "unset",
-    fontWeight: ({ edit }) => edit && "bold",
-  },
-  inputElement: {
-    padding: 0,
-    margin: 0,
-  },
+export const CustomInputBase = styled(InputBase)(
+  ({ width, margin, edit }) => `
+  &.MuiInputBase-root {
+    width: ${width};
+    margin: ${margin};
+    font-size: unset;
+    font-weight: ${edit && "bold"};
+  }
+  & .MuiInputBase-input {
+    padding: ${edit && 0};
+    margin: ${edit && 0};
+  }
+`
+);
+export const editSectionTextStyles = () => ({
   confirmButton: {
-    color: theme.palette.success.main,
+    color: (theme) => theme.palette.success.main,
   },
   cancelButton: {
-    color: theme.palette.error.main,
+    color: (theme) => theme.palette.error.main,
   },
-}));
+});

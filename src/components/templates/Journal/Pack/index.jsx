@@ -6,7 +6,7 @@ import {
   DeleteOutline as DeleteOutlineIcon,
 } from "@mui/icons-material";
 import { Container, Typography } from "@mui/material";
-import { GiLightBackpack } from "react-icons/gi";
+// import { GiLightBackpack } from "react-icons/gi";
 import Page from "../../../atoms/Page";
 import DashboardLayout from "../../../layouts/dashboard";
 import useSettings from "../../../../hooks/useSettings";
@@ -90,7 +90,7 @@ export default function Pack() {
                 <Paper
                   key={packItem.sectionId}
                   variant="outlined"
-                  classes={{ root: classes.listPaper }}
+                  sx={classes.listPaper}
                 >
                   <Grid
                     container
@@ -111,7 +111,7 @@ export default function Pack() {
                         component="h6"
                         variant="h6"
                         color="secondary"
-                        className={classes.sectionTitle}
+                        sx={classes.sectionTitle}
                         style={{
                           width:
                             mouseHoverOnSection &&
@@ -143,7 +143,7 @@ export default function Pack() {
                             <IconButton
                               aria-label="Delete section"
                               size="small"
-                              className={classes.deleteSectionButton}
+                              sx={classes.deleteSectionButton}
                               onClick={() => {
                                 dispatch(
                                   setAndShowDeleteDialog(
