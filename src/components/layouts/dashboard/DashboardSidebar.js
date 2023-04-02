@@ -158,7 +158,10 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
           <AccountStyle>
             <Avatar alt="My Avatar" src="/images/avatar_default.jpg" />
             <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
+              <Typography
+                variant="subtitle2"
+                sx={{ color: "text.primary", textTransform: "capitalize" }}
+              >
                 {displayName}
               </Typography>
               <NextLink href="/profile">
