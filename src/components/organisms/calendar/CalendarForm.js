@@ -1,6 +1,8 @@
-import * as Yup from "yup";
-import { merge } from "lodash";
+import React from "react";
 import PropTypes from "prop-types";
+import * as Yup from "yup";
+import dayjs from "dayjs";
+import { merge } from "lodash";
 import { Icon } from "@iconify/react";
 import trash2Fill from "@iconify/icons-eva/trash-2-fill";
 import { useFormik, Form, FormikProvider } from "formik";
@@ -15,7 +17,8 @@ import {
   DialogActions,
   FormControlLabel,
 } from "@mui/material";
-import { LoadingButton, MobileDateTimePicker } from "@mui/lab";
+import { LoadingButton } from "@mui/lab";
+import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { useDispatch } from "react-redux";
 import ColorSinglePicker from "/src/components/atoms/ColorSinglePicker";
 import createEvent from "/src/store/actions/calendar/createEvent";
@@ -151,26 +154,17 @@ export default function CalendarForm({ event, range, onCancel }) {
 
           <MobileDateTimePicker
             label="Start date"
-            value={values.start}
-            inputFormat="dd/MM/yyyy hh:mm a"
-            onChange={(date) => setFieldValue("start", date)}
-            renderInput={(params) => <TextField {...params} fullWidth />}
+            value={dayjs(values.start)}
+            format="DD/MM/YYYY hh:mm a"
+            onChange={(date) => setFieldValue("start", new Date(date))}
           />
 
           <MobileDateTimePicker
             label="End date"
-            value={values.end}
-            inputFormat="dd/MM/yyyy hh:mm a"
-            onChange={(date) => setFieldValue("end", date)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                fullWidth
-                error={Boolean(touched.end && errors.end)}
-                helperText={touched.end && errors.end}
-                sx={{ mb: 3 }}
-              />
-            )}
+            value={dayjs(values.end)}
+            format="DD/MM/YYYY hh:mm a"
+            onChange={(date) => setFieldValue("end", new Date(date))}
+            sx={{ mb: 3 }}
           />
 
           <ColorSinglePicker

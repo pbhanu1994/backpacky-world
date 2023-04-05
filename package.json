@@ -40,6 +40,7 @@
     "cookie": "^0.5.0",
     "cross-env": "^7.0.3",
     "date-fns": "^2.28.0",
+    "dayjs": "^1.11.7",
     "firebase": "^9.18.0",
     "firebase-admin": "^11.5.0",
     "firebase-functions": "^4.2.1",

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import dynamic from "next/dynamic";
 import App from "next/app";
 import Head from "next/head";
@@ -13,8 +13,8 @@ import createEmotionCache from "../src/handlers/createEmotionCache";
 import { AuthProvider } from "../src/handlers/auth";
 import ThemePrimaryColor from "../src/components/ThemePrimaryColor";
 // material
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 // contexts
 import { SettingsProvider } from "../src/contexts/SettingsContext";
@@ -38,7 +38,7 @@ function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <SettingsProvider>
         <CollapseDrawerProvider>
           <CacheProvider value={emotionCache}>

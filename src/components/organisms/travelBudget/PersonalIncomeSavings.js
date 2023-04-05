@@ -1,7 +1,8 @@
 import React, { useState, useEffect, memo } from "react";
-import DatePicker from "@mui/lab/DatePicker";
-import { Stack, TextField, InputAdornment } from "@mui/material";
+import dayjs from "dayjs";
 import _ from "lodash";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Stack, InputAdornment } from "@mui/material";
 import { RHFTextField } from "/src/components/hook-form";
 import { fDecimalNumber } from "/src/utils/formatNumber";
 
@@ -23,7 +24,7 @@ export default memo(function PersonalIncomeSavings({
     _.find(personalIncomeData, (obj) => obj.id === "personalIncomeOther") || {};
 
   const [personalIncomeDate, setPersonalIncomeDate] = useState(
-    new Date(pDate) || new Date()
+    dayjs(new Date(pDate) || new Date())
   );
   const [personalIncome, setPersonalIncome] = useState(pIncome);
   const [personalSavings, setPersonalSavings] = useState(pSavings);
@@ -52,17 +53,17 @@ export default memo(function PersonalIncomeSavings({
     <Stack
       spacing={2}
       direction={{ xs: "column", sm: "row" }}
-      sx={{ p: 3, bgcolor: "background.neutral" }}
+      sx={{ p: 3, bgcolor: "background.neutral", alignItems: "baseline" }}
     >
       <DatePicker
         label="Date"
         value={personalIncomeDate}
+        format="DD/MM/YYYY"
+        sx={{ width: "100%" }}
         onChange={(newValue) => {
           setPersonalIncomeDate(newValue);
           onHandleSaveBtnChange();
         }}
-        inputFormat="dd/MM/yyyy"
-        renderInput={(params) => <TextField {...params} fullWidth />}
       />
 
       <RHFTextField
