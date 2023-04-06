@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+// import { useRouter } from "next/router";
 import { Container, Typography } from "@mui/material";
 import DashboardLayout from "../layouts/dashboard";
 import useSettings from "../../hooks/useSettings";
@@ -10,9 +10,12 @@ import getPackItems from "../../store/actions/journal/pack/getPackItems";
 import getBudgetItems from "../../store/actions/travelBudget/getTravelBudgetItems";
 
 const Home = ({ userId }) => {
-  const router = useRouter();
+  // const router = useRouter();
   const dispatch = useDispatch();
   const { themeStretch } = useSettings();
+  const {
+    user: { displayName },
+  } = useSelector((state) => state.auth);
 
   useEffect(() => {
     // Journal - Pack items
@@ -25,8 +28,13 @@ const Home = ({ userId }) => {
     <DashboardLayout>
       <Page title="Home | BackpackyWorld">
         <Container maxWidth={themeStretch ? false : "xl"}>
-          <Typography variant="h3" component="h1" paragraph>
-            Home
+          <Typography
+            variant="h3"
+            component="h1"
+            paragraph
+            sx={{ textTransform: "capitalize" }}
+          >
+            Hi, {displayName.split(" ")[0]}!
           </Typography>
           <Typography gutterBottom>
             Curabitur turpis. Vestibulum facilisis, purus nec pulvinar iaculis,
