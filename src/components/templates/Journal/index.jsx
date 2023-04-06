@@ -6,8 +6,8 @@ import { Container, Typography } from "@mui/material";
 import { JournalCard } from "../../atoms/JournalCard";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import DashboardLayout from "../../layouts/dashboard";
-import useSettings from "../../../hooks/useSettings";
 import Page from "../../atoms/Page";
+import useSettings from "../../../hooks/useSettings";
 
 export default function Journal({ userId }) {
   // const router = useRouter();

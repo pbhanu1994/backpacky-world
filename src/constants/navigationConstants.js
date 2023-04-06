@@ -4,6 +4,7 @@ export const PAGE_PATH = {
   RESET_PASSWORD: "/resetPassword/",
   HOME: "/home/",
   PROFILE: "/profile/",
+  PLAN: "/plan/",
   JOURNAL: "/journal/",
   JOURNAL_PACK: "/journal/pack/",
   TRAVEL_BUDGET: "/travelBudget/",
@@ -14,6 +15,7 @@ export const PAGE_PATH = {
 
 export const SIDEBAR_NAVIGATIONS = [
   { label: "Home", value: PAGE_PATH.HOME },
+  { label: "Plan", value: PAGE_PATH.PLAN },
   { label: "Journal", value: PAGE_PATH.JOURNAL },
   { label: "Chat", value: PAGE_PATH.CHAT },
   { label: "Calendar", value: PAGE_PATH.CALENDAR },

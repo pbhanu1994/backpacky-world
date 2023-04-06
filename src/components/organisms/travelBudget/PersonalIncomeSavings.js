@@ -60,8 +60,8 @@ export default memo(function PersonalIncomeSavings({
         value={personalIncomeDate}
         format="DD/MM/YYYY"
         sx={{ width: "100%" }}
-        onChange={(newValue) => {
-          setPersonalIncomeDate(newValue);
+        onChange={(dateValue) => {
+          setPersonalIncomeDate(dateValue);
           onHandleSaveBtnChange();
         }}
       />
