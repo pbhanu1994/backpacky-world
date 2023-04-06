@@ -5,7 +5,7 @@ export const Paper = styled("div")(
     margin-top: ${theme.spacing(8)};
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
 `
 );
 export const signUpStyles = () => ({
