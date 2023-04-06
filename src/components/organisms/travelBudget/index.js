@@ -19,6 +19,7 @@ export default function TravelBudget() {
   const [getBudgetData, setBudgetData] = useState(false);
   const [showSaveBtn, setShowSaveBtn] = useState(false);
   const [showAllTotal, setShowAllTotal] = useState(false);
+  const [saveBtnClicked, setSaveBtnClicked] = useState(false);
   const { personalIncome, beforeILeave, destinations } = useSelector(
     (state) => state.travelBudget
   );
@@ -96,7 +97,8 @@ export default function TravelBudget() {
         beforeILeave: getBeforeILeave.beforeILeave,
         destinations: getDestinations,
       };
-      dispatch(updateTravelBudgetItems(combined));
+      saveBtnClicked && dispatch(updateTravelBudgetItems(combined));
+      setSaveBtnClicked(false);
     }
   }, [getPersonalIncome, getBeforeILeave, getDestinations]);
 
@@ -164,6 +166,7 @@ export default function TravelBudget() {
             onClick={() => {
               setBudgetData(true);
               setShowSaveBtn(false);
+              setSaveBtnClicked(true);
             }}
           >
             Calculate & Save
