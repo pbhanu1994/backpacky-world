@@ -17,7 +17,7 @@ LinkItem.propTypes = {
 function LinkItem({ link }) {
   const { href, name, icon } = link;
   return (
-    <NextLink key={name} href={href} passHref>
+    <NextLink key={name} href={href} passHref shallow>
       <Link
         variant="body2"
         sx={{

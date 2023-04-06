@@ -115,7 +115,7 @@ const NavItem = ({ item, isShow }) => {
                 const isActiveSub = pathname.includes(path);
 
                 return (
-                  <NextLink key={item.title} href={item.path}>
+                  <NextLink key={item.title} href={item.path} shallow>
                     <ListItemStyle
                       sx={{
                         ...(isActiveSub && activeSubStyle),
@@ -154,7 +154,7 @@ const NavItem = ({ item, isShow }) => {
   }
 
   return (
-    <NextLink href={path}>
+    <NextLink href={path} shallow>
       <ListItemStyle
         sx={{
           ...(isActiveRoot && activeRootStyle),

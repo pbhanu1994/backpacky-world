@@ -164,7 +164,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
               >
                 {displayName}
               </Typography>
-              <NextLink href="/profile">
+              <NextLink href="/profile" shallow>
                 <Typography
                   variant="body2"
                   sx={{ color: "text.secondary", cursor: "pointer" }}

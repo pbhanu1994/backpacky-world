@@ -43,7 +43,7 @@ export default function ResetPassword() {
                 onHandleLoadingButton={(value) => setShowLoadingButton(value)}
               />
 
-              <NextLink href={PAGE_PATH.SIGNIN}>
+              <NextLink href={PAGE_PATH.SIGNIN} shallow>
                 <Button fullWidth size="large" sx={{ mt: 1 }}>
                   Back
                 </Button>
@@ -63,7 +63,7 @@ export default function ResetPassword() {
                 Please check your email.
               </Typography>
 
-              <NextLink href={PAGE_PATH.SIGNIN}>
+              <NextLink href={PAGE_PATH.SIGNIN} shallow>
                 <Button size="large" variant="contained" sx={{ mt: 5 }}>
                   Back
                 </Button>

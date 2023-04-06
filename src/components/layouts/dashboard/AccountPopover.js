@@ -88,7 +88,7 @@ export default function AccountPopover() {
         <Divider sx={{ my: 1 }} />
 
         {MENU_OPTIONS.map((option) => (
-          <NextLink key={option.label} href={option.linkTo}>
+          <NextLink key={option.label} href={option.linkTo} shallow>
             <MenuItem
               onClick={handleClose}
               sx={{ typography: "body2", py: 1, px: 2.5 }}

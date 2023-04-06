@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import NextLink from "next/link";
 import {
   Avatar,
   Button,
@@ -160,15 +161,19 @@ export default function SignIn() {
             )}
             <Grid container>
               <Grid item xs>
-                <Link href={PAGE_PATH.RESET_PASSWORD} variant="body2">
-                  Forgot password?
-                </Link>
+                <NextLink href={PAGE_PATH.RESET_PASSWORD} shallow>
+                  <Typography variant="body2" component={Link}>
+                    Forgot password?
+                  </Typography>
+                </NextLink>
               </Grid>
               <Grid item>
                 Don't have an account?{" "}
-                <Link href="/signup" variant="body2">
-                  Sign Up
-                </Link>
+                <NextLink href="/signup" shallow>
+                  <Typography variant="body2" component={Link}>
+                    Sign Up
+                  </Typography>
+                </NextLink>
               </Grid>
             </Grid>
           </Form>

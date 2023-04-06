@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import React from "react";
+// import { useRouter } from "next/router";
+// import { useDispatch } from "react-redux";
 import { Container, Typography } from "@mui/material";
-import { Book as JournalIcon } from "@mui/icons-material";
+// import { Book as JournalIcon } from "@mui/icons-material";
 import { JournalCard } from "../../atoms/JournalCard";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import DashboardLayout from "../../layouts/dashboard";
@@ -10,8 +10,8 @@ import useSettings from "../../../hooks/useSettings";
 import Page from "../../atoms/Page";
 
 export default function Journal({ userId }) {
-  const router = useRouter();
-  const dispatch = useDispatch();
+  // const router = useRouter();
+  // const dispatch = useDispatch();
   const { themeStretch } = useSettings();
 
   return (

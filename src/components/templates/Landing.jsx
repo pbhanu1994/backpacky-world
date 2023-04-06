@@ -15,8 +15,12 @@ export default function Landing() {
         Backpacky World
       </Typography>
       <h3>Have a Safe Travel!</h3>
-      <Link href="/signin">Sign In</Link>
-      <Link href="/signup">Sign Up</Link>
+      <Link href="/signin" shallow>
+        Sign In
+      </Link>
+      <Link href="/signup" shallow>
+        Sign Up
+      </Link>
     </Container>
   );
 }

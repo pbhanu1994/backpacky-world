@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import NextLink from "next/link";
 import {
   Avatar,
   Button,
@@ -206,9 +207,11 @@ export default function SignUp() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 Already have an account?{" "}
-                <Link href="/signin" variant="body2">
-                  Sign in
-                </Link>
+                <NextLink href="/signin" shallow>
+                  <Typography variant="body2" component={Link}>
+                    Sign in
+                  </Typography>
+                </NextLink>
               </Grid>
             </Grid>
           </Form>
