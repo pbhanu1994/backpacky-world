@@ -14,29 +14,29 @@ import {
   DeleteOutline as DeleteOutlineIcon,
 } from "@mui/icons-material";
 import { EditSectionText } from "/src/components/atoms/EditSectionText";
-import { packStyles, CustomListItemText } from "./packStyles";
+import { listStyles, CustomListItemText } from "./listStyles";
 
-export const PackOption = ({
+export const Option = ({
   sectionId,
-  packItem,
+  item,
   checked,
-  onUpdatePackItem,
+  onUpdateitem,
   onDeleteItem,
 }) => {
   const [mouseHover, setMouseHover] = useState(false);
   const [mouseHoverOnItem, setMouseHoverOnItem] = useState(false);
   const [mouseHoverOnEdit, setMouseHoverOnEdit] = useState(false);
-  const [showPackItemInput, setShowPackItemInput] = useState(false);
-  const [packItemId, setPackItemId] = useState(null);
+  const [showitemInput, setShowitemInput] = useState(false);
+  const [itemId, setitemId] = useState(null);
 
-  const labelId = `checkbox-list-label-${packItem.name}`;
+  const labelId = `checkbox-list-label-${item.name}`;
   const checkboxChecked = checked !== false;
-  const classes = packStyles({ checkboxChecked });
+  const classes = listStyles({ checkboxChecked });
 
   return (
     <>
       <ListItem
-        key={packItem.id}
+        key={item.id}
         role={undefined}
         dense
         disableRipple
@@ -51,8 +51,7 @@ export const PackOption = ({
           direction="row"
           alignItems="center"
           onClick={() =>
-            !showPackItemInput &&
-            onUpdatePackItem(sectionId, packItem, true, null)
+            !showitemInput && onUpdateitem(sectionId, item, true, null)
           }
         >
           <ListItemIcon>
@@ -67,22 +66,22 @@ export const PackOption = ({
               inputProps={{ "aria-labelledby": labelId }}
             />
           </ListItemIcon>
-          {(!showPackItemInput || packItemId !== packItem.id) && (
+          {(!showitemInput || itemId !== item.id) && (
             <CustomListItemText
               id={labelId}
               checked={checkboxChecked}
-              primary={packItem.name}
+              primary={item.name}
             />
           )}
-          {showPackItemInput && packItemId === packItem.id && (
+          {showitemInput && itemId === item.id && (
             <EditSectionText
               sectionId={sectionId}
-              inputText={packItem.name}
-              onAddItem={(sectionId, packItemText) =>
-                onUpdatePackItem(sectionId, packItem, null, packItemText)
+              inputText={item.name}
+              onAddItem={(sectionId, itemText) =>
+                onUpdateitem(sectionId, item, null, itemText)
               }
-              edit={showPackItemInput}
-              onHandleEdit={(edit) => setShowPackItemInput(edit)}
+              edit={showitemInput}
+              onHandleEdit={(edit) => setShowitemInput(edit)}
               styles={{ width: "80%" }}
             />
           )}
@@ -96,8 +95,8 @@ export const PackOption = ({
           <IconButton
             aria-label="Edit Item Name"
             onClick={() => {
-              setShowPackItemInput(true);
-              setPackItemId(packItem.id);
+              setShowitemInput(true);
+              setitemId(item.id);
             }}
             onMouseOver={() => setMouseHoverOnEdit(true)}
             onMouseLeave={() => setMouseHoverOnEdit(false)}
@@ -111,7 +110,7 @@ export const PackOption = ({
           </IconButton>
           <IconButton
             aria-label="Delete Item"
-            onClick={() => onDeleteItem(sectionId, packItem)}
+            onClick={() => onDeleteItem(sectionId, item)}
             onMouseOver={() => setMouseHover(true)}
             onMouseLeave={() => setMouseHover(false)}
           >

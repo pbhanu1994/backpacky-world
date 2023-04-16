@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Divider, List, Paper, Grid, IconButton } from "@mui/material";
 import {
   EditOutlined as EditIcon,
@@ -10,85 +10,59 @@ import { Container, Typography } from "@mui/material";
 import Page from "../../../atoms/Page";
 import DashboardLayout from "../../../layouts/dashboard";
 import useSettings from "../../../../hooks/useSettings";
-import { PackOption } from "./PackOption";
+import { Option } from "./Option";
 import { EditSectionText } from "/src/components/atoms/EditSectionText";
-import { AddPackSection } from "./AddPackSection";
+import { AddSection } from "./AddSection";
 import { PAGE_PATH } from "../../../../constants/navigationConstants";
 import HeaderBreadcrumbs from "../../../atoms/HeaderBreadCrumbs";
-import getPackItems from "../../../../store/actions/journal/pack/getPackItems";
-import addPackSection from "../../../../store/actions/journal/pack/addPackSection";
-import updatePackSection from "../../../../store/actions/journal/pack/updatePackSection";
-import deletePackSection from "../../../../store/actions/journal/pack/deletePackSection";
-import addPackItem from "../../../../store/actions/journal/pack/addPackItem";
-import updatePackItem from "../../../../store/actions/journal/pack/updatePackItem";
-import deletePackItem from "../../../../store/actions/journal/pack/deletePackItem";
 import setAndShowDeleteDialog from "../../../../store/actions/config/dialog/setAndShowDeleteDialog";
-import { packStyles } from "./packStyles";
+import { listStyles } from "./listStyles";
 
-export default function Pack() {
+export default function ToDoList({
+  pageTitle,
+  heading,
+  items,
+  onAddSection,
+  onUpdateSectionTitle,
+  onDeleteSection,
+  onAddItem,
+  onUpdateItem,
+  onDeleteItem,
+}) {
   const [selectedHoverSectionId, setSelectedHoverSectionId] = useState(null);
   const [mouseHoverOnSection, setMouseHoverOnSection] = useState(false);
   const [editSectionId, setEditSectionId] = useState(null);
   const [showSectionUpdateInput, setShowSectionUpdateInput] = useState(false);
-  const packItems = useSelector((state) => state.journal.packItems);
 
   const dispatch = useDispatch();
   const { themeStretch } = useSettings();
-  const classes = packStyles();
-
-  useEffect(() => {
-    dispatch(getPackItems());
-  }, []);
-
-  const handleAddSection = (position) => {
-    dispatch(addPackSection(position));
-  };
-
-  const handleUpdateSectionTitle = (sectionId, sectionTitle) => {
-    dispatch(updatePackSection(sectionId, sectionTitle));
-  };
-
-  const handleDeleteSection = (sectionId) => {
-    dispatch(deletePackSection(sectionId));
-  };
-
-  const handleAddItem = (sectionId, packItem) => {
-    dispatch(addPackItem(sectionId, packItem));
-  };
-
-  const handleUpdatePackItem = (sectionId, packItem, toggle, editItemName) => {
-    dispatch(updatePackItem(sectionId, packItem, toggle, editItemName));
-  };
-
-  const handleDeleteItem = (sectionId, packItem) => {
-    dispatch(deletePackItem(sectionId, packItem));
-  };
+  const classes = listStyles();
 
   return (
     <DashboardLayout>
-      <Page title="Journal - Pack | BackpackyWorld">
+      <Page title={pageTitle}>
         <Container maxWidth={themeStretch ? false : "xl"}>
           <HeaderBreadcrumbs
-            heading="Things to pack"
+            heading={heading}
             links={[
               { name: "Journal", href: PAGE_PATH.JOURNAL },
-              { name: "Things to pack" },
+              { name: heading },
             ]}
           />
-          {packItems.length === 0 && (
+          {items.length === 0 && (
             <div>
               <Typography align="center" component="h3" gutterBottom>
                 No items available.
               </Typography>
-              <AddPackSection onAddSection={() => handleAddSection("start")} />
+              <AddSection onAddSection={() => onAddSection("start")} />
             </div>
           )}
-          {packItems.length > 0 && (
+          {items.length > 0 && (
             <>
-              <AddPackSection onAddSection={() => handleAddSection("start")} />
-              {packItems.map((packItem) => (
+              <AddSection onAddSection={() => onAddSection("start")} />
+              {items.map((item) => (
                 <Paper
-                  key={packItem.sectionId}
+                  key={item.sectionId}
                   variant="outlined"
                   sx={classes.listPaper}
                 >
@@ -97,7 +71,7 @@ export default function Pack() {
                     justifyContent="space-between"
                     style={{ padding: "0.8rem 1rem", height: "3.7rem" }}
                     onMouseOver={() => {
-                      setSelectedHoverSectionId(packItem.sectionId);
+                      setSelectedHoverSectionId(item.sectionId);
                       setMouseHoverOnSection(true);
                     }}
                     onMouseLeave={() => {
@@ -106,7 +80,7 @@ export default function Pack() {
                     }}
                   >
                     {(!showSectionUpdateInput ||
-                      editSectionId !== packItem.sectionId) && (
+                      editSectionId !== item.sectionId) && (
                       <Typography
                         component="h6"
                         variant="h6"
@@ -115,13 +89,13 @@ export default function Pack() {
                         style={{
                           width:
                             mouseHoverOnSection &&
-                            selectedHoverSectionId === packItem.sectionId
+                            selectedHoverSectionId === item.sectionId
                               ? "100%"
                               : "fit-content", // TODO: Check with the experienced dev if it's a good approach
                         }}
                       >
-                        {packItem.sectionTitle} &nbsp;
-                        {selectedHoverSectionId === packItem.sectionId && (
+                        {item.sectionTitle} &nbsp;
+                        {selectedHoverSectionId === item.sectionId && (
                           <span
                             style={{
                               display: "flex",
@@ -134,7 +108,7 @@ export default function Pack() {
                               color="secondary"
                               onClick={() => {
                                 setShowSectionUpdateInput(true);
-                                setEditSectionId(packItem.sectionId);
+                                setEditSectionId(item.sectionId);
                               }}
                             >
                               <EditIcon />
@@ -147,9 +121,8 @@ export default function Pack() {
                               onClick={() => {
                                 dispatch(
                                   setAndShowDeleteDialog(
-                                    packItem.sectionTitle,
-                                    () =>
-                                      handleDeleteSection(packItem.sectionId) // Storing function reference (callback?) in the store to use later
+                                    item.sectionTitle,
+                                    () => onDeleteSection(item.sectionId) // Storing function reference (callback?) in the store to use later
                                   )
                                 );
                               }}
@@ -161,11 +134,11 @@ export default function Pack() {
                       </Typography>
                     )}
                     {showSectionUpdateInput &&
-                      editSectionId === packItem.sectionId && (
+                      editSectionId === item.sectionId && (
                         <EditSectionText
-                          sectionId={packItem.sectionId}
-                          inputText={packItem.sectionTitle}
-                          onAddItem={handleUpdateSectionTitle}
+                          sectionId={item.sectionId}
+                          inputText={item.sectionTitle}
+                          onAddItem={onUpdateSectionTitle}
                           edit={showSectionUpdateInput}
                           onHandleEdit={(edit) =>
                             setShowSectionUpdateInput(edit)
@@ -175,7 +148,7 @@ export default function Pack() {
                       )}
                     {/* TODO: Check with the designer if hiding the completed items on hover is a good idea */}
                     {(!mouseHoverOnSection ||
-                      selectedHoverSectionId !== packItem.sectionId) && (
+                      selectedHoverSectionId !== item.sectionId) && (
                       <Typography
                         component="h6"
                         variant="body1"
@@ -186,41 +159,41 @@ export default function Pack() {
                       >
                         Completed:{" "}
                         {
-                          packItem.sectionItems?.filter((item) => item.checked)
+                          item.sectionItems?.filter((item) => item.checked)
                             .length
                         }{" "}
-                        / {packItem.sectionItems?.length}
+                        / {item.sectionItems?.length}
                       </Typography>
                     )}
                     {/* <h3 style={{ fontWeight: 400 }}>Total: 31 Items</h3> */}
                   </Grid>
                   <Divider />
                   <List>
-                    {packItem.sectionItems?.map((sectionItem) => (
-                      <PackOption
+                    {item.sectionItems?.map((sectionItem) => (
+                      <Option
                         key={sectionItem.id}
-                        sectionId={packItem.sectionId}
-                        packItem={sectionItem}
+                        sectionId={item.sectionId}
+                        item={sectionItem}
                         checked={sectionItem.checked}
-                        onUpdatePackItem={handleUpdatePackItem}
-                        onDeleteItem={handleDeleteItem}
+                        onUpdateitem={onUpdateItem}
+                        onDeleteItem={onDeleteItem}
                       />
                     ))}
-                    {packItem.sectionItems?.length === 0 && (
+                    {item.sectionItems?.length === 0 && (
                       <h3 style={{ fontWeight: 400, textAlign: "center" }}>
                         No items found
                       </h3>
                     )}
                   </List>
                   <EditSectionText
-                    sectionId={packItem.sectionId}
-                    placeholderText={packItem.placeholderText}
-                    onAddItem={handleAddItem}
+                    sectionId={item.sectionId}
+                    placeholderText={item.placeholderText}
+                    onAddItem={onAddItem}
                     styles={{ width: "80%", margin: "0.4rem 3.7rem" }}
                   />
                 </Paper>
               ))}
-              <AddPackSection onAddSection={() => handleAddSection("end")} />
+              <AddSection onAddSection={() => onAddSection("end")} />
             </>
           )}
         </Container>

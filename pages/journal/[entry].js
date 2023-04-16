@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import JournalComponent from "../../src/components/templates/Journal";
-import PackComponent from "../../src/components/templates/Journal/Pack";
+import PackComponent from "./Pack";
 import { parseCookies } from "../../src/helpers/parseCookies";
 import { verifyIdToken } from "../../src/handlers/firebaseAdmin";
 import { PAGE_PATH } from "../../src/constants/navigationConstants";

@@ -1,9 +1,9 @@
 import React from "react";
 import { Grid, Button } from "@mui/material";
-import { packStyles } from "./packStyles";
+import { listStyles } from "./listStyles";
 
-export const AddPackSection = ({ onAddSection }) => {
-  const classes = packStyles();
+export const AddSection = ({ onAddSection }) => {
+  const classes = listStyles();
 
   return (
     <Grid>

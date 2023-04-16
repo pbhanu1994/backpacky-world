@@ -12,7 +12,7 @@ export const CustomListItemText = styled(ListItemText)(
   }
 `
 );
-export const packStyles = () => ({
+export const listStyles = () => ({
   addSection: {
     maxWidth: 1000,
     borderRadius: "1rem",
