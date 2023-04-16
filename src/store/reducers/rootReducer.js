@@ -1,5 +1,5 @@
-import { combineReducers } from "redux";
-import storage from "redux-persist/lib/storage";
+import { combineReducers } from "@reduxjs/toolkit";
+// import storage from "redux-persist/lib/storage";
 import { authReducer } from "./authReducer";
 import { counterReducer } from "./counterReducer";
 import { journalReducer } from "./journalReducer";

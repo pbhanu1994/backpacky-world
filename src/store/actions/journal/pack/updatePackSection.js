@@ -1,6 +1,9 @@
 import { db } from "../../../../handlers/firebaseClient";
 import { doc, updateDoc } from "firebase/firestore";
-import { UPDATE_PACK_SECTION } from "../../../actionTypes/journal";
+import {
+  GET_PACK_ITEMS,
+  UPDATE_PACK_SECTION,
+} from "../../../actionTypes/journal";
 import setAndShowErrorToast from "../../config/toast/setAndShowErrorToast";
 
 const updatePackSection = (sectionId, sectionTitle) => (dispatch, getState) => {

@@ -7,6 +7,7 @@ export const PAGE_PATH = {
   PLAN: "/plan/",
   JOURNAL: "/journal/",
   JOURNAL_PACK: "/journal/pack/",
+  JOURNAL_BUCKET_LIST: "/journal/bucketList/",
   TRAVEL_BUDGET: "/travelBudget/",
   CHAT: "/chat/",
   CALENDAR: "/calendar/",

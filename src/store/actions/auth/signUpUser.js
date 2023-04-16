@@ -3,6 +3,7 @@ import { auth } from "../../../handlers/firebaseClient";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import setAndShowErrorToast from "../../actions/config/toast/setAndShowErrorToast";
 import loadPackItems from "../journal/pack/loadPackItems";
+import loadBucketListItems from "../journal/bucketList/loadBucketListItems";
 import loadTravelBudgetItems from "../travelBudget/loadTravelBudgetItems";
 
 const signUpUser =
@@ -40,6 +41,7 @@ const signUpUser =
       });
 
       dispatch(loadPackItems());
+      dispatch(loadBucketListItems());
       dispatch(loadTravelBudgetItems());
     } catch (err) {
       console.log("Error Signing up", err);

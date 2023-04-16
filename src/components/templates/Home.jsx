@@ -7,6 +7,7 @@ import useSettings from "../../hooks/useSettings";
 import Page from "../atoms/Page";
 
 import getPackItems from "../../store/actions/journal/pack/getPackItems";
+import getBucketListItems from "../../store/actions/journal/bucketList/getBucketListItems";
 import getBudgetItems from "../../store/actions/travelBudget/getTravelBudgetItems";
 
 const Home = ({ userId }) => {
@@ -20,6 +21,8 @@ const Home = ({ userId }) => {
   useEffect(() => {
     // Journal - Pack items
     dispatch(getPackItems());
+    // Journal - Bucket List items
+    dispatch(getBucketListItems());
     // Travel Budget Items
     dispatch(getBudgetItems());
   }, []);

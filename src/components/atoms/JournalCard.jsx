@@ -7,30 +7,24 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-
-const journalCardStyles = () => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 140,
-  },
-});
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 export const JournalCard = ({ image, imageTitle, title, path, completed }) => {
   const router = useRouter();
-  const classes = journalCardStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <Card sx={classes.root} variant="outlined">
+    <Card sx={{ width: isMobile ? "100%" : 340 }} variant="outlined">
       <CardActionArea onClick={() => router.push(path)}>
-        <CardMedia sx={classes.media} image={image} title={imageTitle} />
+        <CardMedia sx={{ height: 140 }} image={image} title={imageTitle} />
         <CardContent>
           <Typography color="textSecondary" gutterBottom>
             Journal
           </Typography>
           <Typography gutterBottom variant="h5" component="h2">
-            {title}..
+            {title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             Completed: {completed} Items
