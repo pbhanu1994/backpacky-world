@@ -53,10 +53,15 @@ function IconCollapse({
   isCollapse,
   onMouseEnter,
   onMouseLeave,
+  onClick,
 }) {
   const theme = useTheme();
   return (
-    <Tooltip onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+    <Tooltip
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onClick={onClick}
+    >
       <CardActionArea
         onClick={onToggleCollapse}
         sx={{
@@ -115,7 +120,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
     <Scrollbar
       sx={{
         height: "100%",
-        overflow: mouseEnter ? "hidden" : "visible",
+        overflow: mouseEnter ? "hidden" : "visible", //TODO: Check if this is a good approach to hide the scrollbar
         "& .simplebar-content": {
           height: "100%",
           display: "flex",
@@ -156,6 +161,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
               collapseClick={collapseClick}
               onMouseEnter={() => setMouseEnter(true)}
               onMouseLeave={() => setMouseEnter(false)}
+              onClick={() => setMouseEnter(false)}
             />
           </MHidden>
         </Stack>
