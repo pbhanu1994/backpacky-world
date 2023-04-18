@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
+import { useTheme } from "@mui/material/styles";
+import NextLink from "next/link";
 import { alpha, styled } from "@mui/material/styles";
 import {
   Box,
@@ -13,8 +14,10 @@ import {
   Typography,
   CardActionArea,
 } from "@mui/material";
+import { Icon } from "@iconify/react";
+import chevronLeftFill from "@iconify/icons-eva/chevron-left-fill";
+import chevronRightFill from "@iconify/icons-eva/chevron-right-fill";
 import useCollapseDrawer from "../../../hooks/useCollapseDrawer";
-// import Logo from "./Logo";
 import Scrollbar from "../../atoms/Scrollbar";
 import NavSection from "../../atoms/NavSection";
 import { MHidden } from "../../@material-extend";
@@ -45,58 +48,61 @@ IconCollapse.propTypes = {
   collapseClick: PropTypes.bool,
 };
 
-function IconCollapse({ onToggleCollapse, collapseClick }) {
+function IconCollapse({
+  onToggleCollapse,
+  isCollapse,
+  onMouseEnter,
+  onMouseLeave,
+}) {
+  const theme = useTheme();
   return (
-    <Tooltip title="Mini Menu">
+    <Tooltip onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <CardActionArea
         onClick={onToggleCollapse}
         sx={{
-          width: 18,
-          height: 18,
           display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          boxSizing: "border-box",
+          width: "unset",
+          WebkitTapHighlightColor: "transparent",
+          outline: 0,
+          margin: 0,
           cursor: "pointer",
           borderRadius: "50%",
-          alignItems: "center",
-          color: "text.primary",
-          justifyContent: "center",
-          border: "solid 1px currentColor",
-          ...(collapseClick && {
-            borderWidth: 2,
-          }),
+          overflow: "visible",
+          color: theme.palette.grey[600],
+          transition: "background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+          fontSize: "1.125rem",
+          padding: "4px",
+          top: "32px",
+          position: "fixed",
+          zIndex: 1101,
+          left: isCollapse ? "88px" : "265px",
+          border: `1px solid ${theme.palette.grey[500_24]}`,
+          backdropFilter: "blur(6px)",
+          backgroundColor: "#fff",
         }}
       >
-        <Box
-          sx={{
-            width: 8,
-            height: 8,
-            borderRadius: "50%",
-            bgcolor: "currentColor",
-            transition: (theme) => theme.transitions.create("all"),
-            ...(collapseClick && {
-              width: 0,
-              height: 0,
-            }),
-          }}
-        />
+        {isCollapse ? (
+          <Icon icon={chevronRightFill} />
+        ) : (
+          <Icon icon={chevronLeftFill} />
+        )}
       </CardActionArea>
     </Tooltip>
   );
 }
 
 const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
+  const [mouseEnter, setMouseEnter] = useState(false);
   const { pathname } = useRouter();
   const {
     user: { displayName },
   } = useSelector((state) => state.auth);
 
-  const {
-    isCollapse,
-    collapseClick,
-    collapseHover,
-    onToggleCollapse,
-    onHoverEnter,
-    onHoverLeave,
-  } = useCollapseDrawer();
+  const { isCollapse, collapseClick, collapseHover, onToggleCollapse } =
+    useCollapseDrawer();
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -109,6 +115,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
     <Scrollbar
       sx={{
         height: "100%",
+        overflow: mouseEnter ? "hidden" : "visible",
         "& .simplebar-content": {
           height: "100%",
           display: "flex",
@@ -143,12 +150,13 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
           </NextLink>
 
           <MHidden width="lgDown">
-            {!isCollapse && (
-              <IconCollapse
-                onToggleCollapse={onToggleCollapse}
-                collapseClick={collapseClick}
-              />
-            )}
+            <IconCollapse
+              isCollapse={isCollapse}
+              onToggleCollapse={onToggleCollapse}
+              collapseClick={collapseClick}
+              onMouseEnter={() => setMouseEnter(true)}
+              onMouseLeave={() => setMouseEnter(false)}
+            />
           </MHidden>
         </Stack>
 
@@ -208,8 +216,6 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
         <Drawer
           open
           variant="persistent"
-          onMouseEnter={onHoverEnter}
-          onMouseLeave={onHoverLeave}
           PaperProps={{
             sx: {
               width: DRAWER_WIDTH,
