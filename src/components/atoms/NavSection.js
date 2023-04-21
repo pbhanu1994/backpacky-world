@@ -5,7 +5,7 @@ import arrowIosForwardFill from "@iconify/icons-eva/arrow-ios-forward-fill";
 import arrowIosDownwardFill from "@iconify/icons-eva/arrow-ios-downward-fill";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { alpha, useTheme, styled } from "@mui/material/styles";
+import { alpha, styled } from "@mui/material/styles";
 import {
   Box,
   List,
@@ -15,6 +15,7 @@ import {
   ListSubheader,
   ListItemButton,
 } from "@mui/material";
+import { useTheme } from "@mui/system";
 
 const ListSubheaderStyle = styled((props) => (
   <ListSubheader disableSticky disableGutters {...props} />
@@ -34,18 +35,9 @@ const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
   paddingLeft: theme.spacing(5),
   paddingRight: theme.spacing(2.5),
   color: theme.palette.text.secondary,
-  "&:before": {
-    top: 0,
-    right: 0,
-    width: 3,
-    bottom: 0,
-    content: "''",
-    display: "none",
-    position: "absolute",
-    borderTopLeftRadius: 4,
-    borderBottomLeftRadius: 4,
-    backgroundColor: theme.palette.primary.main,
-  },
+  justifyContent: "center",
+  borderRadius: theme.spacing(1),
+  marginBottom: theme.spacing(0.5),
 }));
 
 const ListItemIconStyle = styled(ListItemIcon)({
@@ -71,6 +63,7 @@ const NavItem = ({ item, isShow }) => {
   const activeRootStyle = {
     color: "primary.main",
     fontWeight: "fontWeightMedium",
+    borderRadius: theme.spacing(1),
     bgcolor: alpha(
       theme.palette.primary.main,
       theme.palette.action.selectedOpacity
@@ -158,6 +151,7 @@ const NavItem = ({ item, isShow }) => {
       <ListItemStyle
         sx={{
           ...(isActiveRoot && activeRootStyle),
+          paddingLeft: isShow ? theme.spacing(2) : theme.spacing(4),
         }}
       >
         <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
@@ -178,12 +172,21 @@ NavItem.propTypes = {
 };
 
 const NavSection = ({ navConfig, isShow = true, ...other }) => {
+  const theme = useTheme();
+
   return (
     <Box {...other}>
       {navConfig.map((list) => {
         const { subheader, items } = list;
         return (
-          <List key={subheader} disablePadding>
+          <List
+            key={subheader}
+            disablePadding
+            sx={{
+              paddingLeft: theme.spacing(2),
+              paddingRight: theme.spacing(2),
+            }}
+          >
             {isShow && <ListSubheaderStyle>{subheader}</ListSubheaderStyle>}
             {items.map((item) => (
               <NavItem key={item.title} item={item} isShow={isShow} />

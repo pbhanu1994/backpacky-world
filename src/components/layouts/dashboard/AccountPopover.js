@@ -13,6 +13,7 @@ import {
   Divider,
   MenuItem,
   Typography,
+  Stack,
 } from "@mui/material";
 import { MenuPopover } from "../../atoms/MenuPopover";
 import { MIconButton } from "../../@material-extend";
@@ -70,7 +71,16 @@ export default function AccountPopover() {
         open={open}
         onClose={handleClose}
         anchorEl={anchorRef.current}
-        sx={{ width: 220 }}
+        sx={{
+          width: 220,
+          p: 0,
+          mt: 1.5,
+          ml: 0.75,
+          "& .MuiMenuItem-root": {
+            typography: "body2",
+            borderRadius: 0.75,
+          },
+        }}
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography
@@ -87,26 +97,28 @@ export default function AccountPopover() {
 
         <Divider sx={{ my: 1 }} />
 
-        {MENU_OPTIONS.map((option) => (
-          <NextLink key={option.label} href={option.linkTo} shallow>
-            <MenuItem
-              onClick={handleClose}
-              sx={{ typography: "body2", py: 1, px: 2.5 }}
-            >
-              <Box
-                component={Icon}
-                icon={option.icon}
-                sx={{
-                  mr: 2,
-                  width: 24,
-                  height: 24,
-                }}
-              />
+        <Stack sx={{ p: 1 }}>
+          {MENU_OPTIONS.map((option) => (
+            <NextLink key={option.label} href={option.linkTo} shallow>
+              <MenuItem
+                onClick={handleClose}
+                sx={{ typography: "body2", py: 1, px: 2.5 }}
+              >
+                <Box
+                  component={Icon}
+                  icon={option.icon}
+                  sx={{
+                    mr: 2,
+                    width: 24,
+                    height: 24,
+                  }}
+                />
 
-              {option.label}
-            </MenuItem>
-          </NextLink>
-        ))}
+                {option.label}
+              </MenuItem>
+            </NextLink>
+          ))}
+        </Stack>
 
         <Box sx={{ p: 2, pt: 1.5 }}>
           <Button
