@@ -95,6 +95,7 @@ export default function ToDoList({
                       padding: "0.8rem 1rem",
                       height: "3.7rem",
                       flexWrap: "nowrap",
+                      alignItems: "center",
                     }}
                     onMouseOver={() => {
                       setSelectedHoverSectionId(item.sectionId);

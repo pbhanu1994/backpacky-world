@@ -65,6 +65,7 @@ export const Option = ({
           container
           direction="row"
           alignItems="center"
+          sx={{ display: isMobile ? "contents" : "flex" }}
           onClick={() =>
             !showitemInput && onUpdateitem(sectionId, item, true, null)
           }
