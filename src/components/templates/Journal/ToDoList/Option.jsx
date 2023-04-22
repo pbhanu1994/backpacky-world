@@ -133,7 +133,7 @@ export const Option = ({
           </span>
         )}
         {isMobile && (
-          <span>
+          <span sx={{ marginLeft: "auto" }}>
             <IconButton size="large" onClick={handleOpen}>
               <Iconify icon={"eva:more-vertical-fill"} width={20} height={20} />
             </IconButton>
