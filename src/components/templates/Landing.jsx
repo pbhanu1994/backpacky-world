@@ -15,6 +15,7 @@ const HeroSection = styled("div")(({ theme }) => ({
   padding: theme.spacing(8, 0),
   marginBottom: theme.spacing(4),
   textAlign: "center",
+  lineHeight: 5,
   "&::before": {
     content: '""',
     position: "absolute",
@@ -79,11 +80,13 @@ const FeatureContent = styled(Box)(({ theme }) => ({
   },
 }));
 
-const GetStartedContent = styled("div")({
+const GetStartedContent = styled("div")(({ theme }) => ({
   display: "flex",
-  justifyContent: "center",
-  padding: "2rem 0",
-});
+  flexDirection: "column",
+  alignItems: "center",
+  padding: theme.spacing(4),
+  lineHeight: 5,
+}));
 
 const Landing = () => {
   return (
@@ -197,6 +200,9 @@ const Landing = () => {
         </FeatureBox>
       </FeatureContainer>
       <GetStartedContent>
+        <Typography variant="h4" align="center">
+          Don't wait any longer to plan your dream vacation.
+        </Typography>
         <Link href="/signup" passHref>
           <Button
             variant="contained"
