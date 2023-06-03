@@ -1,7 +1,11 @@
 {
   "hosting": {
     "public": "public",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "**",
@@ -9,18 +13,31 @@
       }
     ]
   },
-  "functions": {
-    "source": ".",
-    "runtime": "nodejs18",
-    "ignore": [
-      "**/src/**",
-      "**/.vscode/**",
-      ".firebase/**",
-      ".firebaserc",
-      "firebase.json",
-      "**/node_modules/**",
-      "**/public/**",
-      "**/.next/cache/**"
-    ]
-  }
+  "functions": [
+    {
+      "source": ".",
+      "runtime": "nodejs18",
+      "ignore": [
+        "**/src/**",
+        "**/.vscode/**",
+        ".firebase/**",
+        ".firebaserc",
+        "firebase.json",
+        "**/node_modules/**",
+        "**/public/**",
+        "**/.next/cache/**"
+      ],
+      "codebase": "default"
+    },
+    {
+      "source": "functions",
+      "codebase": "functions",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
+    }
+  ]
 }

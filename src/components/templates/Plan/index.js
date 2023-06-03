@@ -6,6 +6,8 @@ import {
   Grid,
   TextField,
   Typography,
+  Autocomplete,
+  CircularProgress,
 } from "@mui/material";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -14,12 +16,14 @@ import * as Yup from "yup";
 import DashboardLayout from "../../layouts/dashboard";
 import Page from "../../atoms/Page";
 import useSettings from "../../../hooks/useSettings";
+import axios from "axios";
 
 export default function Plan({ userId }) {
-  const { themeStretch } = useSettings();
+  const [inputValue, setInputValue] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [options, setOptions] = useState([]);
 
-  //   const [location, setLocation] = useState("");
-  //   const [date, setDate] = useState(dayjs(new Date()));
+  const { themeStretch } = useSettings();
 
   // Validation Schema
   const signUpSchema = Yup.object().shape({
@@ -46,6 +50,37 @@ export default function Plan({ userId }) {
       }
     },
   });
+
+  const handleInputChange = (event, value) => {
+    setLoading(true);
+    setInputValue(value);
+
+    // Make a request to the Google Places Autocomplete API
+    axios
+      .get(
+        "https://us-central1-backpackyworld.cloudfunctions.net/proxy/places",
+        {
+          params: {
+            input: value,
+          },
+        }
+      )
+      .then((response) => {
+        const { predictions } = response.data;
+        if (predictions) {
+          const results = predictions.map((prediction) => ({
+            name: prediction.description,
+            placeId: prediction.place_id,
+          }));
+
+          setOptions(results);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log("Error fetching autocomplete results:", error);
+      });
+  };
 
   const { errors, touched, setFieldValue, handleSubmit, getFieldProps } =
     formik;
@@ -94,15 +129,52 @@ export default function Plan({ userId }) {
                       <Grid container spacing={2} sx={{ alignItems: "center" }}>
                         <Grid item xs={12} md={6}>
                           {/* TODO: Have a re-usable component of countries dropdown */}
-                          <TextField
-                            fullWidth
-                            label="Where do you want to go?"
-                            variant="outlined"
-                            color="primary"
-                            autoFocus
-                            required
-                            {...getFieldProps("location")}
-                            error={Boolean(touched.location && errors.location)}
+                          <Autocomplete
+                            freeSolo
+                            disableClearable
+                            options={options.map((option) => ({
+                              label: option.name,
+                            }))}
+                            inputValue={inputValue}
+                            onInputChange={handleInputChange}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                fullWidth
+                                label="Where do you want to go?"
+                                variant="outlined"
+                                color="primary"
+                                autoFocus
+                                required
+                                {...getFieldProps("location")}
+                                error={Boolean(
+                                  touched.location && errors.location
+                                )}
+                                InputProps={{
+                                  ...params.InputProps,
+                                  endAdornment: (
+                                    <React.Fragment>
+                                      {loading ? (
+                                        <CircularProgress
+                                          color="inherit"
+                                          size={20}
+                                        />
+                                      ) : null}
+                                      {params.InputProps.endAdornment}
+                                    </React.Fragment>
+                                  ),
+                                }}
+                              />
+                            )}
+                            renderOption={(props, option) => {
+                              return (
+                                <li {...props}>
+                                  <Box display="flex" alignItems="center">
+                                    <Typography>{option.label}</Typography>
+                                  </Box>
+                                </li>
+                              );
+                            }}
                           />
                         </Grid>
                         <Grid item xs={12} md={4}>

@@ -119,7 +119,7 @@ const Landing = () => {
           </FeatureImage>
           <FeatureContent>
             <Typography variant="h5" gutterBottom color="primary">
-              Plan Your New Adventure
+              Plan Your Next Adventure
             </Typography>
             <Typography variant="body1" paragraph>
               Our app makes it simple to plan every aspect of your trip, from
