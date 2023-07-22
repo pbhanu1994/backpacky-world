@@ -15,7 +15,7 @@ export const performFlightSearch = async (
     origin,
     destination,
     departureDate,
-    adults, // Number of adults (you can change this as needed)
+    adults,
   };
   const headers = {
     Authorization: `Bearer ${accessToken}`,
@@ -32,5 +32,3 @@ export const performFlightSearch = async (
     return null;
   }
 };
-
-export { performFlightSearch };
