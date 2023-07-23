@@ -2,28 +2,25 @@ import { setAuthorizationHeader, get } from "../../helpers/http";
 import { getAccessToken } from "../auth/amadeusAuth";
 import setAndShowErrorToast from "../../store/actions/config/toast/setAndShowErrorToast";
 
-// Function to perform a flight search
-export const performFlightSearch = async (
+// Function to perform a hotel search
+export const performHotelSearchByCity = async (
   dispatch,
-  originLocationCode,
-  destinationLocationCode,
-  departureDate,
-  adults = 1
+  cityCode,
+  radius = 5
 ) => {
   const accessToken = await getAccessToken();
 
-  const apiEndpoint = "https://test.api.amadeus.com/v2/shopping/flight-offers";
+  const apiEndpoint =
+    "https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city";
   const params = {
-    originLocationCode,
-    destinationLocationCode,
-    departureDate,
-    adults,
+    cityCode,
+    radius,
   };
 
   setAuthorizationHeader(accessToken);
   try {
-    const flightSearchData = await get(apiEndpoint, params);
-    return flightSearchData;
+    const hotelSearchData = await get(apiEndpoint, params);
+    return hotelSearchData;
   } catch (err) {
     console.error("Error occurred:", err.message);
     dispatch(setAndShowErrorToast(err.message));

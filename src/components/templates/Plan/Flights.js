@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { performFlightSearch } from "../../../services/flight/flightSearch";
+import { performFlightOffersSearch } from "../../../services/flight/flightOffers";
 
 export const Flights = () => {
   const [flightSearchResult, setFlightSearchResult] = useState(null);
@@ -14,7 +14,7 @@ export const Flights = () => {
       const destination = "LAX"; // Replace with your desired destination airport code
       const departureDate = "2023-08-01"; // Replace with your desired departure date
 
-      const result = await performFlightSearch(
+      const result = await performFlightOffersSearch(
         dispatch,
         origin,
         destination,
