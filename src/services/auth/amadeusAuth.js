@@ -1,7 +1,7 @@
-import { http } from "../../helpers/http";
+import { setAuthorizationHeader, post } from "../../helpers/http";
 
-const client_id = process.env.AMADEUS_API_KEY;
-const client_secret = process.env.AMEDEUS_SECRET_KEY;
+const client_id = process.env.NEXT_PUBLIC_AMADEUS_API_KEY;
+const client_secret = process.env.NEXT_PUBLIC_AMEDEUS_SECRET_KEY;
 
 // Function to get the access token using client credentials
 export const getAccessToken = async () => {
@@ -12,9 +12,10 @@ export const getAccessToken = async () => {
     client_secret,
   };
 
+  setAuthorizationHeader(null);
   try {
-    const response = await http.post(tokenUrl, payload);
-    return response.data.access_token;
+    const { access_token } = await post(tokenUrl, payload);
+    return access_token;
   } catch (error) {
     throw new Error("Failed to get access token");
   }

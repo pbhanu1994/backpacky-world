@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { performFlightSearch } from "../../../services/flight/flightSearch";
 
-const Flights = () => {
+export const Flights = () => {
   const [flightSearchResult, setFlightSearchResult] = useState(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Perform the flight search when the component mounts
@@ -12,6 +15,7 @@ const Flights = () => {
       const departureDate = "2023-08-01"; // Replace with your desired departure date
 
       const result = await performFlightSearch(
+        dispatch,
         origin,
         destination,
         departureDate
@@ -33,5 +37,3 @@ const Flights = () => {
     </div>
   );
 };
-
-export default Flights;
