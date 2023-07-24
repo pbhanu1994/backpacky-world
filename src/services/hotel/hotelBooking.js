@@ -32,7 +32,7 @@ export const performHotelBooking = async (
         {
           method: "creditCard",
           card: {
-            vendorCode: "VI",
+            vendorCode: "VI", //VISA, CA- MasterCard, etc. (refer documentation for more..)
             cardNumber: "0000000000000000",
             expiryDate: "2026-01",
           },
