@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-const serviceAccount = require("../config/firebase-adminsdk.json");
+const serviceAccount = require("../config/firebaseAdminSdk");
 
 export const verifyIdToken = (token) => {
   if (!admin.apps.length) {

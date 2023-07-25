@@ -1,7 +1,7 @@
 import { setAuthorizationHeader, post } from "../../helpers/http";
 
 const client_id = process.env.NEXT_PUBLIC_AMADEUS_API_KEY;
-const client_secret = process.env.NEXT_PUBLIC_AMEDEUS_SECRET_KEY;
+const client_secret = process.env.NEXT_PUBLIC_AMADEUS_SECRET_KEY;
 
 // Function to get the access token using client credentials
 export const getAccessToken = async () => {
