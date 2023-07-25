@@ -34,8 +34,6 @@ const Dialog = dynamic(() => import("../src/components/atoms/DialogBox"), {
 
 const clientSideEmotionCache = createEmotionCache();
 
-console.log("NODE_ENV", process.env.NODE_ENV);
-
 function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
