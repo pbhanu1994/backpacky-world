@@ -10,7 +10,7 @@ app.get("/places", async (req, res) => {
   try {
     const { input } = req.query;
     const response = await axios.get(
-      `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=AIzaSyBVc4HiK4WQXZJ6TVbws1TkepSbzRIHXzs`
+      `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API}`
     );
     res.json(response.data);
   } catch (error) {

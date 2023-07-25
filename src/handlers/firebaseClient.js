@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import "firebase/auth";
 import "firebase/firestore";
-import FIREBASE_CONFIG from "../config/firebase.json";
+import FIREBASE_CONFIG from "../config/firebase";
 
 // Initialize Firebase
 const app = initializeApp(FIREBASE_CONFIG);
