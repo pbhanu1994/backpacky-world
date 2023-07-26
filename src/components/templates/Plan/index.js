@@ -17,6 +17,7 @@ import DashboardLayout from "../../layouts/dashboard";
 import Page from "../../atoms/Page";
 import useSettings from "../../../hooks/useSettings";
 import PlanTrip from "./PlanTrip";
+import fetchPlacesAutocomplete from "../../../utils/googlePlacesApi";
 
 export default function Plan({ userId }) {
   const [loading, setLoading] = useState(false);
@@ -50,25 +51,8 @@ export default function Plan({ userId }) {
     setFieldValue("location", value);
 
     try {
-      // Make a request to the Google Places Autocomplete API
-      const response = await fetch(
-        `/api/places-autocomplete?input=${encodeURIComponent(value)}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch data from Google Places API");
-      }
-
-      const predictions = await response.json();
-
-      // Map the predictions to desired results
-      const results = predictions.map((prediction) => ({
-        name: prediction.description,
-        placeId: prediction.place_id,
-      }));
-
+      const results = await fetchPlacesAutocomplete(value);
       setOptions(results);
-    } catch (error) {
-      console.error("Error fetching data:", error.message);
     } finally {
       setLoading(false);
     }
