@@ -69,8 +69,8 @@ const Home = ({ userId }) => {
             non enim eleifend felis pretium feugiat. Donec mi odio, faucibus at,
             scelerisque quis, convallis in, nisi. Fusce vel dui. Quisque libero
             metus, condimentum nec, tempor a, commodo mollis, magna. In enim
-            justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Cras
-            dapibus.
+            justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Cras dapibus
+            really.
           </Typography>
         </Container>
       </Page>
