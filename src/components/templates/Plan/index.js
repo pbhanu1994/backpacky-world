@@ -10,7 +10,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import dayjs from "dayjs";
-import axios from "axios";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -46,35 +45,33 @@ export default function Plan({ userId }) {
     },
   });
 
-  const handleInputChange = (event, value) => {
+  const handleInputChange = async (event, value) => {
     setLoading(true);
     setFieldValue("location", value);
 
-    // Make a request to the Google Places Autocomplete API
-    axios
-      .get(
-        "https://us-central1-backpackyworld.cloudfunctions.net/proxy/places",
-        {
-          params: {
-            input: value,
-          },
-        }
-      )
-      .then((response) => {
-        const { predictions } = response.data;
-        if (predictions) {
-          const results = predictions.map((prediction) => ({
-            name: prediction.description,
-            placeId: prediction.place_id,
-          }));
+    try {
+      // Make a request to the Google Places Autocomplete API
+      const response = await fetch(
+        `/api/places-autocomplete?input=${encodeURIComponent(value)}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch data from Google Places API");
+      }
 
-          setOptions(results);
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.log("Error fetching autocomplete results:", error);
-      });
+      const predictions = await response.json();
+
+      // Map the predictions to desired results
+      const results = predictions.map((prediction) => ({
+        name: prediction.description,
+        placeId: prediction.place_id,
+      }));
+
+      setOptions(results);
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const { errors, touched, values, setFieldValue, handleSubmit } = formik;
