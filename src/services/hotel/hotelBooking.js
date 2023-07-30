@@ -7,7 +7,8 @@ export const performHotelBooking = async (
   dispatch,
   offerId,
   guests,
-  payments
+  payments,
+  rooms
 ) => {
   const accessToken = await getAccessToken();
 
@@ -36,6 +37,13 @@ export const performHotelBooking = async (
             cardNumber: "0000000000000000",
             expiryDate: "2026-01",
           },
+        },
+      ],
+      rooms: [
+        {
+          guestIds: [null], // List of Ids, e.g: 1
+          paymentId: null, //e.g: 1
+          specialRequest: "", // e.g: "I will arrive at midnight"
         },
       ],
     },
