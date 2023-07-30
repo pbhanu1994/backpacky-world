@@ -39,6 +39,7 @@ export const performHotelBooking = async (
           },
         },
       ],
+      // Optional:
       rooms: [
         {
           guestIds: [null], // List of Ids, e.g: 1
