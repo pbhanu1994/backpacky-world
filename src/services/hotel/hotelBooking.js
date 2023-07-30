@@ -29,6 +29,7 @@ export const performHotelBooking = async (
           },
         },
       ],
+      // Payment will not be made in most cases, but do pass accurate payment info
       payments: [
         {
           method: "creditCard",
