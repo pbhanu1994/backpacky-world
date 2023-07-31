@@ -1,4 +1,4 @@
-import { amadeusApiUrl } from "../config/amadeusApiConfig";
+import { amadeusApiUrl } from "../../config/apiConfig";
 import { setAuthorizationHeader, post } from "../../helpers/http";
 import { getAccessToken } from "../auth/amadeusAuth";
 import setAndShowErrorToast from "../../store/actions/config/toast/setAndShowErrorToast";

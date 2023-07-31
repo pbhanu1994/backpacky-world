@@ -1,4 +1,4 @@
-import { amadeusApiUrl } from "../config/amadeusApiConfig";
+import { amadeusApiUrl } from "../../config/apiConfig";
 import { setAuthorizationHeader, post } from "../../helpers/http";
 
 const client_id = process.env.NEXT_PUBLIC_AMADEUS_API_KEY;
