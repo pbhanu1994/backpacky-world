@@ -13,7 +13,7 @@ export const performHotelBooking = async (
 ) => {
   const accessToken = await getAccessToken();
 
-  const apiEndpoint = `https://${amadeusApiUrl}/v1/booking/hotel-bookings`;
+  const apiEndpoint = `${amadeusApiUrl}/v1/booking/hotel-bookings`;
   const payload = {
     data: {
       offerId: "NRPQNQBOJM",

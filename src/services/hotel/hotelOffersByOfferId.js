@@ -11,7 +11,7 @@ export const getHotelOffersByOfferId = async (
 ) => {
   const accessToken = await getAccessToken();
 
-  const apiEndpoint = `https://${amadeusApiUrl}/v3/shopping/hotel-offers`;
+  const apiEndpoint = `${amadeusApiUrl}/v3/shopping/hotel-offers`;
   const params = {
     offerId,
     lang: language,

@@ -12,7 +12,7 @@ export const performHotelSearchByGeoCode = async (
 ) => {
   const accessToken = await getAccessToken();
 
-  const apiEndpoint = `https://${amadeusApiUrl}/v1/reference-data/locations/hotels/by-geocode`;
+  const apiEndpoint = `${amadeusApiUrl}/v1/reference-data/locations/hotels/by-geocode`;
   const params = {
     latitude,
     longitude,

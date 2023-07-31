@@ -11,7 +11,7 @@ export const performHotelSearchByCity = async (
 ) => {
   const accessToken = await getAccessToken();
 
-  const apiEndpoint = `https://${amadeusApiUrl}/v1/reference-data/locations/hotels/by-city`;
+  const apiEndpoint = `${amadeusApiUrl}/v1/reference-data/locations/hotels/by-city`;
   const params = {
     cityCode,
     radius,

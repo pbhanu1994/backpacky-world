@@ -13,7 +13,7 @@ export const performFlightOffersSearch = async (
 ) => {
   const accessToken = await getAccessToken();
 
-  const apiEndpoint = `https://${amadeusApiUrl}/v2/shopping/flight-offers`;
+  const apiEndpoint = `${amadeusApiUrl}/v2/shopping/flight-offers`;
   const params = {
     originLocationCode,
     destinationLocationCode,

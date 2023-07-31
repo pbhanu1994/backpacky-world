@@ -6,7 +6,7 @@ const client_secret = process.env.NEXT_PUBLIC_AMADEUS_SECRET_KEY;
 
 // Function to get the access token using client credentials
 export const getAccessToken = async () => {
-  const tokenUrl = `https://${amadeusApiUrl}/v1/security/oauth2/token`;
+  const tokenUrl = `${amadeusApiUrl}/v1/security/oauth2/token`;
   const payload = {
     grant_type: "client_credentials",
     client_id,
