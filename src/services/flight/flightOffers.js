@@ -1,3 +1,4 @@
+import { amadeusApiUrl } from "../config/amadeusApiConfig";
 import { setAuthorizationHeader, get } from "../../helpers/http";
 import { getAccessToken } from "../auth/amadeusAuth";
 import setAndShowErrorToast from "../../store/actions/config/toast/setAndShowErrorToast";
@@ -12,7 +13,7 @@ export const performFlightOffersSearch = async (
 ) => {
   const accessToken = await getAccessToken();
 
-  const apiEndpoint = "https://test.api.amadeus.com/v2/shopping/flight-offers";
+  const apiEndpoint = `https://${amadeusApiUrl}/v2/shopping/flight-offers`;
   const params = {
     originLocationCode,
     destinationLocationCode,

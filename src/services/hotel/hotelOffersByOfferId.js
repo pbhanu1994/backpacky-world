@@ -1,3 +1,4 @@
+import { amadeusApiUrl } from "../config/amadeusApiConfig";
 import { setAuthorizationHeader, get } from "../../helpers/http";
 import { getAccessToken } from "../auth/amadeusAuth";
 import setAndShowErrorToast from "../../store/actions/config/toast/setAndShowErrorToast";
@@ -10,7 +11,7 @@ export const getHotelOffersByOfferId = async (
 ) => {
   const accessToken = await getAccessToken();
 
-  const apiEndpoint = "https://test.api.amadeus.com/v3/shopping/hotel-offers";
+  const apiEndpoint = `https://${amadeusApiUrl}/v3/shopping/hotel-offers`;
   const params = {
     offerId,
     lang: language,

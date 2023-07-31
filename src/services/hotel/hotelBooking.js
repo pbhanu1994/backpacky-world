@@ -1,3 +1,4 @@
+import { amadeusApiUrl } from "../config/amadeusApiConfig";
 import { setAuthorizationHeader, post } from "../../helpers/http";
 import { getAccessToken } from "../auth/amadeusAuth";
 import setAndShowErrorToast from "../../store/actions/config/toast/setAndShowErrorToast";
@@ -12,7 +13,7 @@ export const performHotelBooking = async (
 ) => {
   const accessToken = await getAccessToken();
 
-  const apiEndpoint = "https://test.api.amadeus.com/v1/booking/hotel-bookings";
+  const apiEndpoint = `https://${amadeusApiUrl}/v1/booking/hotel-bookings`;
   const payload = {
     data: {
       offerId: "NRPQNQBOJM",

@@ -1,3 +1,4 @@
+import { amadeusApiUrl } from "../config/amadeusApiConfig";
 import { setAuthorizationHeader, get } from "../../helpers/http";
 import { getAccessToken } from "../auth/amadeusAuth";
 import setAndShowErrorToast from "../../store/actions/config/toast/setAndShowErrorToast";
@@ -10,8 +11,7 @@ export const performHotelSearchByCity = async (
 ) => {
   const accessToken = await getAccessToken();
 
-  const apiEndpoint =
-    "https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city";
+  const apiEndpoint = `https://${amadeusApiUrl}/v1/reference-data/locations/hotels/by-city`;
   const params = {
     cityCode,
     radius,
