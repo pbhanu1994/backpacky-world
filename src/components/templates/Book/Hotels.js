@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import HotelCard from "./HotelCard";
 import { performHotelSearchByCity } from "../../../services/hotel/hotelsByCity";
 
 export const Hotels = () => {
@@ -12,8 +13,11 @@ export const Hotels = () => {
     const performSearch = async () => {
       const cityCode = "LON"; // Replace with your desired city code
 
-      const result = await performHotelSearchByCity(dispatch, cityCode);
-      setHotelSearchResult(result);
+      const { data: hotelsResult, meta } = await performHotelSearchByCity(
+        dispatch,
+        cityCode
+      );
+      setHotelSearchResult({ hotels: hotelsResult, meta });
     };
 
     performSearch();
@@ -23,7 +27,7 @@ export const Hotels = () => {
     <div>
       <h1>Hotel Search Results:</h1>
       {hotelSearchResult ? (
-        <pre>{JSON.stringify(hotelSearchResult, null, 2)}</pre>
+        hotelSearchResult.hotels.map((hotel) => <HotelCard hotel={hotel} />)
       ) : (
         <p>Loading...</p>
       )}
