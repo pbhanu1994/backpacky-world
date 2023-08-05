@@ -22,7 +22,11 @@ const SearchHotelsForm = () => {
   const [checkOutDate, setCheckOutDate] = useState(dayjs(new Date()));
   const [numRooms, setNumRooms] = useState(1);
   const [numGuests, setNumGuests] = useState(1);
-  const [destinationError, setDestinationError] = useState(false);
+  const [searchHotelsFormError, setSearchHotelFormError] = useState({
+    destination: false,
+    checkInDate: false,
+    checkOutDate: false,
+  });
 
   const handleLocationInputChange = async (event, value) => {
     setLoading(true);
@@ -31,21 +35,54 @@ const SearchHotelsForm = () => {
     try {
       const results = await fetchPlacesAutocomplete(value);
       setOptions(results);
-      setDestinationError(false);
+      setSearchHotelFormError(false);
     } finally {
       setLoading(false);
     }
   };
 
+  const validateForm = () => {
+    const parsedCheckInDate = new Date(checkInDate);
+    const parsedCheckOutDate = new Date(checkOutDate);
+
+    const isEmptyCheckInDate =
+      isNaN(parsedCheckInDate) ||
+      parsedCheckInDate.toString() === "Invalid Date";
+    const isEmptyCheckOutDate =
+      isNaN(parsedCheckOutDate) ||
+      parsedCheckOutDate.toString() === "Invalid Date";
+
+    if (!destination) {
+      setSearchHotelFormError((prevState) => ({
+        ...prevState,
+        destination: true,
+      }));
+      return true;
+    }
+    if (isEmptyCheckInDate) {
+      setSearchHotelFormError((prevState) => ({
+        ...prevState,
+        checkInDate: true,
+      }));
+      return true;
+    }
+    if (isEmptyCheckOutDate) {
+      setSearchHotelFormError((prevState) => ({
+        ...prevState,
+        checkOutDate: true,
+      }));
+      return true;
+    }
+
+    return false;
+  };
+
   const handleSearch = (e) => {
     e.preventDefault();
 
-    if (!destination) {
-      setDestinationError(true);
-      return;
-    }
-
-    setDestinationError(false);
+    // Validate the form
+    const errors = validateForm();
+    if (errors) return;
 
     // Perform hotel search based on form inputs
     console.log("Search parameters:", {
@@ -78,9 +115,10 @@ const SearchHotelsForm = () => {
                   variant="outlined"
                   color="primary"
                   autoFocus
-                  error={destinationError}
+                  error={searchHotelsFormError.destination}
                   helperText={
-                    destinationError && "Please enter a valid destination"
+                    searchHotelsFormError.destination &&
+                    "Please enter a valid destination"
                   }
                   InputProps={{
                     ...params.InputProps,
