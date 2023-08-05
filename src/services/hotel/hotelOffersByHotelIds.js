@@ -16,7 +16,7 @@ export const getHotelOffersByHotelIds = async (
 
   const apiEndpoint = `${amadeusApiUrl}/v3/shopping/hotel-offers`;
   const params = {
-    hotelIds, // List of HotelIds ["XXXXXXX", "XXXXXXX"]
+    hotelIds: hotelIds.join(","), // List of HotelIds ["XXXXXXX", "XXXXXXX"]
     adults,
     checkInDate, // Example : 2023-11-22
     checkOutDate, // Example : 2023-12-18

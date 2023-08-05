@@ -12,7 +12,7 @@ export const Flights = () => {
     const performSearch = async () => {
       const origin = "JFK"; // Replace with your desired origin airport code
       const destination = "LAX"; // Replace with your desired destination airport code
-      const departureDate = "2023-08-01"; // Replace with your desired departure date
+      const departureDate = "2023-08-30"; // Replace with your desired departure date
 
       const result = await performFlightOffersSearch(
         dispatch,

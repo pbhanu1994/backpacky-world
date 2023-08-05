@@ -1,29 +1,62 @@
 import React from "react";
-import { Card, CardContent, Typography, Box } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  Divider,
+} from "@mui/material";
+import { styled } from "@mui/system";
 
-const HotelCard = ({ hotel }) => {
+const ResponsiveCard = styled(Card)(({ theme }) => ({
+  marginBottom: theme.spacing(2), // Add some vertical spacing
+
+  [theme.breakpoints.up("md")]: {
+    display: "inline-block",
+    width: "calc(50% - 16px)", // 2 cards in a row for medium screens (like iPads)
+    marginRight: theme.spacing(2), // Add right margin for spacing between cards
+    verticalAlign: "top",
+  },
+
+  [theme.breakpoints.up("lg")]: {
+    width: "calc(33.33% - 16px)", // 3 cards in a row for large screens (desktops)
+    marginRight: theme.spacing(2), // Add right margin for spacing between cards
+    verticalAlign: "top",
+  },
+}));
+
+const HotelCard = ({ offer }) => {
+  const {
+    hotel,
+    offers: [firstOffer],
+  } = offer;
+
   return (
-    <Card sx={{ my: 1.6 }}>
+    <ResponsiveCard>
+      <CardMedia
+        component="img"
+        height="140"
+        image={`https://via.placeholder.com/300x200`} // Replace with actual image URL
+        alt={hotel.name}
+      />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {hotel.name}
+        <Typography variant="h6">{hotel.name}</Typography>
+        <Typography variant="subtitle2" color="textSecondary">
+          {hotel.cityCode}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {hotel.address.countryCode}
+        <Divider sx={{ marginY: 1 }} />
+        <Typography variant="body2">
+          {firstOffer.room.description.text}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Distance: {hotel.distance.value} {hotel.distance.unit}
+        <Typography variant="subtitle1">
+          Price: {firstOffer.price.total} {firstOffer.price.currency}
         </Typography>
-        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-          <Typography variant="body2" color="text.secondary">
-            Latitude: {hotel.geoCode.latitude}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Longitude: {hotel.geoCode.longitude}
-          </Typography>
-        </Box>
+        <Button variant="contained" color="primary" fullWidth>
+          Book Now
+        </Button>
       </CardContent>
-    </Card>
+    </ResponsiveCard>
   );
 };
 
