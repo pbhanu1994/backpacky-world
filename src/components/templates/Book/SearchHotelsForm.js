@@ -78,6 +78,7 @@ const SearchHotelsForm = () => {
               inputValue={destination}
               onInputValueChange={(value) => setDestination(value)}
               label="Destination"
+              autoFocus
               error={!destination && searchHotelsFormError.destination}
               helperText={
                 !destination &&

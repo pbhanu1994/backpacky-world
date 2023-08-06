@@ -95,6 +95,7 @@ export default function Plan({ userId }) {
                                 setFieldValue("location", value)
                               }
                               label="Where do you want to go?"
+                              autoFocus
                               error={Boolean(
                                 touched.location && errors.location
                               )}

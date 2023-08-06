@@ -97,6 +97,7 @@ const SearchFlightsForm = () => {
               inputValue={from}
               onInputValueChange={(value) => setFrom(value)}
               label="From"
+              autoFocus
               error={!from && searchFlightsFormError.from}
               helperText={
                 !from &&
@@ -158,15 +159,14 @@ const SearchFlightsForm = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               select
-              label="Adults"
+              label="Children"
               fullWidth
               value={numAdults}
               onChange={(e) => setNumChildren(e.target.value)}
-              required
             >
               {[0, 1, 2, 3, 4, 5, 6, 7].map((num) => (
                 <MenuItem key={num} value={num}>
-                  {num} children
+                  {num} Children
                 </MenuItem>
               ))}
             </TextField>
@@ -180,7 +180,7 @@ const SearchFlightsForm = () => {
               onChange={(e) => setCabinClass(e.target.value)}
               required
             >
-              {["Cabin", "Economy", "Premium", "Business", "First"].map(
+              {["Cabin", "Economy", "Premium Economy", "Business", "First"].map(
                 (option) => (
                   <MenuItem key={option} value={option}>
                     {option}

@@ -14,6 +14,7 @@ const PlacesAutocompleteField = ({
   label,
   error,
   helperText,
+  autoFocus,
 }) => {
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState([]);
@@ -46,7 +47,7 @@ const PlacesAutocompleteField = ({
           label={label}
           variant="outlined"
           color="primary"
-          autoFocus
+          autoFocus={autoFocus}
           error={error}
           helperText={error && helperText}
           InputProps={{
