@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Container } from "@mui/material";
+import SearchFlightsForm from "./SearchFlightsForm";
 import { performFlightOffersSearch } from "../../../services/flight/flightOffers";
 
 export const Flights = () => {
@@ -27,13 +29,14 @@ export const Flights = () => {
   }, []);
 
   return (
-    <div>
+    <Container>
+      <SearchFlightsForm />
       <h1>Flight Search Results:</h1>
       {flightSearchResult ? (
         <pre>{JSON.stringify(flightSearchResult, null, 2)}</pre>
       ) : (
         <p>Loading...</p>
       )}
-    </div>
+    </Container>
   );
 };
