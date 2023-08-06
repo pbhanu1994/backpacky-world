@@ -1,22 +1,10 @@
 import React, { useState } from "react";
-import {
-  Paper,
-  Box,
-  TextField,
-  Typography,
-  Autocomplete,
-  Button,
-  Grid,
-  MenuItem,
-  CircularProgress,
-} from "@mui/material";
+import { Paper, TextField, Button, Grid, MenuItem } from "@mui/material";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import fetchPlacesAutocomplete from "../../../utils/googlePlacesApi";
+import PlacesAutocompleteField from "../../atoms/PlacesAutoComplete";
 
 const SearchHotelsForm = () => {
-  const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState([]);
   const [destination, setDestination] = useState("");
   const [checkInDate, setCheckInDate] = useState(dayjs(new Date()));
   const [checkOutDate, setCheckOutDate] = useState(dayjs(new Date()));
@@ -27,19 +15,6 @@ const SearchHotelsForm = () => {
     checkInDate: false,
     checkOutDate: false,
   });
-
-  const handleLocationInputChange = async (event, value) => {
-    setLoading(true);
-    setDestination(value);
-
-    try {
-      const results = await fetchPlacesAutocomplete(value);
-      setOptions(results);
-      setSearchHotelFormError(false);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const validateForm = () => {
     const parsedCheckInDate = new Date(checkInDate);
@@ -99,49 +74,16 @@ const SearchHotelsForm = () => {
       <form onSubmit={handleSearch}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Autocomplete
-              freeSolo
-              disableClearable
-              options={options.map((option) => ({
-                label: option.name,
-              }))}
+            <PlacesAutocompleteField
               inputValue={destination}
-              onInputChange={handleLocationInputChange}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  label="Destination"
-                  variant="outlined"
-                  color="primary"
-                  autoFocus
-                  error={searchHotelsFormError.destination}
-                  helperText={
-                    searchHotelsFormError.destination &&
-                    "Please enter a valid destination"
-                  }
-                  InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
-                      <React.Fragment>
-                        {loading ? (
-                          <CircularProgress color="inherit" size={20} />
-                        ) : null}
-                        {params.InputProps.endAdornment}
-                      </React.Fragment>
-                    ),
-                  }}
-                />
-              )}
-              renderOption={(props, option) => {
-                return (
-                  <li {...props}>
-                    <Box display="flex" alignItems="center">
-                      <Typography>{option.label}</Typography>
-                    </Box>
-                  </li>
-                );
-              }}
+              onInputValueChange={(value) => setDestination(value)}
+              label="Destination"
+              error={!destination && searchHotelsFormError.destination}
+              helperText={
+                !destination &&
+                searchHotelsFormError.destination &&
+                "Please enter a valid destination city"
+              }
             />
           </Grid>
           <Grid item xs={12} sm={6}>

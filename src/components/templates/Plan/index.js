@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-  Autocomplete,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
@@ -17,11 +8,9 @@ import DashboardLayout from "../../layouts/dashboard";
 import Page from "../../atoms/Page";
 import useSettings from "../../../hooks/useSettings";
 import PlanTrip from "./PlanTrip";
-import fetchPlacesAutocomplete from "../../../utils/googlePlacesApi";
+import PlacesAutocompleteField from "../../atoms/PlacesAutoComplete";
 
 export default function Plan({ userId }) {
-  const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState([]);
   const [showPlanTrip, setShowPlanTrip] = useState(false);
 
   const { themeStretch } = useSettings();
@@ -45,18 +34,6 @@ export default function Plan({ userId }) {
       }
     },
   });
-
-  const handleInputChange = async (event, value) => {
-    setLoading(true);
-    setFieldValue("location", value);
-
-    try {
-      const results = await fetchPlacesAutocomplete(value);
-      setOptions(results);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const { errors, touched, values, setFieldValue, handleSubmit } = formik;
 
@@ -112,52 +89,15 @@ export default function Plan({ userId }) {
                           sx={{ alignItems: "center" }}
                         >
                           <Grid item xs={12} md={6}>
-                            {/* TODO: Have a re-usable component of countries dropdown */}
-                            <Autocomplete
-                              freeSolo
-                              disableClearable
-                              options={options.map((option) => ({
-                                label: option.name,
-                              }))}
+                            <PlacesAutocompleteField
                               inputValue={location}
-                              onInputChange={handleInputChange}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  fullWidth
-                                  label="Where do you want to go?"
-                                  variant="outlined"
-                                  color="primary"
-                                  autoFocus
-                                  required
-                                  error={Boolean(
-                                    touched.location && errors.location
-                                  )}
-                                  InputProps={{
-                                    ...params.InputProps,
-                                    endAdornment: (
-                                      <React.Fragment>
-                                        {loading ? (
-                                          <CircularProgress
-                                            color="inherit"
-                                            size={20}
-                                          />
-                                        ) : null}
-                                        {params.InputProps.endAdornment}
-                                      </React.Fragment>
-                                    ),
-                                  }}
-                                />
+                              onInputValueChange={(value) =>
+                                setFieldValue("location", value)
+                              }
+                              label="Where do you want to go?"
+                              error={Boolean(
+                                touched.location && errors.location
                               )}
-                              renderOption={(props, option) => {
-                                return (
-                                  <li {...props}>
-                                    <Box display="flex" alignItems="center">
-                                      <Typography>{option.label}</Typography>
-                                    </Box>
-                                  </li>
-                                );
-                              }}
                             />
                           </Grid>
                           <Grid item xs={12} md={4}>
