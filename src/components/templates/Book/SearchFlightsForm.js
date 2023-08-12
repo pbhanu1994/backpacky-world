@@ -109,11 +109,7 @@ const SearchFlightsForm = () => {
   return (
     // TODO: Add Tabs to choose One Way or Round Trip
     <Paper elevation={3} sx={{ padding: 3 }}>
-      <Tabs
-        value={currentTab}
-        onChange={onChangeTab}
-        sx={{ marginBottom: "1.4rem" }}
-      >
+      <Tabs value={currentTab} onChange={onChangeTab} sx={{ mb: 3 }}>
         {FLIGHT_TYPE_TABS.map((tab) => (
           <Tab
             disableRipple
