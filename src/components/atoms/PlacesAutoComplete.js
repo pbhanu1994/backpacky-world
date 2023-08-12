@@ -10,6 +10,7 @@ import fetchPlacesAutocomplete from "../../utils/googlePlacesApi";
 
 const PlacesAutocompleteField = ({
   inputValue,
+  cities = false,
   onInputValueChange,
   label,
   error,
@@ -24,7 +25,7 @@ const PlacesAutocompleteField = ({
     onInputValueChange(value);
 
     try {
-      const results = await fetchPlacesAutocomplete(value);
+      const results = await fetchPlacesAutocomplete(value, cities);
       setOptions(results);
     } finally {
       setLoading(false);

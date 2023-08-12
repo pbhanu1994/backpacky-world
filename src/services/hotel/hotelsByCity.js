@@ -7,7 +7,7 @@ import setAndShowErrorToast from "../../store/actions/config/toast/setAndShowErr
 export const performHotelSearchByCity = async (
   dispatch,
   cityCode,
-  radius = 5
+  radius = 15
 ) => {
   const accessToken = await getAccessToken();
 

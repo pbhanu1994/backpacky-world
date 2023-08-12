@@ -15,9 +15,13 @@ export const JournalCard = ({ image, imageTitle, title, path, completed }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
+  const handleClick = () => {
+    router.push(path);
+  };
+
   return (
     <Card sx={{ width: isMobile ? "100%" : 340 }} variant="outlined">
-      <CardActionArea onClick={() => router.push(path)}>
+      <CardActionArea onClick={handleClick}>
         <CardMedia sx={{ height: 140 }} image={image} title={imageTitle} />
         <CardContent>
           <Typography color="textSecondary" gutterBottom>

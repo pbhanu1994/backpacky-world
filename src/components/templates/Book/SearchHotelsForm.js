@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Paper, TextField, Button, Grid, MenuItem } from "@mui/material";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import PlacesAutocompleteField from "../../atoms/PlacesAutoComplete";
+import { PAGE_PATH } from "../../../constants/navigationConstants";
+import { fDateWithYMD } from "../../../utils/formatTime";
 
 const SearchHotelsForm = () => {
   const [destination, setDestination] = useState("");
@@ -15,6 +18,8 @@ const SearchHotelsForm = () => {
     checkInDate: false,
     checkOutDate: false,
   });
+
+  const router = useRouter();
 
   const validateForm = () => {
     const parsedCheckInDate = new Date(checkInDate);
@@ -59,13 +64,17 @@ const SearchHotelsForm = () => {
     const errors = validateForm();
     if (errors) return;
 
-    // Perform hotel search based on form inputs
-    console.log("Search parameters:", {
+    const searchData = {
       destination,
-      checkInDate,
-      checkOutDate,
+      checkInDate: fDateWithYMD(checkInDate),
+      checkOutDate: fDateWithYMD(checkOutDate),
       numRooms,
       numGuests,
+    };
+
+    router.push({
+      pathname: PAGE_PATH.BOOK_HOTELS,
+      query: searchData,
     });
   };
 
@@ -76,6 +85,7 @@ const SearchHotelsForm = () => {
           <Grid item xs={12}>
             <PlacesAutocompleteField
               inputValue={destination}
+              cities
               onInputValueChange={(value) => setDestination(value)}
               label="Destination"
               autoFocus

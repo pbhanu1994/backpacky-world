@@ -1,7 +1,9 @@
-const fetchPlacesAutocomplete = async (input) => {
+const fetchPlacesAutocomplete = async (input, cities = false) => {
   try {
     const response = await fetch(
-      `/api/places-autocomplete?input=${encodeURIComponent(input)}`
+      `/api/places-autocomplete?input=${encodeURIComponent(
+        input
+      )}&cities=${cities}`
     );
     if (!response.ok) {
       throw new Error("Failed to fetch data from Google Places API");

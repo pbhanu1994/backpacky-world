@@ -6,8 +6,8 @@ import Page from "../../atoms/Page";
 import Iconify from "../../atoms/Iconify";
 import useTabs from "../../../hooks/useTabs";
 import useSettings from "../../../hooks/useSettings";
-import { Flights } from "./Flights";
-import { Hotels } from "./Hotels";
+import SearchFlightsForm from "./SearchFlightsForm";
+import SearchHotelsForm from "./SearchHotelsForm";
 import { Cars } from "./Cars";
 
 const BookType = {
@@ -27,12 +27,12 @@ const Book = ({ location, date }) => {
     {
       value: BookType.Flights,
       icon: <Iconify icon={"mdi:flight"} width={20} height={20} />,
-      component: <Flights />,
+      component: <SearchFlightsForm />,
     },
     {
       value: BookType.Hotels,
       icon: <Iconify icon={"mdi:hotel"} width={20} height={20} />,
-      component: <Hotels />,
+      component: <SearchHotelsForm />,
     },
     {
       value: BookType.Cars,

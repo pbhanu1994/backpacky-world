@@ -124,6 +124,7 @@ const SearchFlightsForm = () => {
           <Grid item xs={12} sm={6}>
             <PlacesAutocompleteField
               inputValue={from}
+              cities
               onInputValueChange={(value) => setFrom(value)}
               label="From"
               autoFocus
@@ -138,6 +139,7 @@ const SearchFlightsForm = () => {
           <Grid item xs={12} sm={6}>
             <PlacesAutocompleteField
               inputValue={to}
+              cities
               onInputValueChange={(value) => setTo(value)}
               label="To"
               error={!to && searchFlightsFormError.to}

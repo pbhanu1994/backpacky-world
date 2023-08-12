@@ -9,12 +9,19 @@ export default async function handler(req, res) {
   const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY;
 
   // The query parameter for the Google Places API autocomplete request
-  const { input } = req.query;
+  const { input, cities } = req.query;
+
+  // Set the types based on the "cities" parameter
+  let types = "";
+
+  if (cities === "true") {
+    types = "(cities)";
+  }
 
   // Google Places API endpoint for autocomplete
   const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${API_KEY}&input=${encodeURIComponent(
     input
-  )}`;
+  )}&types=${encodeURIComponent(types)}`;
 
   try {
     // Fetch data from Google Places API
