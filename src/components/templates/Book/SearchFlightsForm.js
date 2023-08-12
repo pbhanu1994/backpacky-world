@@ -1,12 +1,22 @@
 import React, { useState } from "react";
-import { Paper, TextField, Button, Grid, MenuItem } from "@mui/material";
+import { capitalCase } from "change-case";
+import {
+  Paper,
+  TextField,
+  Tabs,
+  Tab,
+  Button,
+  Grid,
+  MenuItem,
+} from "@mui/material";
+import useTabs from "../../../hooks/useTabs";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import PlacesAutocompleteField from "../../atoms/PlacesAutoComplete";
 
 const SearchFlightType = {
-  ONE_WAY: "ONE_WAY",
-  ROUND_TRIP: "ROUND_TRIP",
+  ONE_WAY: "One Way",
+  RETURN: "Return",
 };
 
 const SearchFlightsForm = () => {
@@ -23,9 +33,18 @@ const SearchFlightsForm = () => {
     departDate: false,
     returnDate: false,
   });
-  const [searchFlightOption, setSearchFlightOption] = useState(
-    SearchFlightType.ROUND_TRIP
-  );
+  const { currentTab, onChangeTab } = useTabs(SearchFlightType.RETURN);
+
+  const FLIGHT_TYPE_TABS = [
+    {
+      value: SearchFlightType.RETURN,
+    },
+    {
+      value: SearchFlightType.ONE_WAY,
+    },
+  ];
+
+  const matchedTab = FLIGHT_TYPE_TABS.find((tab) => tab.value === currentTab);
 
   const validateForm = () => {
     const parsedDepartDate = new Date(departDate);
@@ -90,6 +109,20 @@ const SearchFlightsForm = () => {
   return (
     // TODO: Add Tabs to choose One Way or Round Trip
     <Paper elevation={3} sx={{ padding: 3 }}>
+      <Tabs
+        value={currentTab}
+        onChange={onChangeTab}
+        sx={{ marginBottom: "1.4rem" }}
+      >
+        {FLIGHT_TYPE_TABS.map((tab) => (
+          <Tab
+            disableRipple
+            key={tab.value}
+            label={capitalCase(tab.value)}
+            value={tab.value}
+          />
+        ))}
+      </Tabs>
       <form onSubmit={handleSearch}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -129,7 +162,7 @@ const SearchFlightsForm = () => {
               required
             />
           </Grid>
-          {searchFlightOption === SearchFlightType.ROUND_TRIP && (
+          {matchedTab && matchedTab.value === SearchFlightType.RETURN && (
             <Grid item xs={12} sm={6}>
               <DatePicker
                 label="Return"
@@ -138,6 +171,30 @@ const SearchFlightsForm = () => {
                 format="DD/MM/YYYY"
                 sx={{ width: "100%" }}
               />
+            </Grid>
+          )}
+          {matchedTab && matchedTab.value === SearchFlightType.ONE_WAY && (
+            <Grid item xs={12} sm={6}>
+              <TextField
+                select
+                label="Class"
+                fullWidth
+                value={cabinClass}
+                onChange={(e) => setCabinClass(e.target.value)}
+                required
+              >
+                {[
+                  "Cabin",
+                  "Economy",
+                  "Premium Economy",
+                  "Business",
+                  "First",
+                ].map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
           )}
           <Grid item xs={12} sm={6}>
@@ -161,7 +218,7 @@ const SearchFlightsForm = () => {
               select
               label="Children"
               fullWidth
-              value={numAdults}
+              value={numChildren}
               onChange={(e) => setNumChildren(e.target.value)}
             >
               {[0, 1, 2, 3, 4, 5, 6, 7].map((num) => (
@@ -171,24 +228,30 @@ const SearchFlightsForm = () => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              select
-              label="Class"
-              fullWidth
-              value={cabinClass}
-              onChange={(e) => setCabinClass(e.target.value)}
-              required
-            >
-              {["Cabin", "Economy", "Premium Economy", "Business", "First"].map(
-                (option) => (
+          {matchedTab && matchedTab.value === SearchFlightType.RETURN && (
+            <Grid item xs={12}>
+              <TextField
+                select
+                label="Class"
+                fullWidth
+                value={cabinClass}
+                onChange={(e) => setCabinClass(e.target.value)}
+                required
+              >
+                {[
+                  "Cabin",
+                  "Economy",
+                  "Premium Economy",
+                  "Business",
+                  "First",
+                ].map((option) => (
                   <MenuItem key={option} value={option}>
                     {option}
                   </MenuItem>
-                )
-              )}
-            </TextField>
-          </Grid>
+                ))}
+              </TextField>
+            </Grid>
+          )}
           <Grid item xs={12}>
             <Button
               variant="contained"
