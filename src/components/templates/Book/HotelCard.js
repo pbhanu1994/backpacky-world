@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Grid,
   Card,
   CardContent,
   CardMedia,
@@ -28,6 +29,7 @@ const ResponsiveCard = styled(Card)(({ theme }) => ({
 
 const HotelCard = ({ offer }) => {
   const {
+    available,
     hotel,
     offers: [firstOffer],
   } = offer;
@@ -41,20 +43,58 @@ const HotelCard = ({ offer }) => {
         alt={hotel.name}
       />
       <CardContent>
-        <Typography variant="h6">{hotel.name}</Typography>
-        <Typography variant="subtitle2" color="textSecondary">
-          {hotel.cityCode}
-        </Typography>
-        <Divider sx={{ marginY: 1 }} />
-        <Typography variant="body2">
-          {firstOffer.room.description.text}
-        </Typography>
-        <Typography variant="subtitle1">
-          Price: {firstOffer.price.total} {firstOffer.price.currency}
-        </Typography>
-        <Button variant="contained" color="primary" fullWidth>
-          Book Now
-        </Button>
+        <Grid container spacing={0.6}>
+          <Grid item xs={12}>
+            <Typography variant="h6">{hotel.name}</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subtitle2" color="textSecondary">
+              {hotel.cityCode}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider sx={{ marginY: 1 }} />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body2">
+              {firstOffer.room.description.text}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1">
+              Price: {firstOffer.price.total} {firstOffer.price.currency}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                width: "fit-content",
+                padding: "2px 4px",
+                borderRadius: 3,
+                border: (theme) =>
+                  available
+                    ? `solid 1px ${theme.palette.success.light}`
+                    : `solid 1px ${theme.palette.error.light}`,
+                backgroundColor: (theme) =>
+                  available
+                    ? theme.palette.success.light
+                    : theme.palette.error.light,
+                color: (theme) =>
+                  available
+                    ? theme.palette.success.dark
+                    : theme.palette.error.dark,
+              }}
+            >
+              {available ? "Available" : "Not Available"}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Button variant="contained" color="primary" fullWidth>
+              Book Now
+            </Button>
+          </Grid>
+        </Grid>
       </CardContent>
     </ResponsiveCard>
   );

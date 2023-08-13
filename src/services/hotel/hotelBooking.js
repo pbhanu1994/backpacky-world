@@ -56,9 +56,9 @@ export const performHotelBooking = async (
   try {
     const { access_token } = await post(apiEndpoint, payload);
     return access_token;
-  } catch (error) {
+  } catch (err) {
     console.error("Error occurred:", err.message);
     dispatch(setAndShowErrorToast(err.message));
-    return "error";
+    throw err;
   }
 };

@@ -28,6 +28,6 @@ export const performFlightOffersSearch = async (
   } catch (err) {
     console.error("Error occurred:", err.message);
     dispatch(setAndShowErrorToast(err.message));
-    return "error";
+    throw err;
   }
 };

@@ -17,7 +17,7 @@ export const getAccessToken = async () => {
   try {
     const { access_token } = await post(tokenUrl, payload);
     return access_token;
-  } catch (error) {
+  } catch (err) {
     throw new Error("Failed to get access token");
   }
 };
