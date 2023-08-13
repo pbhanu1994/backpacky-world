@@ -48,9 +48,6 @@ const HotelCardSkeleton = () => {
               sx={{ borderRadius: 3 }}
             />
           </Grid>
-          <Grid item xs={12}>
-            <Skeleton variant="rectangular" height={40} />
-          </Grid>
         </Grid>
       </CardContent>
     </ResponsiveCard>

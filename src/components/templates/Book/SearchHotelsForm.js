@@ -3,11 +3,12 @@ import { Paper, TextField, Button, Grid, MenuItem } from "@mui/material";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import Iconify from "../../atoms/Iconify";
 import PlacesAutocompleteField from "../../atoms/PlacesAutoComplete";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { fDateWithYMD } from "../../../utils/formatTime";
 
-const SearchHotelsForm = () => {
+const SearchHotelsForm = ({ hidePaper = false }) => {
   const [destination, setDestination] = useState("");
   const [checkInDate, setCheckInDate] = useState(dayjs(new Date()));
   const [checkOutDate, setCheckOutDate] = useState(dayjs(new Date()));
@@ -79,7 +80,14 @@ const SearchHotelsForm = () => {
   };
 
   return (
-    <Paper elevation={3} sx={{ padding: 3 }}>
+    <Paper
+      elevation={hidePaper ? 0 : 3}
+      sx={{
+        width: "100%",
+        padding: 3,
+        bgcolor: hidePaper && "background.neutral",
+      }}
+    >
       <form onSubmit={handleSearch}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -154,10 +162,13 @@ const SearchHotelsForm = () => {
               variant="contained"
               size="large"
               color="primary"
+              startIcon={
+                <Iconify icon={"mdi:hotel-outline"} width={20} height={20} />
+              }
               fullWidth
               type="submit"
             >
-              Search
+              Search Hotels
             </Button>
           </Grid>
         </Grid>
