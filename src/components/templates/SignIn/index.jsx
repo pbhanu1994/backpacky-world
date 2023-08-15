@@ -134,19 +134,7 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            {!showLoadingButton && (
-              <Button
-                type="submit"
-                fullWidth
-                size="large"
-                variant="contained"
-                color="primary"
-                sx={classes.submit}
-              >
-                Sign In
-              </Button>
-            )}
-            {showLoadingButton && (
+            {showLoadingButton ? (
               <LoadingButton
                 fullWidth
                 loading
@@ -158,6 +146,17 @@ export default function SignIn() {
               >
                 Signing in...
               </LoadingButton>
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                size="large"
+                variant="contained"
+                color="primary"
+                sx={classes.submit}
+              >
+                Sign In
+              </Button>
             )}
             <Grid container>
               <Grid item xs>

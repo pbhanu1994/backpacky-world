@@ -44,7 +44,7 @@ const HotelCard = ({ offer }) => {
       <CardMedia
         component="img"
         height="140"
-        image={`https://via.placeholder.com/300x200`} // Replace with actual image URL
+        image={`https://www.pngkey.com/png/detail/360-3608307_placeholder-hotel-house.png`}
         alt={hotel.name}
       />
       <CardActionArea onClick={handleClick}>
@@ -73,7 +73,7 @@ const HotelCard = ({ offer }) => {
             </Grid>
             <Grid item xs={12}>
               <Typography
-                variant="subtitle1"
+                variant="caption"
                 sx={{
                   width: "fit-content",
                   padding: "2px 4px",

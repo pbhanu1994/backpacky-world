@@ -73,18 +73,7 @@ export const ResetPasswordForm = ({
             helperText={touched.email && errors.email}
           />
 
-          {!showLoadingButton && (
-            <LoadingButton
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-              loading={isSubmitting}
-            >
-              Reset Password
-            </LoadingButton>
-          )}
-          {showLoadingButton && (
+          {showLoadingButton ? (
             <LoadingButton
               fullWidth
               loading
@@ -94,6 +83,16 @@ export const ResetPasswordForm = ({
               style={{ borderRadius: "8px" }}
             >
               Sending email...
+            </LoadingButton>
+          ) : (
+            <LoadingButton
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+            >
+              Reset Password
             </LoadingButton>
           )}
         </Stack>

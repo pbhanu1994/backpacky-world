@@ -83,7 +83,14 @@ const Hotels = ({ pageTitle }) => {
         <Container maxWidth={themeStretch ? false : "lg"}>
           <HeaderBreadcrumbs
             heading={heading}
-            links={[{ name: "Book", href: PAGE_PATH.BOOK }, { name: heading }]}
+            links={[
+              {
+                name: "Book",
+                href: PAGE_PATH.BOOK,
+                query: { currentTab: "Hotels", ...query },
+              },
+              { name: heading },
+            ]}
           />
           <SearchHotelsFilters
             showSearchForm={showSearchForm}

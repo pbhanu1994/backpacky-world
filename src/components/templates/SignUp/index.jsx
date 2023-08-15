@@ -179,19 +179,7 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            {!showLoadingButton && (
-              <Button
-                type="submit"
-                fullWidth
-                size="large"
-                variant="contained"
-                color="primary"
-                sx={classes.submit}
-              >
-                Sign Up
-              </Button>
-            )}
-            {showLoadingButton && (
+            {showLoadingButton ? (
               <LoadingButton
                 fullWidth
                 loading
@@ -203,6 +191,17 @@ export default function SignUp() {
               >
                 Signing up...
               </LoadingButton>
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                size="large"
+                variant="contained"
+                color="primary"
+                sx={classes.submit}
+              >
+                Sign Up
+              </Button>
             )}
             <Grid container justifyContent="flex-end">
               <Grid item>

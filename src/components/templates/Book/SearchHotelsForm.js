@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Paper, TextField, Button, Grid, MenuItem } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -9,18 +10,24 @@ import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { fDateWithYMD } from "../../../utils/formatTime";
 
 const SearchHotelsForm = ({ hidePaper = false }) => {
-  const [destination, setDestination] = useState("");
-  const [checkInDate, setCheckInDate] = useState(dayjs(new Date()));
-  const [checkOutDate, setCheckOutDate] = useState(dayjs(new Date()));
-  const [numRooms, setNumRooms] = useState(1);
-  const [numGuests, setNumGuests] = useState(1);
+  const router = useRouter();
+  const query = router.query;
+
+  const [destination, setDestination] = useState(query.destination ?? "");
+  const [checkInDate, setCheckInDate] = useState(
+    dayjs(query.checkInDate || new Date())
+  );
+  const [checkOutDate, setCheckOutDate] = useState(
+    dayjs(query.checkOutDate || new Date())
+  );
+  const [numRooms, setNumRooms] = useState(query.numRooms ?? 1);
+  const [numGuests, setNumGuests] = useState(query.numGuests ?? 1);
+  const [showLoadingButton, setShowLoadingButton] = useState(false);
   const [searchHotelsFormError, setSearchHotelFormError] = useState({
     destination: false,
     checkInDate: false,
     checkOutDate: false,
   });
-
-  const router = useRouter();
 
   const validateForm = () => {
     const parsedCheckInDate = new Date(checkInDate);
@@ -54,7 +61,7 @@ const SearchHotelsForm = ({ hidePaper = false }) => {
       }));
       return true;
     }
-
+    setShowLoadingButton(false);
     return false;
   };
 
@@ -64,6 +71,7 @@ const SearchHotelsForm = ({ hidePaper = false }) => {
     // Validate the form
     const errors = validateForm();
     if (errors) return;
+    setShowLoadingButton(true);
 
     const searchData = {
       destination,
@@ -158,18 +166,33 @@ const SearchHotelsForm = ({ hidePaper = false }) => {
             </TextField>
           </Grid>
           <Grid item xs={12}>
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              startIcon={
-                <Iconify icon={"mdi:hotel-outline"} width={20} height={20} />
-              }
-              fullWidth
-              type="submit"
-            >
-              Search Hotels
-            </Button>
+            {showLoadingButton ? (
+              <LoadingButton
+                fullWidth
+                loading
+                size="large"
+                loadingPosition="start"
+                variant="contained"
+                startIcon={
+                  <Iconify icon={"mdi:hotel-outline"} width={20} height={20} />
+                }
+              >
+                Searching Hotels...
+              </LoadingButton>
+            ) : (
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                startIcon={
+                  <Iconify icon={"mdi:hotel-outline"} width={20} height={20} />
+                }
+                fullWidth
+                type="submit"
+              >
+                Search Hotels
+              </Button>
+            )}
           </Grid>
         </Grid>
       </form>

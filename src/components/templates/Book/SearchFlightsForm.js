@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import useTabs from "../../../hooks/useTabs";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import PlacesAutocompleteField from "../../atoms/PlacesAutoComplete";
 
@@ -19,7 +20,10 @@ const SearchFlightType = {
   RETURN: "Return",
 };
 
-const SearchFlightsForm = () => {
+const SearchFlightsForm = ({ hidePaper = false }) => {
+  const router = useRouter();
+  const query = router.query;
+
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [departDate, setDepartDate] = useState(dayjs(new Date()));

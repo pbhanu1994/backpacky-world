@@ -15,9 +15,14 @@ LinkItem.propTypes = {
 };
 
 function LinkItem({ link }) {
-  const { href, name, icon } = link;
+  const { href, name, query, icon } = link;
   return (
-    <NextLink key={name} href={href} passHref shallow>
+    <NextLink
+      key={name}
+      href={{ pathname: href, query: { ...query } }}
+      passHref
+      shallow
+    >
       <Link
         variant="body2"
         sx={{

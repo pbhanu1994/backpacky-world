@@ -1,5 +1,6 @@
 import React from "react";
 import { capitalCase } from "change-case";
+import { useRouter } from "next/router";
 import { Container, Tabs, Tab, Box, Typography } from "@mui/material";
 import DashboardLayout from "../../layouts/dashboard";
 import Page from "../../atoms/Page";
@@ -18,7 +19,11 @@ const BookType = {
 
 const Book = ({ location, date }) => {
   const { themeStretch } = useSettings();
-  const { currentTab, onChangeTab } = useTabs(BookType.Flights);
+  const { query } = useRouter();
+
+  const { currentTab, onChangeTab } = useTabs(
+    query.currentTab ?? BookType.Flights
+  );
 
   console.log("location", location);
   console.log("date", date);
