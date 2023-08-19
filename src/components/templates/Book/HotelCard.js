@@ -27,7 +27,7 @@ const ResponsiveCard = styled(Card)(({ theme }) => ({
   },
 }));
 
-const HotelCard = ({ offer }) => {
+const HotelCard = ({ offer, onSelectedHotel }) => {
   const {
     available,
     hotel,
@@ -35,8 +35,7 @@ const HotelCard = ({ offer }) => {
   } = offer;
 
   const handleClick = () => {
-    console.log("book hotel clicked");
-    // router.push(path);
+    onSelectedHotel(firstOffer.id);
   };
 
   return (

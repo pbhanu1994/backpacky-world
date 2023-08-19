@@ -5,6 +5,7 @@ import { Container, Grid, Typography } from "@mui/material";
 import Page from "../../atoms/Page";
 import DashboardLayout from "./../../layouts/dashboard";
 import HotelCard from "../../templates/Book/HotelCard";
+import HotelOfferCard from "./HotelOfferCard";
 import HotelCardSkeleton from "./HotelCardSkeleton";
 import HeaderBreadcrumbs from "../../atoms/HeaderBreadCrumbs";
 import useSettings from "../../../hooks/useSettings";
@@ -13,12 +14,15 @@ import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { isEmptyObject } from "../../../utils/objectUtils";
 import { performHotelSearchByCity } from "../../../services/hotel/hotelsByCity";
 import { getHotelOffersByHotelIds } from "../../../services/hotel/hotelOffersByHotelIds";
+import { getHotelOffersByOfferId } from "../../../services/hotel/hotelOffersByOfferId";
 
 const Hotels = ({ pageTitle }) => {
   const [hotelOffers, setHotelOffers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showSearchForm, setShowSearchForm] = useState(false);
+  const [selectedHotelOffer, setSelectedHotelOffer] = useState(null);
+  const [showHotelOffer, setShowHotelOffer] = useState(false);
 
   const { query } = useRouter();
   const { themeStretch } = useSettings();
@@ -77,53 +81,82 @@ const Hotels = ({ pageTitle }) => {
     setShowSearchForm(!showSearchForm);
   };
 
+  const onSelectedHotel = async (hotelOfferId) => {
+    try {
+      const { data: hotelOfferResult } = await getHotelOffersByOfferId(
+        dispatch,
+        hotelOfferId
+      );
+
+      setSelectedHotelOffer(hotelOfferResult);
+      setShowHotelOffer(true);
+    } catch (err) {
+      console.error("API call error:", err);
+      setError("An error occurred, please try again later.");
+    }
+  };
+
   return (
     <DashboardLayout>
       <Page title={pageTitle}>
-        <Container maxWidth={themeStretch ? false : "lg"}>
-          <HeaderBreadcrumbs
-            heading={heading}
-            links={[
-              {
-                name: "Book",
-                href: PAGE_PATH.BOOK,
-                query: { currentTab: "Hotels", ...query },
-              },
-              { name: heading },
-            ]}
-          />
-          <SearchHotelsFilters
-            showSearchForm={showSearchForm}
-            onToggleSearchForm={toggleSearchForm}
-            {...query}
-          />
-          <Grid sx={{ my: 2 }}>
-            <Typography variant="h3">Hotels for {destination}</Typography>
-            {error ? (
-              <Typography variant="body1" color="error">
-                {error}
-              </Typography>
-            ) : loading ? (
-              <>
-                {[1, 2, 3].map((num) => (
-                  <HotelCardSkeleton key={num} />
-                ))}
-              </>
-            ) : (
-              <>
-                {hotelOffers.map((offer) => (
-                  <HotelCard offer={offer} key={offer.id} />
-                ))}
-                {hotelOffers.length === 0 && (
-                  <Typography variant="body1">
-                    No hotels were found for the specified filters. Please try
-                    using different filters.
-                  </Typography>
-                )}
-              </>
-            )}
-          </Grid>
-        </Container>
+        {!showHotelOffer && (
+          <Container maxWidth={themeStretch ? false : "lg"}>
+            <HeaderBreadcrumbs
+              heading={heading}
+              links={[
+                {
+                  name: "Book",
+                  href: PAGE_PATH.BOOK,
+                  query: { currentTab: "Hotels", ...query },
+                },
+                { name: heading },
+              ]}
+            />
+            <SearchHotelsFilters
+              showSearchForm={showSearchForm}
+              onToggleSearchForm={toggleSearchForm}
+              {...query}
+            />
+            <Grid sx={{ my: 2 }}>
+              <Typography variant="h3">Hotels for {destination}</Typography>
+              {error ? (
+                <Typography variant="body1" color="error">
+                  {error}
+                </Typography>
+              ) : loading ? (
+                <>
+                  {[1, 2, 3].map((num) => (
+                    <HotelCardSkeleton key={num} />
+                  ))}
+                </>
+              ) : (
+                <>
+                  {hotelOffers.map((offer) => (
+                    <HotelCard
+                      key={offer.id}
+                      offer={offer}
+                      onSelectedHotel={onSelectedHotel}
+                    />
+                  ))}
+                  {hotelOffers.length === 0 && (
+                    <Typography variant="body1">
+                      No hotels were found for the specified filters. Please try
+                      using different filters.
+                    </Typography>
+                  )}
+                </>
+              )}
+            </Grid>
+          </Container>
+        )}
+        {showHotelOffer && (
+          <Container maxWidth={themeStretch ? false : "lg"}>
+            <HotelOfferCard
+              offer={selectedHotelOffer}
+              onBack={() => setShowHotelOffer(false)}
+            />
+          </Container>
+        )}
       </Page>
     </DashboardLayout>
   );

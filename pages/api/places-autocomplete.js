@@ -1,4 +1,4 @@
-import fetch from "isomorphic-unfetch";
+import axios from "axios";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -24,15 +24,14 @@ export default async function handler(req, res) {
   )}&types=${encodeURIComponent(types)}`;
 
   try {
-    // Fetch data from Google Places API
-    const response = await fetch(apiUrl);
+    // Fetch data from Google Places API using Axios
+    const response = await axios.get(apiUrl);
 
-    if (!response.ok) {
+    if (!response.data) {
       throw new Error("Google Places API request failed.");
     }
 
-    const data = await response.json();
-    return res.status(200).json(data.predictions);
+    return res.status(200).json(response.data.predictions);
   } catch (error) {
     console.error("Error fetching data from Google Places API:", error.message);
     return res.status(500).end(); // Internal Server Error
