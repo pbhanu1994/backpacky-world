@@ -81,6 +81,7 @@ const Hotels = ({ pageTitle }) => {
 
   const handleSelectedHotel = (hotelOfferId) => {
     router.push(`${PAGE_PATH.BOOK_HOTELS}${hotelOfferId}`);
+    window.sessionStorage.setItem("canGoBack", true);
   };
 
   return (

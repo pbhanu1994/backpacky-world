@@ -24,7 +24,7 @@ const HotelOffer = ({ pageTitle }) => {
   const { query } = router;
   const { hotelOfferId } = query;
 
-  const isGoBack = window.history.length > 1;
+  const canGoBack = window.sessionStorage.getItem("canGoBack");
 
   useEffect(() => {
     if (hotelOfferId) {
@@ -52,7 +52,7 @@ const HotelOffer = ({ pageTitle }) => {
   }, []);
 
   const handleGoBack = () => {
-    if (isGoBack) {
+    if (canGoBack) {
       router.back();
     } else {
       router.push({
@@ -73,7 +73,7 @@ const HotelOffer = ({ pageTitle }) => {
             startIcon={<Iconify icon={"eva:arrow-ios-back-fill"} />}
             sx={{ mb: 3 }}
           >
-            {isGoBack ? "Back" : "Search Hotels"}
+            {canGoBack ? "Back" : "Search Hotels"}
           </Button>
           {error ? (
             <Typography variant="body1" color="error">

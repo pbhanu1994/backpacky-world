@@ -265,7 +265,7 @@ function HotelOfferCard({ offer }) {
         }}
       >
         <Typography variant="body2" align="center">
-          Three-digit number on the back of your VISA card
+          Three-digit number on the back of your card
         </Typography>
       </Popover>
     </Grid>
