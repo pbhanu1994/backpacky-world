@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Paper,
   Stack,
   Grid,
   Typography,
@@ -14,6 +13,7 @@ import { useTheme } from "@mui/material/styles";
 import SearchHotelsForm from "./SearchHotelsForm";
 
 export const SearchHotelsFilters = ({
+  loading,
   destination,
   checkInDate,
   checkOutDate,
@@ -76,7 +76,7 @@ export const SearchHotelsFilters = ({
           </Grid>
         </>
       )}
-      {showSearchForm && <SearchHotelsForm hidePaper />}
+      {showSearchForm && <SearchHotelsForm hidePaper loading={loading} />}
     </Stack>
   );
 };

@@ -75,7 +75,7 @@ const Hotels = ({ pageTitle }) => {
     }
   }, [query]);
 
-  const toggleSearchForm = () => {
+  const handleToggleSearchForm = () => {
     setShowSearchForm(!showSearchForm);
   };
 
@@ -100,8 +100,9 @@ const Hotels = ({ pageTitle }) => {
             ]}
           />
           <SearchHotelsFilters
+            loading={loading}
             showSearchForm={showSearchForm}
-            onToggleSearchForm={toggleSearchForm}
+            onToggleSearchForm={handleToggleSearchForm}
             {...query}
           />
           <Grid sx={{ my: 2 }}>

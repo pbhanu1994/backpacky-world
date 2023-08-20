@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Paper, TextField, Button, Grid, MenuItem } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import dayjs from "dayjs";
@@ -9,9 +9,9 @@ import PlacesAutocompleteField from "../../atoms/PlacesAutoComplete";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { fDateWithYMD } from "../../../utils/formatTime";
 
-const SearchHotelsForm = ({ hidePaper = false }) => {
+const SearchHotelsForm = ({ hidePaper = false, loading = null }) => {
   const router = useRouter();
-  const query = router.query;
+  const { query } = router;
 
   const [destination, setDestination] = useState(query.destination ?? "");
   const [checkInDate, setCheckInDate] = useState(
@@ -22,12 +22,16 @@ const SearchHotelsForm = ({ hidePaper = false }) => {
   );
   const [numRooms, setNumRooms] = useState(query.numRooms ?? 1);
   const [numGuests, setNumGuests] = useState(query.numGuests ?? 1);
-  const [showLoadingButton, setShowLoadingButton] = useState(false);
+  const [showLoadingButton, setShowLoadingButton] = useState(loading ?? false);
   const [searchHotelsFormError, setSearchHotelFormError] = useState({
     destination: false,
     checkInDate: false,
     checkOutDate: false,
   });
+
+  useEffect(() => {
+    setShowLoadingButton(loading);
+  }, [loading]);
 
   const validateForm = () => {
     const parsedCheckInDate = new Date(checkInDate);
