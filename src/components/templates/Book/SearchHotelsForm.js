@@ -9,7 +9,11 @@ import PlacesAutocompleteField from "../../atoms/PlacesAutoComplete";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { fDateWithYMD } from "../../../utils/formatTime";
 
-const SearchHotelsForm = ({ hidePaper = false, loading = null }) => {
+const SearchHotelsForm = ({
+  hidePaper = false,
+  loading = null,
+  onToggleSearchForm,
+}) => {
   const router = useRouter();
   const { query } = router;
 
@@ -71,6 +75,8 @@ const SearchHotelsForm = ({ hidePaper = false, loading = null }) => {
 
   const handleSearch = (e) => {
     e.preventDefault();
+
+    if (onToggleSearchForm) onToggleSearchForm();
 
     // Validate the form
     const errors = validateForm();

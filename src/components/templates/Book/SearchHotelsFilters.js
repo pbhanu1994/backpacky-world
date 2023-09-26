@@ -76,7 +76,13 @@ export const SearchHotelsFilters = ({
           </Grid>
         </>
       )}
-      {showSearchForm && <SearchHotelsForm hidePaper loading={loading} />}
+      {showSearchForm && (
+        <SearchHotelsForm
+          hidePaper
+          loading={loading}
+          onToggleSearchForm={onToggleSearchForm}
+        />
+      )}
     </Stack>
   );
 };
