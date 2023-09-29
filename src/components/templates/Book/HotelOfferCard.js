@@ -170,16 +170,18 @@ function HotelOfferCard({ selectedHotel, offer }) {
   };
 
   const handlePerformHotelBooking = async () => {
+    setHotelBookLoading(true);
+
     // TODO: Validation
 
     const hotelBookingData = {
-      offerId: offer?.offers[0]?.id,
-      guests: hotelGuests,
-      payments,
-      rooms: specialRequests,
+      data: {
+        offerId: offer?.offers[0]?.id,
+        guests: hotelGuests,
+        payments,
+        rooms: specialRequests,
+      },
     };
-
-    setHotelBookLoading(true);
 
     try {
       const { data: successHotelBookingResult } = await performHotelBooking(
@@ -517,18 +519,6 @@ function HotelOfferCard({ selectedHotel, offer }) {
           >
             {hotelBookLoading ? "Booking..." : "Book"}
           </LoadingButton>
-          {/* <LoadingButton
-          type="submit"
-          fullWidth
-          loading
-          loadingPosition="start"
-          size="large"
-          variant="contained"
-          color="primary"
-          sx={{ mt: 1.5 }}
-        >
-          Booking...
-        </LoadingButton> */}
         </Grid>
       </Grid>
       <Popover

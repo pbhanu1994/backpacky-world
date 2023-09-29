@@ -6,10 +6,6 @@ import axios from "axios";
 
 const client = axios.create();
 
-// Add the 'Content-Type' header to all requests
-client.defaults.headers.post["Content-Type"] =
-  "application/x-www-form-urlencoded";
-
 // Function to set the Authorization header with the access token
 export const setAuthorizationHeader = (token = null) => {
   if (token) {
@@ -30,9 +26,9 @@ export const get = async (url, params = {}) => {
 };
 
 // Function to make a POST request
-export const post = async (url, data) => {
+export const post = async (url, data, config = {}) => {
   try {
-    const response = await client.post(url, data);
+    const response = await client.post(url, data, config);
     return response.data;
   } catch (error) {
     throw new Error(`POST request to ${url} failed: ${error.message}`);

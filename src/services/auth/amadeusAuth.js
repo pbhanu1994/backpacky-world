@@ -12,10 +12,15 @@ export const getAccessToken = async () => {
     client_id,
     client_secret,
   };
+  const config = {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  };
 
   setAuthorizationHeader(null);
   try {
-    const { access_token } = await post(tokenUrl, payload);
+    const { access_token } = await post(tokenUrl, payload, config);
     return access_token;
   } catch (err) {
     throw new Error("Failed to get access token");
