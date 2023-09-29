@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Container, Typography, Button } from "@mui/material";
 import Iconify from "../../atoms/Iconify";
 import Page from "../../atoms/Page";
@@ -20,6 +20,7 @@ const HotelOffer = ({ pageTitle }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { themeStretch } = useSettings();
+  const selectedHotel = useSelector((state) => state.book.hotels.selected);
 
   const { query } = router;
   const { hotelOfferId } = query;
@@ -84,7 +85,10 @@ const HotelOffer = ({ pageTitle }) => {
           ) : (
             <>
               {!isEmptyObject(selectedHotelOffer) && (
-                <HotelOfferCard offer={selectedHotelOffer} />
+                <HotelOfferCard
+                  selectedHotel={selectedHotel}
+                  offer={selectedHotelOffer}
+                />
               )}
               {isEmptyObject(selectedHotelOffer) && (
                 <Typography variant="body1">

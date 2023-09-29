@@ -35,7 +35,7 @@ const HotelCard = ({ offer, onSelectedHotel }) => {
   } = offer;
 
   const handleClick = () => {
-    onSelectedHotel(firstOffer.id);
+    onSelectedHotel(offer);
   };
 
   return (

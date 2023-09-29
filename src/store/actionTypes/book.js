@@ -1,0 +1,2 @@
+// -- HOTELS -- //
+export const UPDATE_SELECTED_HOTEL = "UPDATE_SELECTED_HOTEL";

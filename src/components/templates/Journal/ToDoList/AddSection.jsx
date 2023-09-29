@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid, Button } from "@mui/material";
+import Iconify from "../../../atoms/Iconify";
 import { listStyles } from "./listStyles";
 
 export const AddSection = ({ onAddSection }) => {
@@ -13,9 +14,10 @@ export const AddSection = ({ onAddSection }) => {
         variant="text"
         color="secondary"
         sx={classes.addSection}
+        startIcon={<Iconify icon={"ant-design:plus-outlined"} />}
         onClick={onAddSection}
       >
-        + Add section
+        Add section
       </Button>
     </Grid>
   );

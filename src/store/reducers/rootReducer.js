@@ -6,6 +6,7 @@ import { journalReducer } from "./journalReducer";
 import { travelBudgetReducer } from "./travelBudgetReducer";
 import { calendarReducer } from "./calendarReducer";
 import { configReducer } from "./configReducer";
+import { bookReducer } from "./bookReducer";
 // import { SIGN_OUT } from "../actionTypes/auth";
 
 const rootReducer = combineReducers({
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   travelBudget: travelBudgetReducer,
   calendar: calendarReducer,
   config: configReducer,
+  book: bookReducer,
 });
 
 // TODO: Check with an experienced dev if this is a good approach

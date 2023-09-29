@@ -11,6 +11,7 @@ import useSettings from "../../../hooks/useSettings";
 import { SearchHotelsFilters } from "./SearchHotelsFilters";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { isEmptyObject } from "../../../utils/objectUtils";
+import updateSelectedHotel from "../../../store/actions/book/hotels/updateSelectedHotel";
 import { performHotelSearchByCity } from "../../../services/hotel/hotelsByCity";
 import { getHotelOffersByHotelIds } from "../../../services/hotel/hotelOffersByHotelIds";
 
@@ -79,8 +80,13 @@ const Hotels = ({ pageTitle }) => {
     setShowSearchForm(!showSearchForm);
   };
 
-  const handleSelectedHotel = (hotelOfferId) => {
-    router.push(`${PAGE_PATH.BOOK_HOTELS}${hotelOfferId}`);
+  const handleSelectedHotel = (hotelOffer) => {
+    const {
+      hotel,
+      offers: [firstOffer],
+    } = hotelOffer;
+    dispatch(updateSelectedHotel(hotel));
+    router.push(`${PAGE_PATH.BOOK_HOTELS}${firstOffer.id}`);
     window.sessionStorage.setItem("canGoBack", true);
   };
 
