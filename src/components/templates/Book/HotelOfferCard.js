@@ -17,7 +17,7 @@ import { useTheme } from "@mui/material/styles";
 import { LoadingButton } from "@mui/lab";
 import SearchMap from "../../atoms/SearchMap";
 import { HotelGuestForm } from "./HotelGuestForm";
-import { AddHotelGuest } from "./AddHotelGuest";
+import { AddItem } from "./AddItem";
 import { HotelBookingSuccess } from "./HotelBookingSuccess";
 import { fDate } from "../../../utils/formatTime";
 import { isEmptyObject } from "../../../utils/objectUtils";
@@ -40,6 +40,8 @@ function HotelOfferCard({ selectedHotel, offer }) {
       },
     },
   ]);
+  const [showAdditionalGuests, setShowAdditionalGuests] = useState(false);
+  const [showSpecialRequests, setShowSpecialRequests] = useState(false);
   const [specialRequests, setSpecialRequests] = useState([
     {
       specialRequest: "",
@@ -62,56 +64,104 @@ function HotelOfferCard({ selectedHotel, offer }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const handleTitleChange = (e, index) => {
-    const newGuests = [...hotelGuests];
-    newGuests[index].name.title = e.target.value;
-    setHotelGuests(newGuests);
-  };
+  const { hotel, offers, available } = offer;
+  const { description, checkInDate, checkOutDate, price, room, policies } =
+    offers[0];
 
-  const handleFirstNameChange = (e, index) => {
-    const newGuests = [...hotelGuests];
-    newGuests[index].name.firstName = e.target.value;
-    setHotelGuests(newGuests);
-  };
+  const { latitude, longitude } = selectedHotel;
+  const places = [{ ...selectedHotel }];
 
-  const handleLastNameChange = (e, index) => {
-    const newGuests = [...hotelGuests];
-    newGuests[index].name.lastName = e.target.value;
-    setHotelGuests(newGuests);
-  };
+  const isEmptySelectedHotel = isEmptyObject(selectedHotel);
 
-  const handleEmailChange = (e, index) => {
-    const newGuests = [...hotelGuests];
-    newGuests[index].contact.email = e.target.value;
-    setHotelGuests(newGuests);
-  };
+  const numOfGuests = offers[0]?.guests?.adults;
 
-  const handlePhoneChange = (e, index) => {
+  const handleTitleChange = (e, guestNumber) => {
     const newGuests = [...hotelGuests];
-    newGuests[index].contact.phone = e.target.value;
-    setHotelGuests(newGuests);
-  };
-
-  const handleAddHotelGuest = () => {
-    setHotelGuests((prevGuests) => [
-      ...prevGuests,
-      {
-        name: {
-          title: "Mr", // Default title
-          firstName: "",
-          lastName: "",
-        },
-        contact: {
-          phone: "",
-          email: "",
-        },
+    newGuests[guestNumber] = {
+      ...newGuests[guestNumber],
+      name: {
+        ...newGuests[guestNumber].name,
+        title: e.target.value,
       },
-    ]);
+    };
+    setHotelGuests(newGuests);
   };
 
-  const handleRemoveHotelGuest = (index) => {
+  const handleFirstNameChange = (e, guestNumber) => {
+    const newGuests = [...hotelGuests];
+    newGuests[guestNumber] = {
+      ...newGuests[guestNumber],
+      name: {
+        ...newGuests[guestNumber].name,
+        firstName: e.target.value,
+      },
+    };
+    setHotelGuests(newGuests);
+  };
+
+  const handleLastNameChange = (e, guestNumber) => {
+    const newGuests = [...hotelGuests];
+    newGuests[guestNumber] = {
+      ...newGuests[guestNumber],
+      name: {
+        ...newGuests[guestNumber].name,
+        lastName: e.target.value,
+      },
+    };
+    setHotelGuests(newGuests);
+  };
+
+  const handleEmailChange = (e) => {
+    const newGuests = [...hotelGuests];
+    newGuests[0] = {
+      ...newGuests[0],
+      contact: {
+        ...newGuests[0].contact,
+        email: e.target.value,
+      },
+    };
+    setHotelGuests(newGuests);
+  };
+
+  const handlePhoneChange = (e) => {
+    const newGuests = [...hotelGuests];
+    newGuests[0] = {
+      ...newGuests[0],
+      contact: {
+        ...newGuests[0].contact,
+        phone: e.target.value,
+      },
+    };
+    setHotelGuests(newGuests);
+  };
+
+  const handleAddAdditionalGuests = (addOne = false) => {
+    setShowAdditionalGuests(true);
+    const additionalGuestName = {
+      name: {
+        title: "Mr", // Default title
+        firstName: "",
+        lastName: "",
+      },
+    };
+
+    // Create an array with numOfGuests copies of the initialGuest
+    const additionalGuests = Array.from({ length: numOfGuests - 1 }, () => ({
+      ...additionalGuestName,
+    }));
+
+    if (addOne) {
+      setHotelGuests((prevGuests) => [...prevGuests, additionalGuestName]);
+    } else {
+      setHotelGuests((prevGuests) => [...prevGuests, ...additionalGuests]);
+    }
+  };
+
+  const handleRemoveHotelGuest = (guestNumber) => {
     if (hotelGuests.length > 1) {
-      setHotelGuests((prevGuests) => prevGuests.filter((_, i) => i !== index));
+      setHotelGuests((prevGuests) =>
+        prevGuests.filter((_, i) => i !== guestNumber)
+      );
     }
   };
 
@@ -198,15 +248,6 @@ function HotelOfferCard({ selectedHotel, offer }) {
       setHotelBookLoading(false);
     }
   };
-
-  const { hotel, offers, available } = offer;
-  const { description, checkInDate, checkOutDate, price, room, policies } =
-    offers[0];
-
-  const { latitude, longitude } = selectedHotel;
-  const places = [{ ...selectedHotel }];
-
-  const isEmptySelectedHotel = isEmptyObject(selectedHotel);
 
   return (
     <>
@@ -397,63 +438,65 @@ function HotelOfferCard({ selectedHotel, offer }) {
                       </Typography>
                     </Stack>
                     {/* Hotel Guests */}
-                    {hotelGuests.map((guest, index) => (
-                      <HotelGuestForm
-                        key={index}
-                        guest={guest}
-                        index={index}
-                        numOfGuests={hotelGuests.length}
-                        handleTitleChange={(e) => handleTitleChange(e, index)}
-                        handleFirstNameChange={(e) =>
-                          handleFirstNameChange(e, index)
-                        }
-                        handleLastNameChange={(e) =>
-                          handleLastNameChange(e, index)
-                        }
-                        handleEmailChange={(e) => handleEmailChange(e, index)}
-                        handlePhoneChange={(e) => handlePhoneChange(e, index)}
-                        removeGuest={handleRemoveHotelGuest}
-                      />
-                    ))}
-                    <AddHotelGuest onAddHotelGuest={handleAddHotelGuest} />
+                    <HotelGuestForm
+                      hotelGuests={hotelGuests}
+                      numOfGuests={numOfGuests}
+                      showAdditionalGuests={showAdditionalGuests}
+                      handleTitleChange={handleTitleChange}
+                      handleFirstNameChange={handleFirstNameChange}
+                      handleLastNameChange={handleLastNameChange}
+                      handleEmailChange={handleEmailChange}
+                      handlePhoneChange={handlePhoneChange}
+                      handleAddAdditionalGuests={handleAddAdditionalGuests}
+                      handleRemoveHotelGuest={handleRemoveHotelGuest}
+                    />
                   </Stack>
                 </Box>
               </Card>
             </Grid>
             <Grid item xs={12} md={8}>
-              <Card variant="outlined">
-                <Box
-                  sx={{
-                    padding: 3,
-                    borderRadius: 1,
-                  }}
-                >
-                  <Stack spacing={3}>
-                    <Stack>
-                      <Typography variant="subtitle1">
-                        Special Requests{" "}
-                        <Typography variant="caption">(optional)</Typography>
-                      </Typography>
-                      <Typography variant="caption">
-                        Do you have any special requests or preferences for your
-                        stay? Let us know how we can make your stay more
-                        enjoyable. Whether it's a bottle of champagne, extra
-                        towels, or any other request, we're here to assist you.
-                      </Typography>
+              {showSpecialRequests && (
+                <Card variant="outlined">
+                  <Box
+                    sx={{
+                      padding: 3,
+                      borderRadius: 1,
+                    }}
+                  >
+                    <Stack spacing={3}>
+                      <Stack>
+                        <Typography variant="subtitle1">
+                          Special Request{" "}
+                          <Typography variant="caption">(optional)</Typography>
+                        </Typography>
+                        <Typography variant="caption">
+                          Do you have any special requests or preferences for
+                          your stay? Let us know how we can make your stay more
+                          enjoyable. Whether it's a bottle of champagne, extra
+                          towels, or any other request, we're here to assist
+                          you.
+                        </Typography>
+                      </Stack>
+                      <TextField
+                        fullWidth
+                        multiline
+                        rows={4}
+                        label="Special Requests"
+                        variant="outlined"
+                        placeholder="Enter your special requests here..."
+                        value={specialRequests[0].specialRequest}
+                        onChange={handleSpecialRequestChange}
+                      />
                     </Stack>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={4}
-                      label="Special Requests"
-                      variant="outlined"
-                      placeholder="Enter your special requests here..."
-                      value={specialRequests[0].specialRequest}
-                      onChange={handleSpecialRequestChange}
-                    />
-                  </Stack>
-                </Box>
-              </Card>
+                  </Box>
+                </Card>
+              )}
+              {!showSpecialRequests && (
+                <AddItem
+                  itemName="a Special Request"
+                  onAddItem={() => setShowSpecialRequests(true)}
+                />
+              )}
             </Grid>
             <Grid item xs={12} md={8}>
               <Card variant="outlined">
