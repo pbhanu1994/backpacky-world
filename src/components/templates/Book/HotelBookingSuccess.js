@@ -26,9 +26,9 @@ const hotelBookingSuccessfulStyles = () => ({
 export const HotelBookingSuccess = ({ bookingSuccessData }) => {
   const classes = hotelBookingSuccessfulStyles();
 
-  const { id, providerConfirmationId } = bookingSuccessData.data[0];
+  const { id, providerConfirmationId } = bookingSuccessData[0];
   const { reference, originSystemCode } =
-    bookingSuccessData.data[0].associatedRecords[0];
+    bookingSuccessData[0].associatedRecords[0];
 
   return (
     <Container sx={classes.container}>

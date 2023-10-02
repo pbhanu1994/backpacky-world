@@ -10,11 +10,12 @@ import {
   CardContent,
   Typography,
   TextField,
-  Popover,
+  InputAdornment,
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { LoadingButton } from "@mui/lab";
+import Iconify from "../../atoms/Iconify";
 import SearchMap from "../../atoms/SearchMap";
 import { HotelGuestForm } from "./HotelGuestForm";
 import { AddItem } from "./AddItem";
@@ -23,10 +24,13 @@ import { fDate } from "../../../utils/formatTime";
 import { isEmptyObject } from "../../../utils/objectUtils";
 import { getCardIssuerCode } from "../../../utils/getCardIssuerCode";
 import { convertToYYYYMM } from "../../../utils/convertToYYYYMM";
+import {
+  formatCardNumber,
+  formatExpiryDate,
+} from "../../../utils/formatPaymentDetails";
 import { performHotelBooking } from "../../../services/hotel/hotelBooking";
 
-function HotelOfferCard({ selectedHotel, offer }) {
-  const [isOpen, setIsOpen] = useState(null);
+const HotelOfferCard = ({ selectedHotel, offer }) => {
   const [hotelGuests, setHotelGuests] = useState([
     {
       name: {
@@ -57,6 +61,9 @@ function HotelOfferCard({ selectedHotel, offer }) {
       },
     },
   ]);
+  const [formattedCardNumber, setFormattedCardNumber] = useState("");
+  const [formattedExpiryDate, setFormattedExpiryDate] = useState("");
+  const [cardType, setCardType] = useState(null);
   const [hotelBookLoading, setHotelBookLoading] = useState(false);
   const [hotelBookingResult, setHotelBookingResult] = useState(null);
 
@@ -175,48 +182,57 @@ function HotelOfferCard({ selectedHotel, offer }) {
   const handleCardNumberChange = (e) => {
     const { name, value } = e.target;
 
+    // Allow only numbers by removing non-numeric characters
+    const valueWithNonNumericChars = value.replace(/\D/g, "");
+
     if (name === "cardNumber") {
-      const cardType = creditCardType(value);
+      const cardType = creditCardType(valueWithNonNumericChars);
+      valueWithNonNumericChars === ""
+        ? setCardType(null)
+        : setCardType(cardType[0]?.type);
 
-      if (cardType.length > 0) {
-        const cardIssuerCode = getCardIssuerCode(cardType[0].niceType);
+      const cardIssuerCode =
+        cardType.length > 0 ? getCardIssuerCode(cardType[0].niceType) : "";
 
-        // Update the payments state with cardNumber, vendorCode, and expiryDate
-        setPayments([
-          {
-            method: "creditCard",
-            card: {
-              vendorCode: cardIssuerCode,
-              cardNumber: value,
-              expiryDate: payments[0].card.expiryDate, // Keep the existing expiryDate
-            },
+      // Remove spaces from the card number and store it in payments state
+      const cardNumberWithoutSpaces = valueWithNonNumericChars.replace(
+        /\s/g,
+        ""
+      );
+
+      setPayments([
+        {
+          method: "creditCard",
+          card: {
+            vendorCode: cardIssuerCode,
+            cardNumber: cardNumberWithoutSpaces, // Store without spaces
+            expiryDate: payments[0].card.expiryDate, // Keep the existing expiryDate
           },
-        ]);
-      } else {
-        // Handle the case when no card type is detected
-        setPayments([
-          {
-            method: "creditCard",
-            card: {
-              vendorCode: "",
-              cardNumber: value,
-              expiryDate: payments[0].card.expiryDate, // Keep the existing expiryDate
-            },
-          },
-        ]);
-      }
+        },
+      ]);
+
+      // Format the card number with spaces and update the state
+      setFormattedCardNumber(formatCardNumber(cardNumberWithoutSpaces));
     } else if (name === "expiryDate") {
-      // Handle expiry date change
-      // Update the payments state with the new expiryDate
+      // Ensuring the input is exactly 4 digits
+      const formattedValue = valueWithNonNumericChars.substring(0, 4);
+
+      const formattedExpiryDate = formatExpiryDate(formattedValue);
+
       setPayments((prevPayments) => [
         {
           ...prevPayments[0],
           card: {
             ...prevPayments[0].card,
-            expiryDate: convertToYYYYMM(value),
+            expiryDate: formattedValue
+              ? convertToYYYYMM(formattedExpiryDate)
+              : "",
           },
         },
       ]);
+
+      // Update the state with the formatted expiry date
+      setFormattedExpiryDate(formattedExpiryDate);
     }
   };
 
@@ -524,32 +540,23 @@ function HotelOfferCard({ selectedHotel, offer }) {
                         fullWidth
                         label="Card number"
                         name="cardNumber"
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Iconify icon={`logos:${cardType}`} />
+                            </InputAdornment>
+                          ),
+                        }}
+                        value={formattedCardNumber}
                         onChange={handleCardNumberChange}
                       />
                       <TextField
                         label="Expiration date"
                         name="expiryDate"
                         placeholder="MM/YY"
+                        value={formattedExpiryDate}
                         onChange={handleCardNumberChange}
                       />
-
-                      {/* <TextField
-                  label="CVV"
-                  fullWidth
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          size="small"
-                          edge="end"
-                          onClick={(event) => setIsOpen(event.currentTarget)}
-                        >
-                          <Iconify icon={"eva:info-fill"} />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                /> */}
                     </Stack>
                   </Stack>
                 </Box>
@@ -569,27 +576,10 @@ function HotelOfferCard({ selectedHotel, offer }) {
               </LoadingButton>
             </Grid>
           </Grid>
-          <Popover
-            open={Boolean(isOpen)}
-            anchorEl={isOpen}
-            onClose={() => setIsOpen(null)}
-            anchorOrigin={{ vertical: "center", horizontal: "center" }}
-            transformOrigin={{ vertical: "center", horizontal: "center" }}
-            PaperProps={{
-              sx: {
-                p: 1,
-                maxWidth: 200,
-              },
-            }}
-          >
-            <Typography variant="body2" align="center">
-              Three-digit number on the back of your card
-            </Typography>
-          </Popover>
         </>
       )}
     </>
   );
-}
+};
 
 export default HotelOfferCard;
