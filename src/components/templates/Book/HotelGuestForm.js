@@ -1,155 +1,127 @@
 import React from "react";
-import {
-  Stack,
-  FormControl,
-  InputLabel,
-  Typography,
-  Select,
-  MenuItem,
-  TextField,
-  IconButton,
-} from "@mui/material";
+import { Grid, Box, Stack, Card, Typography, IconButton } from "@mui/material";
 import Iconify from "../../atoms/Iconify";
+import { GuestForm } from "./GuestForm";
 import { AddItem } from "./AddItem";
 
 export const HotelGuestForm = ({
   hotelGuests,
   numOfGuests,
+  showAdditionalGuests,
+  errors,
+  touched,
   handleTitleChange,
   handleFirstNameChange,
   handleLastNameChange,
   handleEmailChange,
   handlePhoneChange,
-  showAdditionalGuests,
   handleAddAdditionalGuests,
   handleRemoveHotelGuest,
-}) => {
-  return (
-    <Stack spacing={2}>
-      <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-        <FormControl fullWidth>
-          <InputLabel>Title</InputLabel>
-          <Select
-            label="Title"
-            value={hotelGuests[0].name.title}
-            onChange={(e) => handleTitleChange(e, 0)}
-            fullWidth
-          >
-            <MenuItem value="Mr">Mr.</MenuItem>
-            <MenuItem value="Ms">Ms.</MenuItem>
-            <MenuItem value="Mrs">Mrs.</MenuItem>
-          </Select>
-        </FormControl>
-        <TextField
-          fullWidth
-          label="First Name"
-          value={hotelGuests[0].name.firstName}
-          onChange={(e) => handleFirstNameChange(e, 0)}
-        />
-        <TextField
-          fullWidth
-          label="Last Name"
-          value={hotelGuests[0].name.lastName}
-          onChange={(e) => handleLastNameChange(e, 0)}
-        />
-      </Stack>
-      <Stack spacing={2}>
-        <TextField
-          fullWidth
-          label="Email"
-          value={hotelGuests[0].contact.email}
-          onChange={handleEmailChange}
-        />
-        <TextField
-          fullWidth
-          label="Phone Number"
-          value={hotelGuests[0].contact.phone}
-          onChange={handlePhoneChange}
-        />
-      </Stack>
+}) => (
+  <Grid item xs={12} md={8}>
+    <Card variant="outlined">
+      <Box
+        sx={{
+          padding: 3,
+          borderRadius: 1,
+        }}
+      >
+        <Stack spacing={3}>
+          <Stack>
+            <Typography variant="subtitle1">Enter Guest Details</Typography>
+            <Typography variant="caption">
+              Enter the details of guests that will be staying at the hotel.
+              Please provide accurate information to ensure a smooth check-in
+              process and a comfortable stay.
+            </Typography>
+          </Stack>
+          {numOfGuests > 1 && (
+            <Typography color="primary" variant="subtitle1">
+              Guest 1
+            </Typography>
+          )}
+          <GuestForm
+            guestIndex={0}
+            hotelGuests={hotelGuests}
+            errors={errors}
+            touched={touched}
+            handleTitleChange={handleTitleChange}
+            handleFirstNameChange={handleFirstNameChange}
+            handleLastNameChange={handleLastNameChange}
+            handleEmailChange={handleEmailChange}
+            handlePhoneChange={handlePhoneChange}
+          />
 
-      {/* Additional Guests */}
-      {numOfGuests > 1 && showAdditionalGuests && (
-        <Stack>
-          {hotelGuests.length !== 1 && (
-            <Stack sx={{ paddingY: 1 }}>
-              <Typography variant="subtitle1">
-                Additional Guests{" "}
-                <Typography variant="caption">(optional)</Typography>
-              </Typography>
-              <Typography variant="caption">
-                Do you want to add your guests' names to this reservation?
-                Please provide any additional guest names below:
-              </Typography>
+          {/* Additional Guests */}
+          {numOfGuests > 1 && showAdditionalGuests && (
+            <Stack>
+              {hotelGuests.length !== 1 && (
+                <Stack sx={{ paddingY: 1 }}>
+                  <Typography variant="subtitle1">
+                    Additional Guests{" "}
+                    <Typography variant="caption">(optional)</Typography>
+                  </Typography>
+                  <Typography variant="caption">
+                    Do you want to add your guests' names to this reservation?
+                    Please provide any additional guest names below:
+                  </Typography>
+                </Stack>
+              )}
+
+              {hotelGuests.map(
+                (guest, guestNumberIndex) =>
+                  guestNumberIndex > 0 && (
+                    <React.Fragment key={guestNumberIndex}>
+                      <Stack
+                        direction={{ xs: "row" }}
+                        justifyContent="space-between"
+                        alignItems="center"
+                        sx={{ paddingY: 1.2 }}
+                      >
+                        <Typography color="primary" variant="subtitle1">
+                          Guest {guestNumberIndex + 1}
+                        </Typography>
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={() =>
+                            handleRemoveHotelGuest(guestNumberIndex)
+                          }
+                        >
+                          <Iconify icon={"eva:trash-2-outline"} />
+                        </IconButton>
+                      </Stack>
+                      <GuestForm
+                        guestIndex={guestNumberIndex}
+                        hotelGuests={hotelGuests}
+                        errors={errors}
+                        touched={touched}
+                        handleTitleChange={handleTitleChange}
+                        handleFirstNameChange={handleFirstNameChange}
+                        handleLastNameChange={handleLastNameChange}
+                        handleEmailChange={handleEmailChange}
+                        handlePhoneChange={handlePhoneChange}
+                      />
+                    </React.Fragment>
+                  )
+              )}
             </Stack>
           )}
-
-          {hotelGuests.map(
-            (guest, index) =>
-              index > 0 && (
-                <>
-                  <Stack
-                    direction={{ xs: "row" }}
-                    justifyContent="space-between"
-                    alignItems="center"
-                    sx={{ paddingY: 1.2 }}
-                  >
-                    <Typography color="primary" variant="subtitle1">
-                      Guest {index}
-                    </Typography>
-                    <IconButton
-                      size="small"
-                      color="error"
-                      onClick={() => handleRemoveHotelGuest(index)}
-                    >
-                      <Iconify icon={"eva:trash-2-outline"} />
-                    </IconButton>
-                  </Stack>
-                  <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-                    <FormControl fullWidth>
-                      <InputLabel>Title</InputLabel>
-                      <Select
-                        label="Title"
-                        value={guest.name.title}
-                        onChange={(e) => handleTitleChange(e, index)}
-                        fullWidth
-                      >
-                        <MenuItem value="Mr">Mr.</MenuItem>
-                        <MenuItem value="Ms">Ms.</MenuItem>
-                        <MenuItem value="Mrs">Mrs.</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <TextField
-                      fullWidth
-                      label="First Name"
-                      value={guest.name.firstName}
-                      onChange={(e) => handleFirstNameChange(e, index)}
-                    />
-                    <TextField
-                      fullWidth
-                      label="Last Name"
-                      value={guest.name.lastName}
-                      onChange={(e) => handleLastNameChange(e, index)}
-                    />
-                  </Stack>
-                </>
-              )
+          {numOfGuests > 1 && hotelGuests.length === 1 ? (
+            <AddItem
+              itemName="Additional Guests"
+              onAddItem={() => handleAddAdditionalGuests(false)}
+            />
+          ) : (
+            numOfGuests - 1 !== hotelGuests.length - 1 && (
+              <AddItem
+                itemName="Additional Guest"
+                onAddItem={() => handleAddAdditionalGuests(true)}
+              />
+            )
           )}
         </Stack>
-      )}
-      {numOfGuests > 1 && hotelGuests.length === 1 ? (
-        <AddItem
-          itemName="Additional Guests"
-          onAddItem={() => handleAddAdditionalGuests(false)}
-        />
-      ) : (
-        numOfGuests - 1 !== hotelGuests.length - 1 && (
-          <AddItem
-            itemName="Additional Guest"
-            onAddItem={() => handleAddAdditionalGuests(true)}
-          />
-        )
-      )}
-    </Stack>
-  );
-};
+      </Box>
+    </Card>
+  </Grid>
+);
