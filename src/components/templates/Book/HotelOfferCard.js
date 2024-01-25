@@ -13,7 +13,7 @@ import { HotelGuestForm } from "./HotelGuestForm";
 import { RoomAllocation } from "./RoomAllocation";
 import { RoomSpecialRequests } from "./RoomsSpecialRequests";
 import CardDetailsForm from "./CardDetailsForm";
-import { HotelBookingSuccess } from "./HotelBookingSuccess";
+import { HotelBookingConfirmation } from "./HotelBookingConfirmation";
 import { isEmptyObject } from "../../../utils/objectUtils";
 import { getCardIssuerCode } from "../../../utils/getCardIssuerCode";
 import { convertToYYYYMM } from "../../../utils/convertToYYYYMM";
@@ -398,7 +398,7 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
   return (
     <>
       {hotelBookingResult ? (
-        <HotelBookingSuccess bookingSuccessData={hotelBookingResult} />
+        <HotelBookingConfirmation bookingSuccessData={hotelBookingResult} />
       ) : (
         <>
           <FormikProvider value={formik}>

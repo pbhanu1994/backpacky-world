@@ -9,6 +9,7 @@ import {
   Divider,
 } from "@mui/material";
 import { styled } from "@mui/system";
+import { formatCurrency } from "../../../utils/formatCurrency";
 
 const ResponsiveCard = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(2), // Add some vertical spacing
@@ -67,7 +68,11 @@ const HotelCard = ({ offer, onSelectedHotel }) => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">
-                Price: {firstOffer.price.total} {firstOffer.price.currency}
+                Price:{" "}
+                {formatCurrency(
+                  firstOffer.price.total,
+                  firstOffer.price.currency
+                )}
               </Typography>
             </Grid>
             <Grid item xs={12}>

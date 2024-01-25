@@ -8,6 +8,7 @@ import {
   Stack,
 } from "@mui/material";
 import { fDate } from "../../../utils/formatTime";
+import { formatCurrency } from "../../../utils/formatCurrency";
 
 export const HotelInfo = ({ offer }) => {
   const { hotel, offers, available } = offer;
@@ -150,7 +151,7 @@ export const HotelInfo = ({ offer }) => {
             </Grid>
             <Grid item>
               <Typography variant="h5" color="primary">
-                {price.currency} {price.total}
+                {formatCurrency(price.total, price.currency)}
               </Typography>
             </Grid>
             <Grid item>
@@ -162,21 +163,23 @@ export const HotelInfo = ({ offer }) => {
                 >
                   Base Price
                 </Typography>
-                {price.base}
+                {formatCurrency(price.base, price.currency)}
               </Typography>
             </Grid>
-            {/* <Grid item>
-                  <Typography variant="body2" color="textSecondary">
-                    <Typography
-                      variant="body2"
-                      color="textSecondary"
-                      fontWeight="fontWeightBold"
-                    >
-                      Cancellation Deadline
-                    </Typography>
-                    {fDate(policies.cancellations[0].deadline)}
-                  </Typography>
-                </Grid> */}
+            <Grid item>
+              <Typography variant="body2" color="textSecondary">
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  fontWeight="fontWeightBold"
+                >
+                  Cancellation Deadline
+                </Typography>
+                {policies.cancellations[0].deadline
+                  ? fDate(policies.cancellations[0].deadline)
+                  : policies.cancellations[0].description.text}
+              </Typography>
+            </Grid>
             <Grid item>
               <Typography
                 variant="body2"
