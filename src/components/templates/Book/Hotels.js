@@ -18,7 +18,6 @@ import { getHotelOffersByHotelIds } from "../../../services/hotel/hotelOffersByH
 const Hotels = ({ pageTitle }) => {
   const [hotelOffers, setHotelOffers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [moreLoading, setMoreLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showSearchForm, setShowSearchForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,9 +44,7 @@ const Hotels = ({ pageTitle }) => {
   useEffect(() => {
     if (!isEmptyObject(query)) {
       const performSearch = async () => {
-        if (hotelOffers.length === 0 && currentPage === 1) {
-          setLoading(true);
-        }
+        setLoading(true);
         setError(null);
 
         try {
@@ -69,7 +66,6 @@ const Hotels = ({ pageTitle }) => {
             numRooms
           );
 
-          setMoreLoading(false);
           setHotelOffers((prevOffers) => [...prevOffers, ...hotelOffersResult]);
           setTotalPages(Math.ceil(hotelIds.length / 100)); // Calculate total pages
         } catch (err) {
@@ -90,7 +86,7 @@ const Hotels = ({ pageTitle }) => {
 
   // Function to load more hotels
   const loadMoreHotels = () => {
-    setMoreLoading(true);
+    setLoading(true);
     if (currentPage < totalPages) {
       setCurrentPage((prevPage) => prevPage + 1);
     }
@@ -135,7 +131,7 @@ const Hotels = ({ pageTitle }) => {
               <Typography variant="body1" color="error">
                 {error}
               </Typography>
-            ) : loading ? (
+            ) : loading && hotelOffers.length === 0 && currentPage === 1 ? (
               <>
                 {[1, 2, 3].map((num) => (
                   <HotelCardSkeleton key={num} />
@@ -158,10 +154,12 @@ const Hotels = ({ pageTitle }) => {
                 )}
               </>
             )}
-            {moreLoading &&
+            {loading &&
+              hotelOffers.length > 0 &&
+              currentPage > 1 &&
               [1, 2, 3].map((item) => <HotelCardSkeleton key={item} />)}
           </Grid>
-          {currentPage < totalPages && !moreLoading && (
+          {currentPage < totalPages && !loading && (
             <Grid container justifyContent="center">
               <Button
                 type="button"
