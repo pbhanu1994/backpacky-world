@@ -7,8 +7,10 @@ import {
   CardContent,
   Typography,
   Divider,
+  useMediaQuery,
 } from "@mui/material";
 import { styled } from "@mui/system";
+import { useTheme } from "@mui/material/styles";
 import { formatCurrency } from "../../../utils/formatCurrency";
 
 const ResponsiveCard = styled(Card)(({ theme }) => ({
@@ -34,6 +36,11 @@ const HotelCard = ({ offer, onSelectedHotel }) => {
     hotel,
     offers: [firstOffer],
   } = offer;
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const MAX_DESC_CHAR_LENGTH = 200;
 
   const handleClick = () => {
     onSelectedHotel(offer);
@@ -61,9 +68,19 @@ const HotelCard = ({ offer, onSelectedHotel }) => {
             <Grid item xs={12}>
               <Divider sx={{ marginY: 1 }} />
             </Grid>
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+              sx={!isMobile ? { minHeight: 160, maxHeight: 160 } : {}}
+            >
               <Typography variant="body2">
-                {firstOffer.room.description.text}
+                {!isMobile &&
+                firstOffer.room.description.text.length > MAX_DESC_CHAR_LENGTH
+                  ? `${firstOffer.room.description.text.slice(
+                      0,
+                      MAX_DESC_CHAR_LENGTH
+                    )}...`
+                  : firstOffer.room.description.text}
               </Typography>
             </Grid>
             <Grid item xs={12}>
@@ -99,11 +116,6 @@ const HotelCard = ({ offer, onSelectedHotel }) => {
                 {available ? "Available" : "Not Available"}
               </Typography>
             </Grid>
-            {/* <Grid item xs={12}>
-              <Button variant="contained" color="primary" fullWidth>
-                Book Now
-              </Button>
-            </Grid> */}
           </Grid>
         </CardContent>
       </CardActionArea>

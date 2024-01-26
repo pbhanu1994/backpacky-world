@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid, Typography, Button } from "@mui/material";
 import Page from "../../atoms/Page";
 import DashboardLayout from "./../../layouts/dashboard";
 import HotelCard from "../../templates/Book/HotelCard";
@@ -18,8 +18,11 @@ import { getHotelOffersByHotelIds } from "../../../services/hotel/hotelOffersByH
 const Hotels = ({ pageTitle }) => {
   const [hotelOffers, setHotelOffers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [moreLoading, setMoreLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showSearchForm, setShowSearchForm] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -42,7 +45,9 @@ const Hotels = ({ pageTitle }) => {
   useEffect(() => {
     if (!isEmptyObject(query)) {
       const performSearch = async () => {
-        setLoading(true);
+        if (hotelOffers.length === 0 && currentPage === 1) {
+          setLoading(true);
+        }
         setError(null);
 
         try {
@@ -53,17 +58,20 @@ const Hotels = ({ pageTitle }) => {
             cityCode
           );
 
-          const hotelIds = ["MCLONGHM"]; // TODO: Remove in Production
+          const hotelIds = hotelsResult.map((hotel) => hotel.hotelId); // Hotel Ids with more than 900 results
+
           const { data: hotelOffersResult } = await getHotelOffersByHotelIds(
             dispatch,
-            hotelIds.splice(0, 10), // TODO: Remove in Production
+            hotelIds.slice((currentPage - 1) * 100, currentPage * 100), // Update to load next 100
             numGuests,
             checkInDate,
             checkOutDate,
             numRooms
           );
 
-          setHotelOffers(hotelOffersResult);
+          setMoreLoading(false);
+          setHotelOffers((prevOffers) => [...prevOffers, ...hotelOffersResult]);
+          setTotalPages(Math.ceil(hotelIds.length / 100)); // Calculate total pages
         } catch (err) {
           console.error("API call error:", err);
           setError("An error occurred, please try again later.");
@@ -74,10 +82,18 @@ const Hotels = ({ pageTitle }) => {
 
       performSearch();
     }
-  }, [query]);
+  }, [query, currentPage]);
 
   const handleToggleSearchForm = () => {
     setShowSearchForm(!showSearchForm);
+  };
+
+  // Function to load more hotels
+  const loadMoreHotels = () => {
+    setMoreLoading(true);
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
   };
 
   const handleSelectedHotel = (hotelOffer) => {
@@ -142,7 +158,21 @@ const Hotels = ({ pageTitle }) => {
                 )}
               </>
             )}
+            {moreLoading &&
+              [1, 2, 3].map((item) => <HotelCardSkeleton key={item} />)}
           </Grid>
+          {currentPage < totalPages && !moreLoading && (
+            <Grid container justifyContent="center">
+              <Button
+                type="button"
+                variant="outlined"
+                color="primary"
+                onClick={loadMoreHotels}
+              >
+                Show More Hotels
+              </Button>
+            </Grid>
+          )}
         </Container>
       </Page>
     </DashboardLayout>

@@ -154,18 +154,20 @@ export const HotelInfo = ({ offer }) => {
                 {formatCurrency(price.total, price.currency)}
               </Typography>
             </Grid>
-            <Grid item>
-              <Typography variant="body2" color="textSecondary">
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  fontWeight="fontWeightBold"
-                >
-                  Base Price
+            {price?.base && (
+              <Grid item>
+                <Typography variant="body2" color="textSecondary">
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    fontWeight="fontWeightBold"
+                  >
+                    Base Price
+                  </Typography>
+                  {formatCurrency(price.base, price.currency)}
                 </Typography>
-                {formatCurrency(price.base, price.currency)}
-              </Typography>
-            </Grid>
+              </Grid>
+            )}
             <Grid item>
               <Typography variant="body2" color="textSecondary">
                 <Typography
