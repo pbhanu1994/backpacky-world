@@ -41,6 +41,12 @@ const Hotels = ({ pageTitle }) => {
     numGuests,
   });
 
+  // Resetting when the query changes
+  useEffect(() => {
+    setHotelOffers([]);
+    setCurrentPage(1);
+  }, [query]);
+
   useEffect(() => {
     if (!isEmptyObject(query)) {
       const performSearch = async () => {
