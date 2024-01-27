@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { Container, Grid, Typography, Button } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Typography,
+  Button,
+  useMediaQuery,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import Page from "../../atoms/Page";
 import DashboardLayout from "./../../layouts/dashboard";
 import HotelCard from "../../templates/Book/HotelCard";
@@ -27,19 +34,22 @@ const Hotels = ({ pageTitle }) => {
   const dispatch = useDispatch();
   const { themeStretch } = useSettings();
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   const { query } = router;
 
   const heading = "Hotels";
 
   const { destination, checkInDate, checkOutDate, numRooms, numGuests } = query;
 
-  console.log("router", {
-    destination,
-    checkInDate,
-    checkOutDate,
-    numRooms,
-    numGuests,
-  });
+  // console.log("router", {
+  //   destination,
+  //   checkInDate,
+  //   checkOutDate,
+  //   numRooms,
+  //   numGuests,
+  // });
 
   // Resetting when the query changes
   useEffect(() => {
@@ -166,11 +176,12 @@ const Hotels = ({ pageTitle }) => {
               [1, 2, 3].map((item) => <HotelCardSkeleton key={item} />)}
           </Grid>
           {currentPage < totalPages && !loading && (
-            <Grid container justifyContent="center">
+            <Grid container xs={12} justifyContent="center">
               <Button
-                type="button"
                 variant="outlined"
                 color="primary"
+                size={isMobile ? "large" : "medium"}
+                fullWidth={isMobile}
                 onClick={loadMoreHotels}
               >
                 Show More Hotels

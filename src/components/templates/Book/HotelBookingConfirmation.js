@@ -75,6 +75,7 @@ export const HotelBookingConfirmation = ({ bookingSuccessData }) => {
         <Button
           variant="contained"
           color="primary"
+          size={isMobile ? "large" : "medium"}
           fullWidth={isMobile}
           href="/"
         >

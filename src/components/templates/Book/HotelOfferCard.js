@@ -199,15 +199,6 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
         };
 
         try {
-          // TODO: Validation
-          // MAKE SURE TO FILL ALL THE GUEST(S) DETAILS
-          // canAssignGuestIds && hotelGuests.length > roomQuantity &&
-          // MAKE SURE ALL THE ROOMS ARE SELECTED
-
-          await hotelBookingSchema.validate(values, {
-            abortEarly: false,
-          });
-
           const { data: successHotelBookingResult } = await performHotelBooking(
             dispatch,
             hotelBookingData
