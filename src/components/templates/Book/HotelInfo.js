@@ -73,18 +73,20 @@ export const HotelInfo = ({ offer }) => {
                 </Typography>
               </Grid>
             </Grid>
-            <Grid item>
-              <Typography variant="body2" color="textSecondary">
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  fontWeight="fontWeightBold"
-                >
-                  Amenities
-                </Typography>{" "}
-                {hotel.amenities.join(", ")}
-              </Typography>
-            </Grid>
+            {hotel?.amenities && (
+              <Grid item>
+                <Typography variant="body2" color="textSecondary">
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    fontWeight="fontWeightBold"
+                  >
+                    Amenities
+                  </Typography>{" "}
+                  {hotel.amenities.join(", ")}
+                </Typography>
+              </Grid>
+            )}
             <Grid item>
               <Typography variant="body2" color="textSecondary">
                 <Stack direction="row" spacing={2}>
@@ -137,18 +139,20 @@ export const HotelInfo = ({ offer }) => {
                 </Stack>
               </Typography>
             </Grid>
-            <Grid item>
-              <Typography variant="body2" color="textSecondary">
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  fontWeight="fontWeightBold"
-                >
-                  Description
+            {description?.text && (
+              <Grid item>
+                <Typography variant="body2" color="textSecondary">
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    fontWeight="fontWeightBold"
+                  >
+                    Description
+                  </Typography>
+                  {description.text}
                 </Typography>
-                {description.text}
-              </Typography>
-            </Grid>
+              </Grid>
+            )}
             <Grid item>
               <Typography variant="h5" color="primary">
                 {formatCurrency(price.total, price.currency)}

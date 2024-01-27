@@ -18,7 +18,7 @@ export const HotelBookingConfirmation = ({ bookingSuccessData }) => {
     <Grid container justifyContent="center" alignItems="center" spacing={3}>
       <Grid item xs={12}>
         <Typography variant="h4" align="center" gutterBottom>
-          Booking Confirmation
+          Booking Confirmed
         </Typography>
         <Typography variant="body1" align="center" paragraph>
           Your hotel booking has been confirmed.
