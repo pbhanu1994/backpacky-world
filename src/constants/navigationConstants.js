@@ -13,6 +13,11 @@ export const PAGE_PATH = {
   BOOK: "/book/",
   BOOK_FLIGHTS: "/book/flights",
   BOOK_HOTELS: "/book/hotels/",
+  BOOK_HOTELS_CONFIRMATION: "/book/hotels/bookingConfirmation/",
+  // TODO: Implement below routes..
+  BOOKINGS: "/bookings/",
+  BOOKINGS_FLIGHTS: "/bookings/flights/",
+  BOOKINGS_HOTELS: "/bookings/hotels/",
   CHAT: "/chat/",
   CALENDAR: "/calendar/",
   SETTINGS: "/settings/",

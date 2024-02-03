@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, initializeFirestore } from "firebase/firestore";
 import {
   getAuth,
   FacebookAuthProvider,
@@ -16,6 +16,10 @@ const app = initializeApp(FIREBASE_CONFIG);
 // firebase.analytics();
 
 // Database
+// Settings - Ignoring Undefined Properties
+initializeFirestore(app, {
+  ignoreUndefinedProperties: true,
+});
 export const db = getFirestore(app);
 
 // Authentication

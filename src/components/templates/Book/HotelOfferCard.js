@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import creditCardType from "credit-card-type";
+import _ from "lodash";
 import { Grid, Card, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { LoadingButton } from "@mui/lab";
@@ -13,14 +15,15 @@ import { HotelGuestForm } from "./HotelGuestForm";
 import { RoomAllocation } from "./RoomAllocation";
 import { RoomSpecialRequests } from "./RoomsSpecialRequests";
 import CardDetailsForm from "./CardDetailsForm";
-import { HotelBookingConfirmation } from "./HotelBookingConfirmation";
-import { isEmptyObject } from "../../../utils/objectUtils";
+import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { getCardIssuerCode } from "../../../utils/getCardIssuerCode";
 import { convertToYYYYMM } from "../../../utils/convertToYYYYMM";
 import {
   formatCardNumber,
   formatExpiryDate,
 } from "../../../utils/formatPaymentDetails";
+import addHotelBooking from "../../../store/actions/book/hotels/bookings/addHotelBooking";
+import setAndShowErrorToast from "../../../store/actions/config/toast/setAndShowErrorToast";
 import { performHotelBooking } from "../../../services/hotel/hotelBooking";
 
 const HotelOfferCard = ({ selectedHotel, offer }) => {
@@ -29,19 +32,19 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
   const [formattedExpiryDate, setFormattedExpiryDate] = useState("");
   const [cardType, setCardType] = useState(null);
   const [hotelBookLoading, setHotelBookLoading] = useState(false);
-  const [hotelBookingResult, setHotelBookingResult] = useState(null);
 
+  const router = useRouter();
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const { offers } = offer;
-  const { roomQuantity = 1 } = offers[0];
+  const { checkInDate, checkOutDate, price, roomQuantity = 1 } = offers[0];
 
-  const { latitude, longitude } = selectedHotel;
+  const { hotelId, name, latitude, longitude } = selectedHotel;
   const places = [{ ...selectedHotel }];
 
-  const isEmptySelectedHotel = isEmptyObject(selectedHotel);
+  const isEmptySelectedHotel = _.isEmpty(selectedHotel);
 
   const numOfGuests = offers[0]?.guests?.adults;
 
@@ -203,13 +206,35 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
             dispatch,
             hotelBookingData
           );
-          console.log("successHotelBookingResult", successHotelBookingResult);
 
-          setHotelBookingResult(successHotelBookingResult);
+          // AMADEUS REFERENCE (ID) FOR BOOKING
+          const reference =
+            successHotelBookingResult[0].associatedRecords[0].reference;
+
+          // TODO: PUT THIS INTO STORE & FIRESTORE DB
+          const bookingInfo = {
+            id: reference,
+            bookingConfirmation: successHotelBookingResult,
+            hotelDetails: {
+              hotelId: hotelId,
+              name: name,
+              checkInDate: checkInDate,
+              checkOutDate: checkOutDate,
+              price: {
+                currency: price.currency,
+                total: price.total,
+              },
+            },
+            ...hotelBookingData.data,
+          };
+
+          dispatch(addHotelBooking(bookingInfo));
+          // TODO: Send Email for Booking Confirmation
+          router.push(`${PAGE_PATH.BOOK_HOTELS_CONFIRMATION}${reference}`);
         } catch (err) {
           console.log("error", err);
-        } finally {
           setHotelBookLoading(false);
+          dispatch(setAndShowErrorToast(err.message));
         }
       }
     },
@@ -387,116 +412,104 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
   };
 
   return (
-    <>
-      {hotelBookingResult ? (
-        <HotelBookingConfirmation bookingSuccessData={hotelBookingResult} />
-      ) : (
-        <>
-          <FormikProvider value={formik}>
-            <Form
-              style={{ width: "100%", marginTop: 8 }}
-              autoComplete="off"
-              noValidate
-              onSubmit={handleSubmit}
+    <FormikProvider value={formik}>
+      <Form
+        style={{ width: "100%", marginTop: 8 }}
+        autoComplete="off"
+        noValidate
+        onSubmit={handleSubmit}
+      >
+        <Grid container spacing={2}>
+          {/* Hotel Description */}
+          <HotelInfo offer={offer} />
+
+          {/* Search Map */}
+          {!isEmptySelectedHotel && (
+            <Grid item xs={12} md={4}>
+              <Card
+                variant="outlined"
+                sx={{ height: !isMobile ? "40%" : "100%" }}
+              >
+                <SearchMap
+                  defaultLatAndLong={{ lat: latitude, lng: longitude }}
+                  places={places}
+                />
+              </Card>
+            </Grid>
+          )}
+
+          {/* Hotel Guests */}
+          <HotelGuestForm
+            hotelGuests={hotelGuests}
+            numOfGuests={numOfGuests}
+            guestRooms={guestRooms}
+            roomQuantity={roomQuantity}
+            canAssignGuestIds={canAssignGuestIds}
+            showAdditionalGuests={showAdditionalGuests}
+            errors={errors?.guests}
+            touched={touched?.guests}
+            handleChange={handleChange}
+            handleTitleChange={handleTitleChange}
+            handleFirstNameChange={handleFirstNameChange}
+            handleLastNameChange={handleLastNameChange}
+            handleEmailChange={handleEmailChange}
+            handlePhoneChange={handlePhoneChange}
+            handleRoomChange={handleRoomChange}
+            handleAddAdditionalGuests={handleAddAdditionalGuests}
+            handleRemoveHotelGuest={handleRemoveHotelGuest}
+          />
+
+          {/* Rooms - Room Allocation */}
+          {canAssignGuestIds && hotelGuests.length > roomQuantity && (
+            <RoomAllocation
+              guests={hotelGuests}
+              guestRooms={guestRooms}
+              roomQuantity={roomQuantity}
+              errors={errors?.guestRooms}
+              touched={touched?.guestRooms}
+              handleRoomChange={handleRoomChange}
+              handleBlur={handleBlur}
+            />
+          )}
+
+          {/* Rooms - Special Requests */}
+          <RoomSpecialRequests
+            roomQuantity={roomQuantity}
+            specialRequests={specialRequests}
+            handleAddSpecialRequests={handleAddSpecialRequests}
+            handleRemoveSpecialRequest={handleRemoveSpecialRequest}
+            handleSpecialRequestChange={handleSpecialRequestChange}
+          />
+
+          <Grid item xs={12} md={8}>
+            {/* Payment - Card Details */}
+            <CardDetailsForm
+              cardType={cardType}
+              formatCardNumber={formattedCardNumber}
+              formattedExpiryDate={formattedExpiryDate}
+              errors={errors?.payments}
+              touched={touched?.payments}
+              handleCardNumberChange={handleCardNumberChange}
+            />
+            <LoadingButton
+              type="submit"
+              fullWidth
+              loading={hotelBookLoading}
+              loadingPosition="start"
+              startIcon={
+                <Iconify icon={"mdi:hotel-outline"} width={20} height={20} />
+              }
+              size="large"
+              variant="contained"
+              color="primary"
+              sx={{ mt: 1.5 }}
             >
-              <Grid container spacing={2}>
-                {/* Hotel Description */}
-                <HotelInfo offer={offer} />
-
-                {/* Search Map */}
-                {!isEmptySelectedHotel && (
-                  <Grid item xs={12} md={4}>
-                    <Card
-                      variant="outlined"
-                      sx={{ height: !isMobile ? "40%" : "100%" }}
-                    >
-                      <SearchMap
-                        defaultLatAndLong={{ lat: latitude, lng: longitude }}
-                        places={places}
-                      />
-                    </Card>
-                  </Grid>
-                )}
-
-                {/* Hotel Guests */}
-                <HotelGuestForm
-                  hotelGuests={hotelGuests}
-                  numOfGuests={numOfGuests}
-                  guestRooms={guestRooms}
-                  roomQuantity={roomQuantity}
-                  canAssignGuestIds={canAssignGuestIds}
-                  showAdditionalGuests={showAdditionalGuests}
-                  errors={errors?.guests}
-                  touched={touched?.guests}
-                  handleChange={handleChange}
-                  handleTitleChange={handleTitleChange}
-                  handleFirstNameChange={handleFirstNameChange}
-                  handleLastNameChange={handleLastNameChange}
-                  handleEmailChange={handleEmailChange}
-                  handlePhoneChange={handlePhoneChange}
-                  handleRoomChange={handleRoomChange}
-                  handleAddAdditionalGuests={handleAddAdditionalGuests}
-                  handleRemoveHotelGuest={handleRemoveHotelGuest}
-                />
-
-                {/* Rooms - Room Allocation */}
-                {canAssignGuestIds && hotelGuests.length > roomQuantity && (
-                  <RoomAllocation
-                    guests={hotelGuests}
-                    guestRooms={guestRooms}
-                    roomQuantity={roomQuantity}
-                    errors={errors?.guestRooms}
-                    touched={touched?.guestRooms}
-                    handleRoomChange={handleRoomChange}
-                    handleBlur={handleBlur}
-                  />
-                )}
-
-                {/* Rooms - Special Requests */}
-                <RoomSpecialRequests
-                  roomQuantity={roomQuantity}
-                  specialRequests={specialRequests}
-                  handleAddSpecialRequests={handleAddSpecialRequests}
-                  handleRemoveSpecialRequest={handleRemoveSpecialRequest}
-                  handleSpecialRequestChange={handleSpecialRequestChange}
-                />
-
-                <Grid item xs={12} md={8}>
-                  {/* Payment - Card Details */}
-                  <CardDetailsForm
-                    cardType={cardType}
-                    formatCardNumber={formattedCardNumber}
-                    formattedExpiryDate={formattedExpiryDate}
-                    errors={errors?.payments}
-                    touched={touched?.payments}
-                    handleCardNumberChange={handleCardNumberChange}
-                  />
-                  <LoadingButton
-                    type="submit"
-                    fullWidth
-                    loading={hotelBookLoading}
-                    loadingPosition="start"
-                    startIcon={
-                      <Iconify
-                        icon={"mdi:hotel-outline"}
-                        width={20}
-                        height={20}
-                      />
-                    }
-                    size="large"
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 1.5 }}
-                  >
-                    {hotelBookLoading ? "Booking..." : "Book"}
-                  </LoadingButton>
-                </Grid>
-              </Grid>
-            </Form>
-          </FormikProvider>
-        </>
-      )}
-    </>
+              {hotelBookLoading ? "Booking..." : "Book"}
+            </LoadingButton>
+          </Grid>
+        </Grid>
+      </Form>
+    </FormikProvider>
   );
 };
 

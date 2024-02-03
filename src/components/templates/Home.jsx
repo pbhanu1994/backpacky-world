@@ -9,6 +9,7 @@ import Page from "../atoms/Page";
 import getPackItems from "../../store/actions/journal/pack/getPackItems";
 import getBucketListItems from "../../store/actions/journal/bucketList/getBucketListItems";
 import getBudgetItems from "../../store/actions/travelBudget/getTravelBudgetItems";
+import getHotelBookings from "../../store/actions/book/hotels/bookings/getHotelBookings";
 
 const Home = ({ userId }) => {
   // const router = useRouter();
@@ -25,6 +26,8 @@ const Home = ({ userId }) => {
     dispatch(getBucketListItems());
     // Travel Budget Items
     dispatch(getBudgetItems());
+    // Book - Hotels - Bookings
+    dispatch(getHotelBookings());
   }, []);
 
   return (

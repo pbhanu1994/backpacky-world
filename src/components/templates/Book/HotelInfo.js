@@ -172,20 +172,22 @@ export const HotelInfo = ({ offer }) => {
                 </Typography>
               </Grid>
             )}
-            <Grid item>
-              <Typography variant="body2" color="textSecondary">
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  fontWeight="fontWeightBold"
-                >
-                  Cancellation Deadline
+            {policies.cancellations && (
+              <Grid item>
+                <Typography variant="body2" color="textSecondary">
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    fontWeight="fontWeightBold"
+                  >
+                    Cancellation Deadline
+                  </Typography>
+                  {policies.cancellations[0].deadline
+                    ? fDate(policies.cancellations[0].deadline)
+                    : policies.cancellations[0].description.text}
                 </Typography>
-                {policies.cancellations[0].deadline
-                  ? fDate(policies.cancellations[0].deadline)
-                  : policies.cancellations[0].description.text}
-              </Typography>
-            </Grid>
+              </Grid>
+            )}
             <Grid item>
               <Typography
                 variant="body2"

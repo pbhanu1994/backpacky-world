@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+import _ from "lodash";
 import {
   Container,
   Grid,
@@ -17,7 +18,6 @@ import HeaderBreadcrumbs from "../../atoms/HeaderBreadCrumbs";
 import useSettings from "../../../hooks/useSettings";
 import { SearchHotelsFilters } from "./SearchHotelsFilters";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
-import { isEmptyObject } from "../../../utils/objectUtils";
 import updateSelectedHotel from "../../../store/actions/book/hotels/updateSelectedHotel";
 import { performHotelSearchByCity } from "../../../services/hotel/hotelsByCity";
 import { getHotelOffersByHotelIds } from "../../../services/hotel/hotelOffersByHotelIds";
@@ -58,7 +58,7 @@ const Hotels = ({ pageTitle }) => {
   }, [query]);
 
   useEffect(() => {
-    if (!isEmptyObject(query)) {
+    if (!_.isEmpty(query)) {
       const performSearch = async () => {
         setLoading(true);
         setError(null);

@@ -11,6 +11,7 @@ import {
 import { TuneSharp as FilterIcon } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import SearchHotelsForm from "./SearchHotelsForm";
+import { fDate } from "../../../utils/formatTime";
 
 export const SearchHotelsFilters = ({
   loading,
@@ -28,8 +29,8 @@ export const SearchHotelsFilters = ({
 
   const filterItems = [
     { label: "Destination", value: destination, xs: 12, md: 3 },
-    { label: "Check-In", value: checkInDate, xs: 6, md: 2 },
-    { label: "Check-Out", value: checkOutDate, xs: 6, md: 2 },
+    { label: "Check-In", value: fDate(checkInDate), xs: 6, md: 2 },
+    { label: "Check-Out", value: fDate(checkOutDate), xs: 6, md: 2 },
     { label: "Rooms", value: numRooms, xs: 6, md: 2 },
     { label: "Guests", value: numGuests, xs: 6, md: 2 },
   ];

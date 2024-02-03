@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
+import _ from "lodash";
 import { Container, Typography, Button } from "@mui/material";
 import Iconify from "../../atoms/Iconify";
 import Page from "../../atoms/Page";
@@ -9,7 +10,6 @@ import HotelOfferCard from "./HotelOfferCard";
 import HotelOfferCardSkeleton from "./HotelOfferCardSkeleton";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import useSettings from "../../../hooks/useSettings";
-import { isEmptyObject } from "../../../utils/objectUtils";
 import { getHotelOffersByOfferId } from "../../../services/hotel/hotelOffersByOfferId";
 
 const HotelOffer = ({ pageTitle }) => {
@@ -84,18 +84,13 @@ const HotelOffer = ({ pageTitle }) => {
             <HotelOfferCardSkeleton />
           ) : (
             <>
-              {!isEmptyObject(selectedHotelOffer) && (
+              {!_.isEmpty(selectedHotelOffer) && (
                 <HotelOfferCard
                   selectedHotel={selectedHotel}
                   offer={selectedHotelOffer}
                 />
               )}
-              {isEmptyObject(selectedHotelOffer) && (
-                <Typography variant="body1">
-                  Hotel offer details not found. Please try again selecting with
-                  different hotel.
-                </Typography>
-              )}
+              {_.isEmpty(selectedHotelOffer) && <HotelOfferCardSkeleton />}
             </>
           )}
         </Container>
