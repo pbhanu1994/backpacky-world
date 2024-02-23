@@ -20,9 +20,9 @@ import {
   Hotel as HotelIcon,
   MeetingRoom as RoomIcon,
   Payment as PaymentIcon,
-  PersonOutline as PersonIcon,
+  // PersonOutline as PersonIcon,
   EmailOutlined as EmailIcon,
-  PhoneOutlined as PhoneIcon,
+  PhoneIphoneOutlined as PhoneIcon,
 } from "@mui/icons-material";
 import Iconify from "../../atoms/Iconify";
 import Page from "../../atoms/Page";
@@ -80,8 +80,14 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
     });
   };
 
-  const { bookingConfirmation, hotelDetails, guests, payments, rooms } =
-    bookingInfo;
+  const {
+    bookingConfirmation,
+    hotelDetails,
+    guests,
+    payments,
+    rooms,
+    download,
+  } = bookingInfo;
 
   const BookMoreOrReturnHome = () => (
     <Grid
@@ -176,8 +182,32 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
       <Typography variant="h3" align="center" gutterBottom>
         Booking Confirmed
       </Typography>
+      <Grid
+        container
+        justifyContent="flex-end"
+        spacing={2}
+        sx={{ marginTop: 4 }}
+      >
+        {!_.isEmpty(download) && (
+          <Button
+            variant="outlined"
+            color="primary"
+            href={download?.downloadURL}
+            download={download?.fileName}
+            startIcon={
+              <Iconify
+                icon={"mdi:file-download-outline"}
+                width={20}
+                height={20}
+              />
+            }
+          >
+            Download
+          </Button>
+        )}
+      </Grid>
 
-      {/* Display Confirmation Results with Enhanced Styling */}
+      {/* Confirmation Results with Enhanced Styling */}
       <Typography
         variant="h6"
         gutterBottom
@@ -185,7 +215,7 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
         alignItems="center"
         sx={{ marginTop: 4 }}
       >
-        <ReceiptIcon sx={{ marginRight: 0.5 }} /> Confirmation Details:
+        <ReceiptIcon sx={{ marginRight: 0.5 }} /> Confirmation Details
       </Typography>
       <Grid container spacing={2}>
         {bookingConfirmation.map((result, index) => (
@@ -221,7 +251,7 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
         ))}
       </Grid>
 
-      {/* Display Hotel Booking Details */}
+      {/* Hotel Booking Details */}
       <Typography
         variant="h6"
         gutterBottom
@@ -229,7 +259,7 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
         alignItems="center"
         sx={{ marginTop: 2 }}
       >
-        <HotelIcon sx={{ marginRight: 0.5 }} /> Hotel Booking Details:
+        <HotelIcon sx={{ marginRight: 0.5 }} /> Hotel Booking Details
       </Typography>
       <Grid container spacing={!isMobile ? 2 : 0}>
         {/* Hotel ID and Hotel Name in one row */}
@@ -282,7 +312,7 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
         </Grid>
       </Grid>
 
-      {/* Display User Information */}
+      {/* Guests Information */}
       <Typography
         variant="h6"
         gutterBottom
@@ -291,7 +321,7 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
         sx={{ marginTop: 2 }}
       >
         <GuestIcon sx={{ marginRight: 0.5 }} />{" "}
-        {guests.length === 1 ? "Guest" : "Guests"} Details:
+        {guests.length === 1 ? "Guest" : "Guests"} Details
       </Typography>
       <Grid container spacing={2}>
         {guests.map((guest, index) => (
@@ -305,7 +335,7 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
                     display="flex"
                     alignItems="center"
                   >
-                    <PersonIcon sx={{ marginRight: 0.5 }} />{" "}
+                    {/* <PersonIcon sx={{ marginRight: 0.5 }} />{" "} */}
                     {`${guest.name.title}. ${
                       guest.name.firstName.charAt(0).toUpperCase() +
                       guest.name.firstName.slice(1)
@@ -343,7 +373,7 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
         ))}
       </Grid>
 
-      {/* Display Payment Information */}
+      {/* Payment Information */}
       <Typography
         variant="h6"
         gutterBottom
@@ -351,7 +381,7 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
         alignItems="center"
         sx={{ marginTop: 2 }}
       >
-        <PaymentIcon sx={{ marginRight: 0.5 }} /> Payment Details:
+        <PaymentIcon sx={{ marginRight: 0.5 }} /> Payment Details
       </Typography>
       <Grid container spacing={2}>
         {payments.map((payment, index) => (
@@ -382,7 +412,7 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
         ))}
       </Grid>
 
-      {/* Display Room Information with Special Requests */}
+      {/* Room Information with Special Requests */}
       {!rooms.every((room) =>
         Object.values(room).every((value) => value === undefined)
       ) &&
@@ -395,7 +425,7 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
             sx={{ marginTop: 2 }}
           >
             <RoomIcon sx={{ marginRight: 0.5 }} />{" "}
-            {rooms.length === 1 ? "Room" : "Rooms"} Details:
+            {rooms.length === 1 ? "Room" : "Rooms"} Details
           </Typography>
         )}
       {!rooms.every((room) =>

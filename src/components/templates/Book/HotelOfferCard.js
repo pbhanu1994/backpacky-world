@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import creditCardType from "credit-card-type";
 import _ from "lodash";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { Grid, Card, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { LoadingButton } from "@mui/lab";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
+import { storage } from "../../../handlers/firebaseClient";
 import Iconify from "../../atoms/Iconify";
 import SearchMap from "../../atoms/SearchMap";
 import { HotelInfo } from "./HotelInfo";
@@ -15,7 +17,10 @@ import { HotelGuestForm } from "./HotelGuestForm";
 import { RoomAllocation } from "./RoomAllocation";
 import { RoomSpecialRequests } from "./RoomsSpecialRequests";
 import CardDetailsForm from "./CardDetailsForm";
+import { hotelBookingConfirmationDocument } from "./hotelBookingConfirmationDocument";
+import { hotelBookingConfirmationEmailbody } from "./hotelBookingConfirmationEmailBody";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
+import { generatePdfAndStore } from "../../../helpers/generatePdfAndStore";
 import { getCardIssuerCode } from "../../../utils/getCardIssuerCode";
 import { convertToYYYYMM } from "../../../utils/convertToYYYYMM";
 import {
@@ -23,6 +28,7 @@ import {
   formatExpiryDate,
 } from "../../../utils/formatPaymentDetails";
 import addHotelBooking from "../../../store/actions/book/hotels/bookings/addHotelBooking";
+import sendHotelBookingConfirmationEmail from "../../../store/actions/book/hotels/bookings/sendHotelBookingConfirmationEmail";
 import setAndShowErrorToast from "../../../store/actions/config/toast/setAndShowErrorToast";
 import { performHotelBooking } from "../../../services/hotel/hotelBooking";
 
@@ -32,11 +38,13 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
   const [formattedExpiryDate, setFormattedExpiryDate] = useState("");
   const [cardType, setCardType] = useState(null);
   const [hotelBookLoading, setHotelBookLoading] = useState(false);
+  const [imageData, setImageData] = useState({});
 
   const router = useRouter();
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { uid } = useSelector((state) => state.auth.user);
 
   const { offers } = offer;
   const { checkInDate, checkOutDate, price, roomQuantity = 1 } = offers[0];
@@ -49,6 +57,41 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
   const numOfGuests = offers[0]?.guests?.adults;
 
   const canAssignGuestIds = numOfGuests > roomQuantity;
+
+  // Getting all the images for booking confirmation PDF
+  useEffect(() => {
+    // Reference to the images in Firebase Storage
+    const imagesRef = ref(
+      storage,
+      "backpacky/assets/images/hotel-booking-confirmation-pdf"
+    );
+
+    // Fetch the list of items in the folder
+    listAll(imagesRef)
+      .then((res) => {
+        const imageDetails = {};
+
+        // Iterate through each item and get the download URL and file name
+        res.items.forEach((itemRef) => {
+          // Extracting the file name with extension
+          const fileNameWithExtension = itemRef.name.split("/").pop();
+          // Removing the file extension
+          const fileName = fileNameWithExtension
+            .split(".")
+            .slice(0, -1)
+            .join("");
+          getDownloadURL(itemRef).then((url) => {
+            imageDetails[fileName] = url;
+            // Updating state with the image details
+            setImageData(imageDetails);
+          });
+        });
+      })
+      .catch((error) => {
+        // Uh-oh, an error occurred!
+        console.log("error", error);
+      });
+  }, []);
 
   // Validation Schema
   // Guest Schema
@@ -192,6 +235,17 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
           })
         );
 
+        const hotelDetails = {
+          hotelId,
+          name,
+          checkInDate,
+          checkOutDate,
+          price: {
+            currency: price.currency,
+            total: price.total,
+          },
+        };
+
         const hotelBookingData = {
           data: {
             offerId: offer?.offers[0]?.id,
@@ -207,30 +261,91 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
             hotelBookingData
           );
 
+          /* Remove later - uncomment below for testing purposes */
+          // const successHotelBookingResult = [
+          //   {
+          //     type: "hotel-booking",
+          //     providerConfirmationId: "72416785",
+          //     associatedRecords: [
+          //       {
+          //         reference: "SF36REA",
+          //         originSystemCode: "GDS",
+          //       },
+          //     ],
+          //     id: "RC_72416785",
+          //   },
+          //   {
+          //     type: "hotel-booking",
+          //     providerConfirmationId: "72416786",
+          //     associatedRecords: [
+          //       {
+          //         reference: "SF36REA",
+          //         originSystemCode: "GDS",
+          //       },
+          //     ],
+          //     id: "RC_72416786",
+          //   },
+          // ];
+
           // AMADEUS REFERENCE (ID) FOR BOOKING
           const reference =
             successHotelBookingResult[0].associatedRecords[0].reference;
 
-          // TODO: PUT THIS INTO STORE & FIRESTORE DB
-          const bookingInfo = {
-            id: reference,
-            bookingConfirmation: successHotelBookingResult,
-            hotelDetails: {
-              hotelId: hotelId,
-              name: name,
-              checkInDate: checkInDate,
-              checkOutDate: checkOutDate,
-              price: {
-                currency: price.currency,
-                total: price.total,
-              },
-            },
-            ...hotelBookingData.data,
-          };
+          if (reference) {
+            const storagePath = `documents/${uid}/hotelBookings`;
+            const fileName = `hotel-booking-${reference}.pdf`;
 
-          dispatch(addHotelBooking(bookingInfo));
-          // TODO: Send Email for Booking Confirmation
-          router.push(`${PAGE_PATH.BOOK_HOTELS_CONFIRMATION}${reference}`);
+            const pdfContent = hotelBookingConfirmationDocument(
+              successHotelBookingResult,
+              hotelDetails,
+              updatedHotelGuests,
+              payments,
+              updatedRooms,
+              imageData,
+              theme
+            );
+
+            const { pdfBlob, downloadURL } = await generatePdfAndStore(
+              pdfContent,
+              storagePath,
+              fileName
+            );
+
+            const bookingInfo = {
+              id: reference,
+              bookingConfirmation: successHotelBookingResult,
+              hotelDetails,
+              download: {
+                fileName,
+                downloadURL,
+              },
+              ...hotelBookingData.data,
+            };
+
+            dispatch(addHotelBooking(bookingInfo, downloadURL));
+
+            // Sending Booking Confirmation Emails for each guest
+            updatedHotelGuests.forEach((guest) => {
+              const emailBodyContent = hotelBookingConfirmationEmailbody(
+                guest,
+                successHotelBookingResult,
+                hotelDetails,
+                updatedHotelGuests,
+                payments,
+                updatedRooms,
+                theme
+              );
+              dispatch(
+                sendHotelBookingConfirmationEmail(
+                  reference,
+                  emailBodyContent,
+                  guest,
+                  downloadURL
+                )
+              );
+            });
+            router.push(`${PAGE_PATH.BOOK_HOTELS_CONFIRMATION}${reference}`);
+          }
         } catch (err) {
           console.log("error", err);
           setHotelBookLoading(false);

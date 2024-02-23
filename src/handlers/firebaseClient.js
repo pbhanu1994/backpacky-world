@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, initializeFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 import {
   getAuth,
   FacebookAuthProvider,
@@ -21,6 +22,9 @@ initializeFirestore(app, {
   ignoreUndefinedProperties: true,
 });
 export const db = getFirestore(app);
+
+// Storage
+export const storage = getStorage(app);
 
 // Authentication
 export const auth = getAuth(app);
