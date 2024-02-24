@@ -39,8 +39,14 @@ export const hotelBookingConfirmationEmailbody = (
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        h1, h2 {
+        h1 {
             color: ${text.primary};
+            font-family: 'Public Sans', sans-serif;
+            text-align: center;
+        }
+        
+        h2 {
+            color: ${primary.main};
             font-family: 'Public Sans', sans-serif;
         }
 

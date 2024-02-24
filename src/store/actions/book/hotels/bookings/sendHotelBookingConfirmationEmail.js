@@ -1,5 +1,5 @@
 import { db } from "../../../../../handlers/firebaseClient";
-import { collection, addDoc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import setAndShowErrorToast from "../../../config/toast/setAndShowErrorToast";
 
 const sendHotelBookingConfirmationEmail =
@@ -27,32 +27,38 @@ const sendHotelBookingConfirmationEmail =
       //           </ol>
       //       </div>`
       // ).join("\n");
-      /* Normal - WORKS! */
-      const emailData = {
-        to: [guest.contact.email],
-        message: {
-          subject: `Your Hotel Booking Confirmation - REF #${reference}`,
-          html: emailBodyHTMLContent,
-          attachments: [
-            {
-              filename: `Booking_Confirmation-REF_#${reference}.pdf`,
-              path: downloadUrl,
-            },
-          ],
-        },
-      };
-      /* Templates EXAMPLE*/
+      /* Normal */
       // const emailData = {
-      //   to: ["pbhanu.1994@gmail.com", "pbhanu.1994@ymail.com"],
-      //   template: {
-      //     name: "monthly_invoice",
-      //     data: {
-      //       amount: 200,
-      //       invoice_link: downloadUrl,
-      //     },
+      //   to: [guest.contact.email],
+      //   message: {
+      //     subject: `Your Hotel Booking Confirmation - REF #${reference}`,
+      //     html: emailBodyHTMLContent,
+      //     attachments: [
+      //       {
+      //         filename: `Booking_Confirmation-REF_#${reference}.pdf`,
+      //         path: downloadUrl,
+      //       },
+      //     ],
       //   },
       // };
-      addDoc(collection(db, "mail"), emailData);
+
+      /* Template */
+      const emailData = {
+        to: [guest.contact.email],
+        template: {
+          name: "hotelBookingConfirmation",
+          data: {
+            html: emailBodyHTMLContent,
+            reference,
+            downloadUrl,
+          },
+        },
+      };
+      // addDoc(collection(db, "mail"), emailData);
+      setDoc(
+        doc(db, "mail", `hotelBookingConfirmation-${reference}`),
+        emailData
+      );
     } catch (err) {
       console.log("error", err);
       const errorMessage = `Whoops! Could not send the Hotel Booking Confirmation email. Please try again.`;

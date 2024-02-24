@@ -127,7 +127,11 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
     const guests = originalValue?.guests;
     const guestRooms = originalValue?.guestRooms;
 
-    if (canAssignGuestIds && guests?.length > roomQuantity) {
+    if (
+      roomQuantity > 1 &&
+      canAssignGuestIds &&
+      guests?.length > roomQuantity
+    ) {
       const selectedRooms = Object.values(guestRooms || {});
       const errors = Array.from({ length: roomQuantity })
         .map((_, index) =>
@@ -265,25 +269,25 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
           // const successHotelBookingResult = [
           //   {
           //     type: "hotel-booking",
-          //     providerConfirmationId: "72416785",
+          //     providerConfirmationId: "92416788",
           //     associatedRecords: [
           //       {
-          //         reference: "SF36REA",
+          //         reference: "UF36REC",
           //         originSystemCode: "GDS",
           //       },
           //     ],
-          //     id: "RC_72416785",
+          //     id: "SC_92416788",
           //   },
           //   {
           //     type: "hotel-booking",
-          //     providerConfirmationId: "72416786",
+          //     providerConfirmationId: "92416789",
           //     associatedRecords: [
           //       {
-          //         reference: "SF36REA",
+          //         reference: "UF36REC",
           //         originSystemCode: "GDS",
           //       },
           //     ],
-          //     id: "RC_72416786",
+          //     id: "SC_92416789",
           //   },
           // ];
 
@@ -575,17 +579,19 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
           />
 
           {/* Rooms - Room Allocation */}
-          {canAssignGuestIds && hotelGuests.length > roomQuantity && (
-            <RoomAllocation
-              guests={hotelGuests}
-              guestRooms={guestRooms}
-              roomQuantity={roomQuantity}
-              errors={errors?.guestRooms}
-              touched={touched?.guestRooms}
-              handleRoomChange={handleRoomChange}
-              handleBlur={handleBlur}
-            />
-          )}
+          {roomQuantity > 1 &&
+            canAssignGuestIds &&
+            hotelGuests.length > roomQuantity && (
+              <RoomAllocation
+                guests={hotelGuests}
+                guestRooms={guestRooms}
+                roomQuantity={roomQuantity}
+                errors={errors?.guestRooms}
+                touched={touched?.guestRooms}
+                handleRoomChange={handleRoomChange}
+                handleBlur={handleBlur}
+              />
+            )}
 
           {/* Rooms - Special Requests */}
           <RoomSpecialRequests
