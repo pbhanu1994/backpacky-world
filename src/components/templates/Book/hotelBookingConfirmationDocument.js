@@ -276,7 +276,6 @@ export const hotelBookingConfirmationDocument = (
                           .join(", ")}
                       </Text>
                     )}
-                    {room.guestIds && room.guestIds.length > 0 && <br />}
                     {room.specialRequest && (
                       <View style={styles.cell}>
                         <Text style={styles.subLabel}>Special Request:</Text>

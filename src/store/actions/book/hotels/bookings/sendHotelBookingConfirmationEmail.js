@@ -1,10 +1,9 @@
 import { db } from "../../../../../handlers/firebaseClient";
-import { setDoc, doc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import setAndShowErrorToast from "../../../config/toast/setAndShowErrorToast";
 
 const sendHotelBookingConfirmationEmail =
   (reference, emailBodyHTMLContent, guest, downloadUrl) => async (dispatch) => {
-    // const uid = getState().auth.user.uid;
     try {
       //Temp
       // const sampleHtml = Array.from(
@@ -27,6 +26,7 @@ const sendHotelBookingConfirmationEmail =
       //           </ol>
       //       </div>`
       // ).join("\n");
+
       /* Normal */
       // const emailData = {
       //   to: [guest.contact.email],
@@ -54,11 +54,7 @@ const sendHotelBookingConfirmationEmail =
           },
         },
       };
-      // addDoc(collection(db, "mail"), emailData);
-      setDoc(
-        doc(db, "mail", `hotelBookingConfirmation-${reference}`),
-        emailData
-      );
+      addDoc(collection(db, "mail"), emailData);
     } catch (err) {
       console.log("error", err);
       const errorMessage = `Whoops! Could not send the Hotel Booking Confirmation email. Please try again.`;
