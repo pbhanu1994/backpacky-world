@@ -214,7 +214,7 @@ export const hotelBookingConfirmationEmailbody = (
                             <div>
                               ${
                                 room.guestIds && room.guestIds.length > 0
-                                  ? `<li><p class="subLabel"><strong>Guests:</strong> ${
+                                  ? `<li><p class="subLabel"><strong>Guests:</strong></p> ${
                                       room.guestIds && room.guestIds.length > 0
                                         ? room.guestIds
                                             .map(
@@ -231,7 +231,7 @@ export const hotelBookingConfirmationEmailbody = (
                                             )
                                             .join(", ")
                                         : ""
-                                    }</p></li>`
+                                    }</li>`
                                   : ""
                               }
                               ${

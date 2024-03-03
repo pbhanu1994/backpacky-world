@@ -19,6 +19,7 @@ import { RoomSpecialRequests } from "./RoomsSpecialRequests";
 import CardDetailsForm from "./CardDetailsForm";
 import { hotelBookingConfirmationDocument } from "./hotelBookingConfirmationDocument";
 import { hotelBookingConfirmationEmailbody } from "./hotelBookingConfirmationEmailBody";
+import { hotelBookingConfirmationSMSBody } from "./hotelBookingConfirmationSMSBody";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { generatePdfAndStore } from "../../../helpers/generatePdfAndStore";
 import { getCardIssuerCode } from "../../../utils/getCardIssuerCode";
@@ -29,6 +30,7 @@ import {
 } from "../../../utils/formatPaymentDetails";
 import addHotelBooking from "../../../store/actions/book/hotels/bookings/addHotelBooking";
 import sendHotelBookingConfirmationEmail from "../../../store/actions/book/hotels/bookings/sendHotelBookingConfirmationEmail";
+import sendHotelBookingConfirmationSMS from "../../../store/actions/book/hotels/bookings/sendHotelBookingConfirmationSMS";
 import setAndShowErrorToast from "../../../store/actions/config/toast/setAndShowErrorToast";
 import { performHotelBooking } from "../../../services/hotel/hotelBooking";
 
@@ -339,6 +341,13 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
                 updatedRooms,
                 theme
               );
+              const SMSBodyContent = hotelBookingConfirmationSMSBody(
+                guest.name.firstName,
+                reference,
+                hotelDetails,
+                downloadURL
+              );
+              // Sending EMAIL
               dispatch(
                 sendHotelBookingConfirmationEmail(
                   reference,
@@ -347,7 +356,16 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
                   downloadURL
                 )
               );
+              // Sending SMS
+              dispatch(
+                sendHotelBookingConfirmationSMS(
+                  guest.contact.phone,
+                  SMSBodyContent,
+                  downloadURL
+                )
+              );
             });
+
             router.push(`${PAGE_PATH.BOOK_HOTELS_CONFIRMATION}${reference}`);
           }
         } catch (err) {
