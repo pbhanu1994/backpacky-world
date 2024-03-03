@@ -8,6 +8,7 @@ const sendHotelBookingConfirmationSMS =
       const SMSData = {
         to: phoneNumber,
         body: SMSBodyContent,
+        //mediaUrl is also an Array (if there are Multiple docs/items)
         mediaUrl: downloadUrl,
       };
       addDoc(collection(db, "messages"), SMSData);
