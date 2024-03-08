@@ -7,8 +7,8 @@ import {
   Typography,
   Stack,
 } from "@mui/material";
-import { fDate } from "../../../utils/formatTime";
-import { formatCurrency } from "../../../utils/formatCurrency";
+import { fDate } from "../../../../utils/formatTime";
+import { formatCurrency } from "../../../../utils/formatCurrency";
 
 export const HotelInfo = ({ offer }) => {
   const { hotel, offers, available } = offer;

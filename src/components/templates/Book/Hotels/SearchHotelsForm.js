@@ -4,10 +4,10 @@ import { LoadingButton } from "@mui/lab";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Iconify from "../../atoms/Iconify";
-import PlacesAutocompleteField from "../../atoms/PlacesAutoComplete";
-import { PAGE_PATH } from "../../../constants/navigationConstants";
-import { fDateWithYMD } from "../../../utils/formatTime";
+import Iconify from "../../../atoms/Iconify";
+import PlacesAutocompleteField from "../../../atoms/PlacesAutoComplete";
+import { PAGE_PATH } from "../../../../constants/navigationConstants";
+import { fDateWithYMD } from "../../../../utils/formatTime";
 
 const SearchHotelsForm = ({
   hidePaper = false,

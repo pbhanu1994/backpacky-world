@@ -8,7 +8,7 @@ import {
   TextField,
   IconButton,
 } from "@mui/material";
-import Iconify from "../../atoms/Iconify";
+import Iconify from "../../../atoms/Iconify";
 import { AddItem } from "./AddItem";
 
 export const RoomSpecialRequests = ({

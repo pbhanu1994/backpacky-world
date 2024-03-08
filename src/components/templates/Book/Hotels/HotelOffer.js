@@ -3,14 +3,14 @@ import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import _ from "lodash";
 import { Container, Typography, Button } from "@mui/material";
-import Iconify from "../../atoms/Iconify";
-import Page from "../../atoms/Page";
-import DashboardLayout from "../../layouts/dashboard";
+import Iconify from "../../../atoms/Iconify";
+import Page from "../../../atoms/Page";
+import DashboardLayout from "../../../layouts/dashboard";
 import HotelOfferCard from "./HotelOfferCard";
 import HotelOfferCardSkeleton from "./HotelOfferCardSkeleton";
-import { PAGE_PATH } from "../../../constants/navigationConstants";
-import useSettings from "../../../hooks/useSettings";
-import { getHotelOffersByOfferId } from "../../../services/hotel/hotelOffersByOfferId";
+import { PAGE_PATH } from "../../../../constants/navigationConstants";
+import useSettings from "../../../../hooks/useSettings";
+import { getHotelOffersByOfferId } from "../../../../services/hotel/hotelOffersByOfferId";
 
 const HotelOffer = ({ pageTitle }) => {
   const [selectedHotelOffer, setSelectedHotelOffer] = useState({});

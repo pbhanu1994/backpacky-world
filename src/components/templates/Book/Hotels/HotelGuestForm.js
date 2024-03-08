@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Box, Stack, Card, Typography, IconButton } from "@mui/material";
-import Iconify from "../../atoms/Iconify";
+import Iconify from "../../../atoms/Iconify";
 import { GuestForm } from "./GuestForm";
 import { AddItem } from "./AddItem";
 

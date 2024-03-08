@@ -9,9 +9,9 @@ import { useTheme } from "@mui/material/styles";
 import { LoadingButton } from "@mui/lab";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
-import { storage } from "../../../handlers/firebaseClient";
-import Iconify from "../../atoms/Iconify";
-import SearchMap from "../../atoms/SearchMap";
+import { storage } from "../../../../handlers/firebaseClient";
+import Iconify from "../../../atoms/Iconify";
+import SearchMap from "../../../atoms/SearchMap";
 import { HotelInfo } from "./HotelInfo";
 import { HotelGuestForm } from "./HotelGuestForm";
 import { RoomAllocation } from "./RoomAllocation";
@@ -20,19 +20,19 @@ import CardDetailsForm from "./CardDetailsForm";
 import { hotelBookingConfirmationDocument } from "./hotelBookingConfirmationDocument";
 import { hotelBookingConfirmationEmailbody } from "./hotelBookingConfirmationEmailBody";
 import { hotelBookingConfirmationSMSBody } from "./hotelBookingConfirmationSMSBody";
-import { PAGE_PATH } from "../../../constants/navigationConstants";
-import { generatePdfAndStore } from "../../../helpers/generatePdfAndStore";
-import { getCardIssuerCode } from "../../../utils/getCardIssuerCode";
-import { convertToYYYYMM } from "../../../utils/convertToYYYYMM";
+import { PAGE_PATH } from "../../../../constants/navigationConstants";
+import { generatePdfAndStore } from "../../../../helpers/generatePdfAndStore";
+import { getCardIssuerCode } from "../../../../utils/getCardIssuerCode";
+import { convertToYYYYMM } from "../../../../utils/convertToYYYYMM";
 import {
   formatCardNumber,
   formatExpiryDate,
-} from "../../../utils/formatPaymentDetails";
-import addHotelBooking from "../../../store/actions/book/hotels/bookings/addHotelBooking";
-import sendHotelBookingConfirmationEmail from "../../../store/actions/book/hotels/bookings/sendHotelBookingConfirmationEmail";
-import sendHotelBookingConfirmationSMS from "../../../store/actions/book/hotels/bookings/sendHotelBookingConfirmationSMS";
-import setAndShowErrorToast from "../../../store/actions/config/toast/setAndShowErrorToast";
-import { performHotelBooking } from "../../../services/hotel/hotelBooking";
+} from "../../../../utils/formatPaymentDetails";
+import addHotelBooking from "../../../../store/actions/book/hotels/bookings/addHotelBooking";
+import sendHotelBookingConfirmationEmail from "../../../../store/actions/book/hotels/bookings/sendHotelBookingConfirmationEmail";
+import sendHotelBookingConfirmationSMS from "../../../../store/actions/book/hotels/bookings/sendHotelBookingConfirmationSMS";
+import setAndShowErrorToast from "../../../../store/actions/config/toast/setAndShowErrorToast";
+import { performHotelBooking } from "../../../../services/hotel/hotelBooking";
 
 const HotelOfferCard = ({ selectedHotel, offer }) => {
   const [showAdditionalGuests, setShowAdditionalGuests] = useState(false);

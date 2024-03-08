@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Container } from "@mui/material";
 import SearchFlightsForm from "./SearchFlightsForm";
-import { performFlightOffersSearch } from "../../../services/flight/flightOffers";
+import { performFlightOffersSearch } from "../../../../services/flight/flightOffers";
 
 export const Flights = () => {
   const [flightSearchResult, setFlightSearchResult] = useState(null);

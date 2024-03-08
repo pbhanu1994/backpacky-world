@@ -1,5 +1,5 @@
 import React from "react";
-import HotelsComponent from "../../../src/components/templates/Book/Hotels";
+import HotelsComponent from "../../../src/components/templates/Book/Hotels/Hotels";
 import { parseCookies } from "../../../src/helpers/parseCookies";
 import { verifyIdToken } from "../../../src/handlers/firebaseAdmin";
 

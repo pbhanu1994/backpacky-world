@@ -11,7 +11,7 @@ import {
 import { TuneSharp as FilterIcon } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import SearchHotelsForm from "./SearchHotelsForm";
-import { fDate } from "../../../utils/formatTime";
+import { fDate } from "../../../../utils/formatTime";
 
 export const SearchHotelsFilters = ({
   loading,

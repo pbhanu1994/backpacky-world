@@ -7,8 +7,8 @@ import Page from "../../atoms/Page";
 import Iconify from "../../atoms/Iconify";
 import useTabs from "../../../hooks/useTabs";
 import useSettings from "../../../hooks/useSettings";
-import SearchFlightsForm from "./SearchFlightsForm";
-import SearchHotelsForm from "./SearchHotelsForm";
+import SearchFlightsForm from "./Flights/SearchFlightsForm";
+import SearchHotelsForm from "./Hotels/SearchHotelsForm";
 import { Cars } from "./Cars";
 
 const BookType = {

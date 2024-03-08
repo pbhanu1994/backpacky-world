@@ -10,17 +10,17 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import Page from "../../atoms/Page";
-import DashboardLayout from "./../../layouts/dashboard";
-import HotelCard from "../../templates/Book/HotelCard";
-import HotelCardSkeleton from "./HotelCardSkeleton";
-import HeaderBreadcrumbs from "../../atoms/HeaderBreadCrumbs";
-import useSettings from "../../../hooks/useSettings";
+import Page from "../../../atoms/Page";
+import HeaderBreadcrumbs from "../../../atoms/HeaderBreadCrumbs";
+import DashboardLayout from "../../../layouts/dashboard";
+import HotelCard from "./HotelCard";
 import { SearchHotelsFilters } from "./SearchHotelsFilters";
-import { PAGE_PATH } from "../../../constants/navigationConstants";
-import updateSelectedHotel from "../../../store/actions/book/hotels/updateSelectedHotel";
-import { performHotelSearchByCity } from "../../../services/hotel/hotelsByCity";
-import { getHotelOffersByHotelIds } from "../../../services/hotel/hotelOffersByHotelIds";
+import HotelCardSkeleton from "./HotelCardSkeleton";
+import useSettings from "../../../../hooks/useSettings";
+import { PAGE_PATH } from "../../../../constants/navigationConstants";
+import updateSelectedHotel from "../../../../store/actions/book/hotels/updateSelectedHotel";
+import { performHotelSearchByCity } from "../../../../services/hotel/hotelsByCity";
+import { getHotelOffersByHotelIds } from "../../../../services/hotel/hotelOffersByHotelIds";
 
 const Hotels = ({ pageTitle }) => {
   const [hotelOffers, setHotelOffers] = useState([]);

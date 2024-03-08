@@ -24,13 +24,13 @@ import {
   EmailOutlined as EmailIcon,
   PhoneIphoneOutlined as PhoneIcon,
 } from "@mui/icons-material";
-import Iconify from "../../atoms/Iconify";
-import Page from "../../atoms/Page";
-import DashboardLayout from "../../layouts/dashboard";
-import { PAGE_PATH } from "../../../constants/navigationConstants";
-import { formatCurrency } from "../../../utils/formatCurrency";
-import { fDate } from "../../../utils/formatTime";
-import getHotelBookings from "../../../store/actions/book/hotels/bookings/getHotelBookings";
+import Iconify from "../../../atoms/Iconify";
+import Page from "../../../atoms/Page";
+import DashboardLayout from "../../../layouts/dashboard";
+import { PAGE_PATH } from "../../../../constants/navigationConstants";
+import { formatCurrency } from "../../../../utils/formatCurrency";
+import { fDate } from "../../../../utils/formatTime";
+import getHotelBookings from "../../../../store/actions/book/hotels/bookings/getHotelBookings";
 
 const HotelBookingConfirmation = ({ pageTitle }) => {
   const [bookingInfo, setBookingInfo] = useState({});

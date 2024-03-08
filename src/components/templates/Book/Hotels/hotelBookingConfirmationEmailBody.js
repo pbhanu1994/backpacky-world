@@ -1,5 +1,5 @@
-import { fDate } from "../../../utils/formatTime";
-import { formatCurrency } from "../../../utils/formatCurrency";
+import { fDate } from "../../../../utils/formatTime";
+import { formatCurrency } from "../../../../utils/formatCurrency";
 
 export const hotelBookingConfirmationEmailbody = (
   guest,

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, Font } from "@react-pdf/renderer";
-import { fDate } from "../../../utils/formatTime";
-import { formatCurrency } from "../../../utils/formatCurrency";
+import { fDate } from "../../../../utils/formatTime";
+import { formatCurrency } from "../../../../utils/formatCurrency";
 
 export const hotelBookingConfirmationDocument = (
   bookingConfirmation,

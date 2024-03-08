@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
-import { formatCurrency } from "../../../utils/formatCurrency";
+import { formatCurrency } from "../../../../utils/formatCurrency";
 
 const ResponsiveCard = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(2), // Add some vertical spacing

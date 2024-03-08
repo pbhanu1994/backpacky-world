@@ -9,11 +9,11 @@ import {
   Grid,
   MenuItem,
 } from "@mui/material";
-import useTabs from "../../../hooks/useTabs";
+import useTabs from "../../../../hooks/useTabs";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import PlacesAutocompleteField from "../../atoms/PlacesAutoComplete";
+import PlacesAutocompleteField from "../../../atoms/PlacesAutoComplete";
 
 const SearchFlightType = {
   ONE_WAY: "One Way",

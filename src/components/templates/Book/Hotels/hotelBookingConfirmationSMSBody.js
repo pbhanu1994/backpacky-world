@@ -1,4 +1,4 @@
-import { fDate } from "../../../utils/formatTime";
+import { fDate } from "../../../../utils/formatTime";
 
 export const hotelBookingConfirmationSMSBody = (
   firstName,

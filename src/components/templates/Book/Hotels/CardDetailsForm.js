@@ -9,7 +9,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import Iconify from "../../atoms/Iconify";
+import Iconify from "../../../atoms/Iconify";
 
 const CardDetailsForm = ({
   cardType,

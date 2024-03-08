@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Button } from "@mui/material";
-import Iconify from "../../atoms/Iconify";
+import Iconify from "../../../atoms/Iconify";
 
 export const AddItem = ({ itemName, onAddItem }) => {
   return (
