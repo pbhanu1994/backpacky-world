@@ -4,10 +4,10 @@ import { getAccessToken } from "../auth/amadeusAuth";
 import setAndShowErrorToast from "../../store/actions/config/toast/setAndShowErrorToast";
 
 // Function to perform a city / airport search which gives IATA codes
-export const getCityWithCityCodes = async (
+export const getCityAirportDetails = async (
   dispatch,
-  input,
-  city = true,
+  keyword,
+  city = false,
   airport = false
 ) => {
   const accessToken = await getAccessToken();
@@ -19,12 +19,12 @@ export const getCityWithCityCodes = async (
 
   const params = {
     subType: subTypeCheck,
-    keyword: input ? input : "a",
+    keyword,
   };
 
   setAuthorizationHeader(accessToken);
   try {
-    const cityIataSearchResults = await get(apiEndpoint, params, true);
+    const { data: cityIataSearchResults } = await get(apiEndpoint, params);
     return cityIataSearchResults;
   } catch (err) {
     console.error("Error occurred:", err.message);

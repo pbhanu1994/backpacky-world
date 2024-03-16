@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import _ from "lodash";
 import {
   Container,
@@ -29,6 +29,8 @@ const Hotels = ({ pageTitle }) => {
   const [showSearchForm, setShowSearchForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
+  const cityCode = useSelector((state) => state.book.destination.iataCode);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -64,8 +66,6 @@ const Hotels = ({ pageTitle }) => {
         setError(null);
 
         try {
-          const cityCode = "LON"; // Replace with your desired city code
-
           const { data: hotelsResult } = await performHotelSearchByCity(
             dispatch,
             cityCode
@@ -140,8 +140,15 @@ const Hotels = ({ pageTitle }) => {
             {...query}
           />
           <Grid sx={{ my: 2 }}>
-            <Typography variant="h3" sx={{ mb: 2 }}>
-              Hotels for {destination}
+            <Typography variant="h3" sx={{ mb: 2, fontWeight: 100 }}>
+              Hotels for{" "}
+              <Typography
+                component="span"
+                variant="h3"
+                sx={{ fontWeight: "bold", color: "primary.main" }}
+              >
+                {destination}
+              </Typography>
             </Typography>
             {error ? (
               <Typography variant="body1" color="error">

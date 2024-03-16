@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Iconify from "../../../atoms/Iconify";
-import PlacesAutocompleteField from "../../../atoms/PlacesAutoComplete";
+import CityAirportSearchField from "../../../atoms/CityAirportSearchField";
 import { PAGE_PATH } from "../../../../constants/navigationConstants";
 import { fDateWithYMD } from "../../../../utils/formatTime";
 
@@ -109,10 +109,10 @@ const SearchHotelsForm = ({
       <form onSubmit={handleSearch}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <PlacesAutocompleteField
+            <CityAirportSearchField
               inputValue={destination}
-              cities
-              onInputValueChange={(value) => setDestination(value)}
+              city
+              onDestinationSelected={(value) => setDestination(value)}
               label="Destination"
               autoFocus
               error={!destination && searchHotelsFormError.destination}

@@ -1,10 +1,12 @@
 import {
+  ADD_DESTINATION_DETAILS,
   UPDATE_SELECTED_HOTEL,
   GET_HOTEL_BOOKINGS,
   ADD_HOTEL_BOOKING,
 } from "../actionTypes/book";
 
 const initialState = {
+  destination: {},
   hotels: {
     selected: {},
     bookings: {},
@@ -13,6 +15,14 @@ const initialState = {
 
 export const bookReducer = (state = initialState, action) => {
   switch (action.type) {
+    case ADD_DESTINATION_DETAILS: {
+      const destinationInfo = action.payload;
+
+      return {
+        ...state,
+        destination: destinationInfo,
+      };
+    }
     // -- HOTELS -- //
     case UPDATE_SELECTED_HOTEL: {
       const selectedHotel = action.payload;
