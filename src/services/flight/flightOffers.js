@@ -9,7 +9,9 @@ export const performFlightOffersSearch = async (
   originLocationCode,
   destinationLocationCode,
   departureDate,
-  adults = 1
+  returnDate,
+  adults = 1,
+  max = 3 //Max flight offers (we could go max of 250 flight offers)
 ) => {
   const accessToken = await getAccessToken();
 
@@ -18,7 +20,9 @@ export const performFlightOffersSearch = async (
     originLocationCode,
     destinationLocationCode,
     departureDate,
+    returnDate,
     adults,
+    max,
   };
 
   setAuthorizationHeader(accessToken);
