@@ -130,6 +130,7 @@ const SearchHotelsForm = ({
               value={checkInDate}
               format="DD/MM/YYYY"
               sx={{ width: "100%" }}
+              disablePast
               required
             />
           </Grid>
@@ -140,6 +141,7 @@ const SearchHotelsForm = ({
               value={checkOutDate}
               format="DD/MM/YYYY"
               sx={{ width: "100%" }}
+              disablePast
               required
             />
           </Grid>

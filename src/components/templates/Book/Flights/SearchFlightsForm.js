@@ -161,6 +161,7 @@ const SearchFlightsForm = ({ hidePaper = false }) => {
               value={departDate}
               format="DD/MM/YYYY"
               sx={{ width: "100%" }}
+              disablePast
               required
             />
           </Grid>
@@ -172,6 +173,7 @@ const SearchFlightsForm = ({ hidePaper = false }) => {
                 value={returnDate}
                 format="DD/MM/YYYY"
                 sx={{ width: "100%" }}
+                disablePast
               />
             </Grid>
           )}
