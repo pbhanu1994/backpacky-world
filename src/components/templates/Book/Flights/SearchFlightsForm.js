@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import PlacesAutocompleteField from "../../../atoms/PlacesAutoComplete";
+import DatePickerRange from "../../../atoms/DatePickerRange";
 
 const SearchFlightType = {
   ONE_WAY: "One Way",
@@ -30,6 +31,7 @@ const SearchFlightsForm = ({ hidePaper = false }) => {
   const [returnDate, setReturnDate] = useState(dayjs(new Date()));
   const [numAdults, setNumAdults] = useState(1);
   const [numChildren, setNumChildren] = useState(0);
+  const [numInfants, setNumInfants] = useState(0);
   const [cabinClass, setCabinClass] = useState("Economy");
   const [searchFlightsFormError, setSearchFlightsFormError] = useState({
     from: false,
@@ -49,6 +51,11 @@ const SearchFlightsForm = ({ hidePaper = false }) => {
   ];
 
   const matchedTab = FLIGHT_TYPE_TABS.find((tab) => tab.value === currentTab);
+
+  const handleDepartReturnDate = ([departDate, returnDate]) => {
+    setDepartDate(departDate);
+    setReturnDate(returnDate);
+  };
 
   const validateForm = () => {
     const parsedDepartDate = new Date(departDate);
@@ -154,25 +161,26 @@ const SearchFlightsForm = ({ hidePaper = false }) => {
               }
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <DatePicker
-              label="Depart"
-              onChange={(dateValue) => setDepartDate(dateValue)}
-              value={departDate}
-              format="DD/MM/YYYY"
-              sx={{ width: "100%" }}
-              disablePast
-              required
-            />
-          </Grid>
-          {matchedTab && matchedTab.value === SearchFlightType.RETURN && (
+          {matchedTab && matchedTab.value !== SearchFlightType.RETURN && (
             <Grid item xs={12} sm={6}>
               <DatePicker
-                label="Return"
-                onChange={(dateValue) => setReturnDate(dateValue)}
-                value={returnDate}
+                label="Depart"
+                onChange={(dateValue) => setDepartDate(dateValue)}
+                value={departDate}
                 format="DD/MM/YYYY"
                 sx={{ width: "100%" }}
+                disablePast
+                required
+              />
+            </Grid>
+          )}
+          {matchedTab && matchedTab.value === SearchFlightType.RETURN && (
+            <Grid item xs={12} sm={12}>
+              <DatePickerRange
+                value={[departDate, returnDate]}
+                onDateChange={(date) => handleDepartReturnDate(date)}
+                startText="Depart"
+                endText="Return"
                 disablePast
               />
             </Grid>
@@ -187,24 +195,20 @@ const SearchFlightsForm = ({ hidePaper = false }) => {
                 onChange={(e) => setCabinClass(e.target.value)}
                 required
               >
-                {[
-                  "Cabin",
-                  "Economy",
-                  "Premium Economy",
-                  "Business",
-                  "First",
-                ].map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
+                {["Economy", "Premium Economy", "Business", "First"].map(
+                  (option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  )
+                )}
               </TextField>
             </Grid>
           )}
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={4}>
             <TextField
               select
-              label="Adults"
+              label="Adults (age 12 or older)"
               fullWidth
               value={numAdults}
               onChange={(e) => setNumAdults(e.target.value)}
@@ -217,10 +221,10 @@ const SearchFlightsForm = ({ hidePaper = false }) => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={4}>
             <TextField
               select
-              label="Children"
+              label="Children (2 - 11 years)"
               fullWidth
               value={numChildren}
               onChange={(e) => setNumChildren(e.target.value)}
@@ -228,6 +232,21 @@ const SearchFlightsForm = ({ hidePaper = false }) => {
               {[0, 1, 2, 3, 4, 5, 6, 7].map((num) => (
                 <MenuItem key={num} value={num}>
                   {num} Children
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              select
+              label="Infants (below 2 years)"
+              fullWidth
+              value={numInfants}
+              onChange={(e) => setNumInfants(e.target.value)}
+            >
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((num) => (
+                <MenuItem key={num} value={num}>
+                  {num} {`${num <= 1 ? "Infant" : "Infants"}`}
                 </MenuItem>
               ))}
             </TextField>
@@ -242,17 +261,13 @@ const SearchFlightsForm = ({ hidePaper = false }) => {
                 onChange={(e) => setCabinClass(e.target.value)}
                 required
               >
-                {[
-                  "Cabin",
-                  "Economy",
-                  "Premium Economy",
-                  "Business",
-                  "First",
-                ].map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
+                {["Economy", "Premium Economy", "Business", "First"].map(
+                  (option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  )
+                )}
               </TextField>
             </Grid>
           )}

@@ -3,7 +3,7 @@ import { Paper, TextField, Button, Grid, MenuItem } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import DatePickerRange from "../../../atoms/DatePickerRange";
 import Iconify from "../../../atoms/Iconify";
 import CityAirportSearchField from "../../../atoms/CityAirportSearchField";
 import { PAGE_PATH } from "../../../../constants/navigationConstants";
@@ -36,6 +36,11 @@ const SearchHotelsForm = ({
   useEffect(() => {
     setShowLoadingButton(loading);
   }, [loading]);
+
+  const handleCheckInCheckOutDate = ([checkInDate, checkOutDate]) => {
+    setCheckInDate(checkInDate);
+    setCheckOutDate(checkOutDate);
+  };
 
   const validateForm = () => {
     const parsedCheckInDate = new Date(checkInDate);
@@ -123,26 +128,13 @@ const SearchHotelsForm = ({
               }
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <DatePicker
-              label="Check in"
-              onChange={(dateValue) => setCheckInDate(dateValue)}
-              value={checkInDate}
-              format="DD/MM/YYYY"
-              sx={{ width: "100%" }}
+          <Grid item xs={12} sm={12}>
+            <DatePickerRange
+              value={[checkInDate, checkOutDate]}
+              onDateChange={(date) => handleCheckInCheckOutDate(date)}
+              startText="Check In"
+              endText="Check out"
               disablePast
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <DatePicker
-              label="Check out"
-              onChange={(dateValue) => setCheckOutDate(dateValue)}
-              value={checkOutDate}
-              format="DD/MM/YYYY"
-              sx={{ width: "100%" }}
-              disablePast
-              required
             />
           </Grid>
           <Grid item xs={12} sm={6}>

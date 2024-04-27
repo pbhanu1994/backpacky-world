@@ -14,3 +14,9 @@ a {
 * {
   box-sizing: border-box;
 }
+
+/* TODO: PLEASE REMOVE THE BELOW LATER -  BUY A LICENSE FOR @mui/x-date-pickers-pro and use the Date Range lib */
+.MuiDateRangeCalendar-root.css-e47596-MuiDateRangeCalendar-root
+  > div:first-child {
+  display: none;
+}
