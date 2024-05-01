@@ -11,18 +11,19 @@ import Iconify from "./Iconify";
 import { ENVIRONMENTS } from "../../constants/environments";
 import useCurrentEnvironment from "../../hooks/useCurrentEnvironment";
 import { getCityAirportDetails } from "../../services/flight/cityAirportSearch";
-import addDestinationDetails from "../../store/actions/book/addDestinationDetails";
 
 const CityAirportSearchField = ({
   city = false,
   airport = false,
-  onDestinationSelected,
+  inputValue,
+  onChange = () => {},
+  onSelected,
   label,
   error,
   helperText,
   autoFocus,
 }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(inputValue ?? "");
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState([]);
 
@@ -30,6 +31,10 @@ const CityAirportSearchField = ({
   const currentEnv = useCurrentEnvironment();
 
   const isDevEnv = currentEnv === ENVIRONMENTS.DEVELOPMENT;
+
+  useEffect(() => {
+    onChange(searchTerm);
+  }, [searchTerm]);
 
   useEffect(() => {
     let delayApiCall;
@@ -68,8 +73,7 @@ const CityAirportSearchField = ({
   }, [searchTerm]);
 
   const handleCityAddressSelected = (destinationDetails) => {
-    onDestinationSelected(destinationDetails.label);
-    dispatch(addDestinationDetails(destinationDetails.destination));
+    onSelected(destinationDetails);
   };
 
   return (

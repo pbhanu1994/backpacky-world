@@ -267,32 +267,6 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
             hotelBookingData
           );
 
-          /* Remove later - uncomment below for testing purposes */
-          // const successHotelBookingResult = [
-          //   {
-          //     type: "hotel-booking",
-          //     providerConfirmationId: "92416788",
-          //     associatedRecords: [
-          //       {
-          //         reference: "UF36REC",
-          //         originSystemCode: "GDS",
-          //       },
-          //     ],
-          //     id: "SC_92416788",
-          //   },
-          //   {
-          //     type: "hotel-booking",
-          //     providerConfirmationId: "92416789",
-          //     associatedRecords: [
-          //       {
-          //         reference: "UF36REC",
-          //         originSystemCode: "GDS",
-          //       },
-          //     ],
-          //     id: "SC_92416789",
-          //   },
-          // ];
-
           // AMADEUS REFERENCE (ID) FOR BOOKING
           const reference =
             successHotelBookingResult[0].associatedRecords[0].reference;
@@ -635,9 +609,7 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
               fullWidth
               loading={hotelBookLoading}
               loadingPosition="start"
-              startIcon={
-                <Iconify icon={"mdi:hotel-outline"} width={20} height={20} />
-              }
+              startIcon={<Iconify icon={"mdi:hotel"} width={20} height={20} />}
               size="large"
               variant="contained"
               color="primary"

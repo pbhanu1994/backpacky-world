@@ -102,9 +102,7 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
         <Button
           variant="outlined"
           color="primary"
-          startIcon={
-            <Iconify icon={"mdi:hotel-outline"} width={20} height={20} />
-          }
+          startIcon={<Iconify icon={"mdi:hotel"} width={20} height={20} />}
           size={isMobile ? "large" : "medium"}
           fullWidth={isMobile}
           onClick={handleGoBackToHotels}
@@ -117,9 +115,7 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
           <Button
             variant="contained"
             color="primary"
-            startIcon={
-              <Iconify icon={"mdi:home-outline"} width={20} height={20} />
-            }
+            startIcon={<Iconify icon={"mdi:home"} width={20} height={20} />}
             size={isMobile ? "large" : "medium"}
             fullWidth={isMobile}
             href="/"

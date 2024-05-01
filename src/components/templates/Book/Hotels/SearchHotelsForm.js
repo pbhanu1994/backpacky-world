@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
+import { useDispatch } from "react-redux";
 import { Paper, TextField, Button, Grid, MenuItem } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import dayjs from "dayjs";
@@ -8,6 +9,7 @@ import Iconify from "../../../atoms/Iconify";
 import CityAirportSearchField from "../../../atoms/CityAirportSearchField";
 import { PAGE_PATH } from "../../../../constants/navigationConstants";
 import { fDateWithYMD } from "../../../../utils/formatTime";
+import addDestinationDetails from "../../../../store/actions/book/addDestinationDetails";
 
 const SearchHotelsForm = ({
   hidePaper = false,
@@ -15,6 +17,7 @@ const SearchHotelsForm = ({
   onToggleSearchForm,
 }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { query } = router;
 
   const [destination, setDestination] = useState(query.destination ?? "");
@@ -78,6 +81,11 @@ const SearchHotelsForm = ({
     return false;
   };
 
+  const handleDestinationSelected = (destinationDetails) => {
+    setDestination(destinationDetails.label);
+    dispatch(addDestinationDetails(destinationDetails.destination));
+  };
+
   const handleSearch = (e) => {
     e.preventDefault();
 
@@ -117,7 +125,10 @@ const SearchHotelsForm = ({
             <CityAirportSearchField
               inputValue={destination}
               city
-              onDestinationSelected={(value) => setDestination(value)}
+              onSelected={(destinationDetails) =>
+                handleDestinationSelected(destinationDetails)
+              }
+              onChange={(value) => setDestination(value)}
               label="Destination"
               autoFocus
               error={!destination && searchHotelsFormError.destination}
@@ -178,7 +189,7 @@ const SearchHotelsForm = ({
                 loadingPosition="start"
                 variant="contained"
                 startIcon={
-                  <Iconify icon={"mdi:hotel-outline"} width={20} height={20} />
+                  <Iconify icon={"mdi:hotel"} width={20} height={20} />
                 }
               >
                 Searching Hotels...
@@ -189,7 +200,7 @@ const SearchHotelsForm = ({
                 size="large"
                 color="primary"
                 startIcon={
-                  <Iconify icon={"mdi:hotel-outline"} width={20} height={20} />
+                  <Iconify icon={"mdi:hotel"} width={20} height={20} />
                 }
                 fullWidth
                 type="submit"
