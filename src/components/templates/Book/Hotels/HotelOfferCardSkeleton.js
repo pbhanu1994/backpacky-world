@@ -6,53 +6,100 @@ const HotelOfferCardSkeleton = () => {
     <Grid container spacing={2}>
       <Grid item xs={12} md={8}>
         <Card variant="outlined">
-          <Skeleton variant="rectangular" height={140} animation="wave" />
+          <Skeleton variant="rectangular" height={200} animation="wave" />
           <CardContent>
-            <Skeleton variant="text" height={40} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
+            <Skeleton variant="text" height={40} animation="wave" width="60%" />
+            <Skeleton variant="text" height={20} animation="wave" width="80%" />
+            <Skeleton variant="text" height={20} animation="wave" width="90%" />
+            <Skeleton variant="text" height={20} animation="wave" width="75%" />
+            <Skeleton variant="text" height={20} animation="wave" width="85%" />
           </CardContent>
         </Card>
       </Grid>
       <Grid item xs={12} md={4}>
-        <Card variant="outlined" sx={{ padding: 3 }}>
-          <Skeleton variant="text" height={40} animation="wave" />
-          <Skeleton variant="text" height={20} animation="wave" />
-          <Skeleton variant="text" height={20} animation="wave" />
-          <Skeleton variant="text" height={20} animation="wave" />
-          <Skeleton variant="text" height={20} animation="wave" />
+        <Card variant="outlined">
+          <Skeleton variant="rectangular" height={200} animation="wave" />
         </Card>
       </Grid>
       <Grid item xs={12} md={8}>
         <Card variant="outlined">
-          <Stack spacing={3} sx={{ padding: 3 }}>
-            <Skeleton variant="text" height={20} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
-          </Stack>
+          <CardContent>
+            <Stack spacing={2}>
+              <Skeleton
+                variant="text"
+                height={40}
+                animation="wave"
+                width="60%"
+              />
+              <Skeleton variant="rectangular" height={140} animation="wave" />
+              <Skeleton
+                variant="text"
+                height={20}
+                animation="wave"
+                width="80%"
+              />
+              <Skeleton
+                variant="text"
+                height={20}
+                animation="wave"
+                width="90%"
+              />
+            </Stack>
+          </CardContent>
         </Card>
       </Grid>
       <Grid item xs={12} md={8}>
         <Card variant="outlined">
-          <Stack spacing={3} sx={{ padding: 3 }}>
-            <Skeleton variant="text" height={20} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
-          </Stack>
+          <CardContent>
+            <Stack spacing={2}>
+              <Skeleton
+                variant="text"
+                height={40}
+                animation="wave"
+                width="60%"
+              />
+              <Skeleton variant="rectangular" height={140} animation="wave" />
+              <Skeleton
+                variant="text"
+                height={20}
+                animation="wave"
+                width="80%"
+              />
+              <Skeleton
+                variant="text"
+                height={20}
+                animation="wave"
+                width="90%"
+              />
+            </Stack>
+          </CardContent>
         </Card>
       </Grid>
       <Grid item xs={12} md={8}>
         <Card variant="outlined">
-          <Stack spacing={3} sx={{ padding: 3 }}>
-            <Skeleton variant="text" height={20} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
-            <Skeleton variant="text" height={20} animation="wave" />
-          </Stack>
+          <CardContent>
+            <Stack spacing={2}>
+              <Skeleton
+                variant="text"
+                height={40}
+                animation="wave"
+                width="60%"
+              />
+              <Skeleton variant="rectangular" height={140} animation="wave" />
+              <Skeleton
+                variant="text"
+                height={20}
+                animation="wave"
+                width="80%"
+              />
+              <Skeleton
+                variant="text"
+                height={20}
+                animation="wave"
+                width="90%"
+              />
+            </Stack>
+          </CardContent>
         </Card>
         <Skeleton
           variant="rectangular"

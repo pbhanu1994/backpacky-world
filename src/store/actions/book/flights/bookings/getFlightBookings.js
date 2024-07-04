@@ -2,9 +2,9 @@ import _ from "lodash";
 import { db } from "../../../../../handlers/firebaseClient";
 import { collection, query, orderBy, getDocs } from "firebase/firestore";
 import setAndShowErrorToast from "../../../config/toast/setAndShowErrorToast";
-import { GET_HOTEL_BOOKINGS } from "../../../../actionTypes/book";
+import { GET_FLIGHT_BOOKINGS } from "../../../../actionTypes/book";
 
-const getHotelBookings = () => async (dispatch, getState) => {
+const getFlightBookings = () => async (dispatch, getState) => {
   const uid = getState().auth.user.uid;
 
   try {
@@ -12,7 +12,7 @@ const getHotelBookings = () => async (dispatch, getState) => {
       db,
       "book",
       uid,
-      "hotels",
+      "flights",
       uid,
       "bookings"
     );
@@ -23,22 +23,22 @@ const getHotelBookings = () => async (dispatch, getState) => {
     );
     const querySnapshot = await getDocs(bookingsQuery);
 
-    const hotelBookings = {};
+    const flightBookings = {};
 
     querySnapshot.forEach((doc) => {
       const bookingData = doc.data();
-      hotelBookings[bookingData.id] = bookingData;
+      flightBookings[bookingData.id] = bookingData;
     });
 
     dispatch({
-      type: GET_HOTEL_BOOKINGS,
-      payload: hotelBookings,
+      type: GET_FLIGHT_BOOKINGS,
+      payload: flightBookings,
     });
   } catch (err) {
     console.error("error", err);
-    const errorMessage = `Whoops! Could not fetch the Hotel Bookings`;
+    const errorMessage = `Whoops! Could not fetch the Flight Bookings`;
     dispatch(setAndShowErrorToast(errorMessage));
   }
 };
 
-export default getHotelBookings;
+export default getFlightBookings;

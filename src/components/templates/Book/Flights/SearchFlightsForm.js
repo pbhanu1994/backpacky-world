@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import {
   Paper,
   TextField,
@@ -17,13 +18,13 @@ import DatePickerRange from "../../../atoms/DatePickerRange";
 import Iconify from "../../../atoms/Iconify";
 import CityAirportSearchField from "../../../atoms/CityAirportSearchField";
 import { PAGE_PATH } from "../../../../constants/navigationConstants";
-import { CABIN_CLASS } from "../../../../constants/flightBooking";
+import {
+  CABIN_CLASS,
+  SEARCH_FLIGHT_TYPE,
+} from "../../../../constants/flightBooking";
 import { fDateWithYMD } from "../../../../utils/formatTime";
-
-const SearchFlightType = {
-  ONE_WAY: "One Way",
-  RETURN: "Return",
-};
+import addFromDetailsForFlight from "../../../../store/actions/book/flights/addFromDetails";
+import addToDetailsForFlight from "../../../../store/actions/book/flights/addToDetails";
 
 const SearchFlightsForm = ({
   hidePaper = false,
@@ -31,6 +32,7 @@ const SearchFlightsForm = ({
   onToggleSearchForm,
 }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { query } = router;
 
   const [from, setFrom] = useState(query.from ?? "");
@@ -45,7 +47,7 @@ const SearchFlightsForm = ({
   const [numChildren, setNumChildren] = useState(query.numChildren ?? 0);
   const [numInfants, setNumInfants] = useState(query.numInfants ?? 0);
   const [cabinClass, setCabinClass] = useState(
-    query.cabinClass ?? CABIN_CLASS.ECONOMY
+    CABIN_CLASS[query.cabinClass] ?? CABIN_CLASS.ECONOMY
   );
   const [showLoadingButton, setShowLoadingButton] = useState(loading ?? false);
   const [searchFlightsFormError, setSearchFlightsFormError] = useState({
@@ -59,14 +61,16 @@ const SearchFlightsForm = ({
     setShowLoadingButton(loading);
   }, [loading]);
 
-  const { currentTab, onChangeTab } = useTabs(SearchFlightType.RETURN);
+  const { currentTab, onChangeTab } = useTabs(
+    query.flightType ?? SEARCH_FLIGHT_TYPE.RETURN
+  );
 
   const FLIGHT_TYPE_TABS = [
     {
-      value: SearchFlightType.RETURN,
+      value: SEARCH_FLIGHT_TYPE.RETURN,
     },
     {
-      value: SearchFlightType.ONE_WAY,
+      value: SEARCH_FLIGHT_TYPE.ONE_WAY,
     },
   ];
 
@@ -76,6 +80,10 @@ const SearchFlightsForm = ({
     CABIN_CLASS.BUSINESS,
     CABIN_CLASS.FIRST,
   ];
+
+  const cabinClassValue = Object.keys(CABIN_CLASS).find(
+    (cabinClassKey) => CABIN_CLASS[cabinClassKey] === cabinClass
+  );
 
   const matchedTab = FLIGHT_TYPE_TABS.find((tab) => tab.value === currentTab);
 
@@ -125,6 +133,15 @@ const SearchFlightsForm = ({
     return false;
   };
 
+  const handleFromSelected = (fromDetails) => {
+    setFrom(fromDetails.label);
+    dispatch(addFromDetailsForFlight(fromDetails.cityAddress));
+  };
+  const handleToSelected = (toDetails) => {
+    setTo(toDetails.label);
+    dispatch(addToDetailsForFlight(toDetails.cityAddress));
+  };
+
   const handleSearch = (e) => {
     e.preventDefault();
 
@@ -139,13 +156,14 @@ const SearchFlightsForm = ({
       from,
       to,
       departDate: fDateWithYMD(departDate),
-      ...(currentTab === SearchFlightType.RETURN && {
+      ...(currentTab === SEARCH_FLIGHT_TYPE.RETURN && {
         returnDate: fDateWithYMD(returnDate),
       }),
       numAdults,
       numChildren,
       numInfants,
-      cabinClass,
+      cabinClass: cabinClassValue,
+      flightType: currentTab,
     };
 
     router.push({
@@ -180,7 +198,8 @@ const SearchFlightsForm = ({
             <CityAirportSearchField
               inputValue={from}
               city
-              onSelected={(value) => setFrom(value)}
+              onChange={(value) => setFrom(value)}
+              onSelected={(fromDetails) => handleFromSelected(fromDetails)}
               label="From"
               autoFocus
               error={!from && searchFlightsFormError.from}
@@ -195,7 +214,8 @@ const SearchFlightsForm = ({
             <CityAirportSearchField
               inputValue={to}
               city
-              onSelected={(value) => setTo(value)}
+              onChange={(value) => setTo(value)}
+              onSelected={(toDetails) => handleToSelected(toDetails)}
               label="To"
               error={!to && searchFlightsFormError.to}
               helperText={
@@ -205,7 +225,7 @@ const SearchFlightsForm = ({
               }
             />
           </Grid>
-          {matchedTab && matchedTab.value !== SearchFlightType.RETURN && (
+          {matchedTab && matchedTab.value !== SEARCH_FLIGHT_TYPE.RETURN && (
             <Grid item xs={12} sm={6}>
               <DatePicker
                 label="Depart"
@@ -218,7 +238,7 @@ const SearchFlightsForm = ({
               />
             </Grid>
           )}
-          {matchedTab && matchedTab.value === SearchFlightType.RETURN && (
+          {matchedTab && matchedTab.value === SEARCH_FLIGHT_TYPE.RETURN && (
             <Grid item xs={12} sm={12}>
               <DatePickerRange
                 value={[departDate, returnDate]}
@@ -229,7 +249,7 @@ const SearchFlightsForm = ({
               />
             </Grid>
           )}
-          {matchedTab && matchedTab.value === SearchFlightType.ONE_WAY && (
+          {matchedTab && matchedTab.value === SEARCH_FLIGHT_TYPE.ONE_WAY && (
             <Grid item xs={12} sm={6}>
               <TextField
                 select
@@ -293,7 +313,7 @@ const SearchFlightsForm = ({
               ))}
             </TextField>
           </Grid>
-          {matchedTab && matchedTab.value === SearchFlightType.RETURN && (
+          {matchedTab && matchedTab.value === SEARCH_FLIGHT_TYPE.RETURN && (
             <Grid item xs={12}>
               <TextField
                 select

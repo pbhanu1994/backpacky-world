@@ -302,7 +302,7 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
               ...hotelBookingData.data,
             };
 
-            dispatch(addHotelBooking(bookingInfo, downloadURL));
+            dispatch(addHotelBooking(bookingInfo));
 
             // Sending Booking Confirmation Emails for each guest
             updatedHotelGuests.forEach((guest) => {
@@ -343,7 +343,7 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
             router.push(`${PAGE_PATH.BOOK_HOTELS_CONFIRMATION}${reference}`);
           }
         } catch (err) {
-          console.log("error", err);
+          console.error("error", err);
           setHotelBookLoading(false);
           dispatch(setAndShowErrorToast(err.message));
         }

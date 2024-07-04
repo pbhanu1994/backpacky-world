@@ -7,6 +7,7 @@ import {
   Box,
 } from "@mui/material";
 import fetchPlacesAutocomplete from "../../utils/googlePlacesApi";
+import { LOADING_STATES } from "../../constants/loadingStates";
 
 const PlacesAutocompleteField = ({
   inputValue,
@@ -17,18 +18,25 @@ const PlacesAutocompleteField = ({
   helperText,
   autoFocus,
 }) => {
-  const [loading, setLoading] = useState(false);
+  const [loadingState, setLoadingState] = useState(LOADING_STATES.INITIAL);
   const [options, setOptions] = useState([]);
 
   const handleLocationInputChange = async (event, value) => {
-    setLoading(true);
+    setLoadingState(LOADING_STATES.LOADING);
     onInputValueChange(value);
 
     try {
       const results = await fetchPlacesAutocomplete(value, cities);
       setOptions(results);
-    } finally {
-      setLoading(false);
+
+      if (results.length > 0) {
+        setLoadingState(LOADING_STATES.LOADED);
+      } else {
+        setLoadingState(LOADING_STATES.NO_RESULTS);
+      }
+    } catch (err) {
+      console.error("API call error:", err);
+      setLoadingState(LOADING_STATES.ERROR);
     }
   };
 
@@ -55,7 +63,7 @@ const PlacesAutocompleteField = ({
             ...params.InputProps,
             endAdornment: (
               <React.Fragment>
-                {loading ? (
+                {loadingState === LOADING_STATES.LOADING ? (
                   <CircularProgress color="inherit" size={20} />
                 ) : null}
                 {params.InputProps.endAdornment}

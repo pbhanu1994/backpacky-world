@@ -11,7 +11,8 @@ export const PAGE_PATH = {
   JOURNAL_BUCKET_LIST: "/journal/bucketList/",
   TRAVEL_BUDGET: "/travelBudget/",
   BOOK: "/book/",
-  BOOK_FLIGHTS: "/book/flights",
+  BOOK_FLIGHTS: "/book/flights/",
+  BOOK_FLIGHTS_CONFIRMATION: "/book/flights/bookingConfirmation/",
   BOOK_HOTELS: "/book/hotels/",
   BOOK_HOTELS_CONFIRMATION: "/book/hotels/bookingConfirmation/",
   // TODO: Implement below routes..

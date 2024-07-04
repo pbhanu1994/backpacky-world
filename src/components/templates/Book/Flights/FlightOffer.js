@@ -6,45 +6,54 @@ import { Container, Typography, Button } from "@mui/material";
 import Iconify from "../../../atoms/Iconify";
 import Page from "../../../atoms/Page";
 import DashboardLayout from "../../../layouts/dashboard";
-import HotelOfferCard from "./HotelOfferCard";
-import HotelOfferCardSkeleton from "./HotelOfferCardSkeleton";
+import FlightOfferCard from "./FlightOfferCard";
+import FlightOfferCardSkeleton from "./FlightOfferCardSkeleton";
 import { BOOK_TYPES } from "../";
 import { LOADING_STATES } from "../../../../constants/loadingStates";
 import { PAGE_PATH } from "../../../../constants/navigationConstants";
 import useSettings from "../../../../hooks/useSettings";
-import { getHotelOffersByOfferId } from "../../../../services/hotel/hotelOffersByOfferId";
+import { performFlightOffersPricing } from "../../../../services/flight/flightOffersPricing";
 
-const HotelOffer = ({ pageTitle }) => {
-  const [selectedHotelOffer, setSelectedHotelOffer] = useState({});
+const FlightOffer = ({ pageTitle }) => {
+  const selectedFlightOffer = useSelector(
+    (state) => state.book.flights.selected
+  );
+  const [flightOfferPricing, setFlightOfferPricing] = useState({});
   const [loadingState, setLoadingState] = useState(LOADING_STATES.INITIAL);
 
   const router = useRouter();
   const dispatch = useDispatch();
   const { themeStretch } = useSettings();
-  const selectedHotel = useSelector((state) => state.book.hotels.selected);
 
   const { query } = router;
-  const { hotelOfferId } = query;
+  const { flightOfferId } = query;
 
   const errorMessage = "An error occurred, please try again later.";
 
   const canGoBack = window.sessionStorage.getItem("canGoBack");
 
-  const renderSkeletonLoading = () => <HotelOfferCardSkeleton />;
+  const renderSkeletonLoading = () => <FlightOfferCardSkeleton />;
 
   useEffect(() => {
-    if (hotelOfferId) {
-      const getHotelOfferDetails = async () => {
+    if (flightOfferId) {
+      const getFlightOfferPricing = async () => {
         setLoadingState(LOADING_STATES.LOADING);
 
+        const flightOffersPricingBody = {
+          data: {
+            type: "flight-offers-pricing",
+            flightOffers: [selectedFlightOffer],
+          },
+        };
+
         try {
-          const { data: hotelOfferResult } = await getHotelOffersByOfferId(
+          const flightOfferPricingResult = await performFlightOffersPricing(
             dispatch,
-            hotelOfferId
+            flightOffersPricingBody
           );
 
-          setSelectedHotelOffer(hotelOfferResult);
-          if (hotelOfferResult) {
+          setFlightOfferPricing(flightOfferPricingResult);
+          if (!_.isEmpty(query)) {
             setLoadingState(LOADING_STATES.LOADED);
           } else {
             setLoadingState(LOADING_STATES.NO_RESULTS);
@@ -55,7 +64,7 @@ const HotelOffer = ({ pageTitle }) => {
         }
       };
 
-      getHotelOfferDetails();
+      getFlightOfferPricing();
     }
   }, []);
 
@@ -65,7 +74,7 @@ const HotelOffer = ({ pageTitle }) => {
     } else {
       router.push({
         pathname: PAGE_PATH.BOOK,
-        query: { currentTab: BOOK_TYPES.HOTELS },
+        query: { currentTab: BOOK_TYPES.FLIGHTS },
       });
     }
   };
@@ -89,13 +98,10 @@ const HotelOffer = ({ pageTitle }) => {
             </Typography>
           )}
           {(loadingState === LOADING_STATES.LOADING ||
-            _.isEmpty(selectedHotelOffer)) &&
+            _.isEmpty(flightOfferPricing)) &&
             renderSkeletonLoading()}
-          {!_.isEmpty(selectedHotelOffer) && (
-            <HotelOfferCard
-              selectedHotel={selectedHotel}
-              offer={selectedHotelOffer}
-            />
+          {!_.isEmpty(flightOfferPricing) && (
+            <FlightOfferCard offer={flightOfferPricing} />
           )}
         </Container>
       </Page>
@@ -103,4 +109,4 @@ const HotelOffer = ({ pageTitle }) => {
   );
 };
 
-export default HotelOffer;
+export default FlightOffer;

@@ -9,7 +9,7 @@ import Iconify from "../../../atoms/Iconify";
 import CityAirportSearchField from "../../../atoms/CityAirportSearchField";
 import { PAGE_PATH } from "../../../../constants/navigationConstants";
 import { fDateWithYMD } from "../../../../utils/formatTime";
-import addDestinationDetails from "../../../../store/actions/book/addDestinationDetails";
+import addDestinationDetailsForHotel from "../../../../store/actions/book/hotels/addDestinationDetails";
 
 const SearchHotelsForm = ({
   hidePaper = false,
@@ -83,7 +83,7 @@ const SearchHotelsForm = ({
 
   const handleDestinationSelected = (destinationDetails) => {
     setDestination(destinationDetails.label);
-    dispatch(addDestinationDetails(destinationDetails.destination));
+    dispatch(addDestinationDetailsForHotel(destinationDetails.cityAddress));
   };
 
   const handleSearch = (e) => {

@@ -56,7 +56,7 @@ const sendHotelBookingConfirmationEmail =
       };
       addDoc(collection(db, "mail"), emailData);
     } catch (err) {
-      console.log("error", err);
+      console.error("error", err);
       const errorMessage = `Whoops! Could not send the Hotel Booking Confirmation email. Please try again.`;
       dispatch(setAndShowErrorToast(errorMessage));
     }

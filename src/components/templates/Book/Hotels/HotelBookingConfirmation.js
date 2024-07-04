@@ -27,6 +27,7 @@ import {
 import Iconify from "../../../atoms/Iconify";
 import Page from "../../../atoms/Page";
 import DashboardLayout from "../../../layouts/dashboard";
+import { LOADING_STATES } from "../../../../constants/loadingStates";
 import { PAGE_PATH } from "../../../../constants/navigationConstants";
 import { formatCurrency } from "../../../../utils/formatCurrency";
 import { fDate } from "../../../../utils/formatTime";
@@ -34,8 +35,7 @@ import getHotelBookings from "../../../../store/actions/book/hotels/bookings/get
 
 const HotelBookingConfirmation = ({ pageTitle }) => {
   const [bookingInfo, setBookingInfo] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [bookingNotFound, setBookingNotFound] = useState(false);
+  const [loadingState, setLoadingState] = useState(LOADING_STATES.LOADING);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -61,10 +61,9 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
 
       if (existingBookingInfo) {
         setBookingInfo(existingBookingInfo);
-        setLoading(false);
+        setLoadingState(LOADING_STATES.LOADED);
       } else {
-        setBookingNotFound(true);
-        setLoading(false);
+        setLoadingState(LOADING_STATES.NO_RESULTS);
       }
     }
   }, [reference, hotelBookings]);
@@ -496,14 +495,16 @@ const HotelBookingConfirmation = ({ pageTitle }) => {
               Back
             </Button>
           )}
-          {loading ? (
+          {loadingState === LOADING_STATES.LOADING ? (
             <LoadingBookingConfirmation />
-          ) : bookingNotFound ? (
+          ) : loadingState === LOADING_STATES.NO_RESULTS ? (
             <BookingNotFound />
           ) : (
             <BookingConfirmation />
           )}
-          {!bookingNotFound && <BookMoreOrReturnHome />}
+          {loadingState !== LOADING_STATES.NO_RESULTS && (
+            <BookMoreOrReturnHome />
+          )}
         </Container>
       </Page>
     </DashboardLayout>

@@ -11,7 +11,10 @@ export const performFlightOffersSearch = async (
   departureDate,
   returnDate,
   adults = 1,
-  max = 3 //Max flight offers (we could go max of 250 flight offers)
+  children = 0,
+  infants = 0,
+  travelClass,
+  max = 250 //Max flight offers (we could go max (default) of 250 flight offers)
 ) => {
   const accessToken = await getAccessToken();
 
@@ -22,6 +25,9 @@ export const performFlightOffersSearch = async (
     departureDate,
     returnDate,
     adults,
+    children,
+    infants,
+    travelClass,
     max,
   };
 

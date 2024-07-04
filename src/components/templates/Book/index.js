@@ -11,10 +11,10 @@ import SearchFlightsForm from "./Flights/SearchFlightsForm";
 import SearchHotelsForm from "./Hotels/SearchHotelsForm";
 import { Cars } from "./Cars";
 
-const BookType = {
-  Flights: "Flights",
-  Hotels: "Hotels",
-  Cars: "Cars",
+export const BOOK_TYPES = {
+  FLIGHTS: "Flights",
+  HOTELS: "Hotels",
+  CARS: "Cars",
 };
 
 const Book = ({ location, date }) => {
@@ -22,7 +22,7 @@ const Book = ({ location, date }) => {
   const { query } = useRouter();
 
   const { currentTab, onChangeTab } = useTabs(
-    query.currentTab ?? BookType.Flights
+    query.currentTab ?? BOOK_TYPES.FLIGHTS
   );
 
   console.log("location", location);
@@ -30,17 +30,17 @@ const Book = ({ location, date }) => {
 
   const BOOK_TABS = [
     {
-      value: BookType.Flights,
+      value: BOOK_TYPES.FLIGHTS,
       icon: <Iconify icon={"mdi:flight"} width={20} height={20} />,
       component: <SearchFlightsForm />,
     },
     {
-      value: BookType.Hotels,
+      value: BOOK_TYPES.HOTELS,
       icon: <Iconify icon={"mdi:hotel"} width={20} height={20} />,
       component: <SearchHotelsForm />,
     },
     {
-      value: BookType.Cars,
+      value: BOOK_TYPES.CARS,
       icon: <Iconify icon={"mdi:car"} width={20} height={20} />,
       component: <Cars />,
     },

@@ -17,20 +17,23 @@ import HotelCard from "./HotelCard";
 import { SearchHotelsFilters } from "./SearchHotelsFilters";
 import HotelCardSkeleton from "./HotelCardSkeleton";
 import useSettings from "../../../../hooks/useSettings";
+import { LOADING_STATES } from "../../../../constants/loadingStates";
 import { PAGE_PATH } from "../../../../constants/navigationConstants";
 import updateSelectedHotel from "../../../../store/actions/book/hotels/updateSelectedHotel";
 import { performHotelSearchByCity } from "../../../../services/hotel/hotelsByCity";
 import { getHotelOffersByHotelIds } from "../../../../services/hotel/hotelOffersByHotelIds";
 
 const Hotels = ({ pageTitle }) => {
+  const [allHotelIds, setAllHotelIds] = useState([]);
   const [hotelOffers, setHotelOffers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loadingState, setLoadingState] = useState(LOADING_STATES.INITIAL);
   const [showSearchForm, setShowSearchForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const cityCode = useSelector((state) => state.book.destination.iataCode);
+  const cityCode = useSelector(
+    (state) => state.book.hotels.destination.iataCode
+  );
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -43,69 +46,73 @@ const Hotels = ({ pageTitle }) => {
 
   const heading = "Hotels";
 
+  const errorMessage = "An error occurred, please try again later.";
+
   const { destination, checkInDate, checkOutDate, numRooms, numGuests } = query;
 
-  // console.log("router", {
-  //   destination,
-  //   checkInDate,
-  //   checkOutDate,
-  //   numRooms,
-  //   numGuests,
-  // });
-
-  // Resetting when the query changes
   useEffect(() => {
-    setHotelOffers([]);
-    setCurrentPage(1);
-  }, [query]);
+    const performSearch = async () => {
+      setLoadingState(LOADING_STATES.LOADING);
+      setHotelOffers([]);
+      setAllHotelIds([]);
+      setCurrentPage(1);
 
-  useEffect(() => {
+      try {
+        const { data: hotelsResult } = await performHotelSearchByCity(
+          dispatch,
+          cityCode
+        );
+
+        const hotelIds = hotelsResult.map((hotel) => hotel.hotelId); // Hotel Ids with more than 900 results
+        setAllHotelIds(hotelIds);
+        setTotalPages(Math.ceil(hotelIds.length / 50));
+        loadMoreHotels(1, hotelIds);
+      } catch (err) {
+        console.error("API call error:", err);
+        setLoadingState(LOADING_STATES.ERROR);
+      }
+    };
+
     if (!_.isEmpty(query)) {
-      const performSearch = async () => {
-        setLoading(true);
-        setError(null);
-
-        try {
-          const { data: hotelsResult } = await performHotelSearchByCity(
-            dispatch,
-            cityCode
-          );
-
-          const hotelIds = hotelsResult.map((hotel) => hotel.hotelId); // Hotel Ids with more than 900 results
-
-          const { data: hotelOffersResult } = await getHotelOffersByHotelIds(
-            dispatch,
-            hotelIds.slice((currentPage - 1) * 100, currentPage * 100), // Update to load next 100
-            numGuests,
-            checkInDate,
-            checkOutDate,
-            numRooms
-          );
-
-          setHotelOffers((prevOffers) => [...prevOffers, ...hotelOffersResult]);
-          setTotalPages(Math.ceil(hotelIds.length / 100)); // Calculate total pages
-        } catch (err) {
-          console.error("API call error:", err);
-          setError("An error occurred, please try again later.");
-        } finally {
-          setLoading(false);
-        }
-      };
-
       performSearch();
     }
-  }, [query, currentPage]);
+  }, [query]);
+
+  const loadMoreHotels = async (page, hotelIds) => {
+    setLoadingState(LOADING_STATES.LOADING);
+    const startIndex = (page - 1) * 50;
+    const endIndex = page * 50;
+
+    try {
+      const { data: hotelOffersResult } = await getHotelOffersByHotelIds(
+        dispatch,
+        hotelIds.slice(startIndex, endIndex),
+        numGuests,
+        checkInDate,
+        checkOutDate,
+        numRooms
+      );
+      setHotelOffers((prevOffers) => [...prevOffers, ...hotelOffersResult]);
+
+      if (hotelOffersResult.length > 0) {
+        setLoadingState(LOADING_STATES.LOADED);
+      } else {
+        setLoadingState(LOADING_STATES.NO_RESULTS);
+      }
+    } catch (err) {
+      console.error("API call error:", err);
+      setLoadingState(LOADING_STATES.ERROR);
+    }
+  };
+
+  const handleLoadMoreHotels = () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    loadMoreHotels(nextPage, allHotelIds);
+  };
 
   const handleToggleSearchForm = () => {
     setShowSearchForm(!showSearchForm);
-  };
-
-  // Function to load more hotels
-  const loadMoreHotels = () => {
-    setLoading(true);
-    if (currentPage < totalPages) {
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
   };
 
   const handleSelectedHotel = (hotelOffer) => {
@@ -116,6 +123,14 @@ const Hotels = ({ pageTitle }) => {
     dispatch(updateSelectedHotel(hotel));
     router.push(`${PAGE_PATH.BOOK_HOTELS}${firstOffer.id}`);
     window.sessionStorage.setItem("canGoBack", true);
+  };
+
+  const renderSkeletonLoading = () => {
+    const SKELETON_LOADING_COUNT = 3;
+
+    return Array.from({ length: SKELETON_LOADING_COUNT }, (_, index) => (
+      <HotelCardSkeleton key={index} />
+    ));
   };
 
   return (
@@ -134,7 +149,7 @@ const Hotels = ({ pageTitle }) => {
             ]}
           />
           <SearchHotelsFilters
-            loading={loading}
+            loading={loadingState === LOADING_STATES.LOADING}
             showSearchForm={showSearchForm}
             onToggleSearchForm={handleToggleSearchForm}
             {...query}
@@ -150,51 +165,40 @@ const Hotels = ({ pageTitle }) => {
                 {destination}
               </Typography>
             </Typography>
-            {error ? (
+            {loadingState === LOADING_STATES.ERROR && (
               <Typography variant="body1" color="error">
-                {error}
+                {errorMessage}
               </Typography>
-            ) : loading && hotelOffers.length === 0 && currentPage === 1 ? (
-              <>
-                {[1, 2, 3].map((num) => (
-                  <HotelCardSkeleton key={num} />
-                ))}
-              </>
-            ) : (
-              <>
-                {hotelOffers.map((offer) => (
-                  <HotelCard
-                    key={offer.id}
-                    offer={offer}
-                    onSelectedHotel={handleSelectedHotel}
-                  />
-                ))}
-                {hotelOffers.length === 0 && (
-                  <Typography variant="body1">
-                    No hotels were found for the specified filters. Please try
-                    using different filters.
-                  </Typography>
-                )}
-              </>
             )}
-            {loading &&
-              hotelOffers.length > 0 &&
-              currentPage > 1 &&
-              [1, 2, 3].map((item) => <HotelCardSkeleton key={item} />)}
+            {hotelOffers.map((offer) => (
+              <HotelCard
+                key={offer.id}
+                offer={offer}
+                onSelectedHotel={handleSelectedHotel}
+              />
+            ))}
+            {loadingState === LOADING_STATES.NO_RESULTS && (
+              <Typography variant="body1">
+                No hotels were found for the specified filters. Please try using
+                different filters.
+              </Typography>
+            )}
+            {loadingState === LOADING_STATES.LOADING && renderSkeletonLoading()}
           </Grid>
-          {currentPage < totalPages && !loading && (
-            <Grid container xs={12} justifyContent="center">
-              <Button
-                variant="outlined"
-                color="primary"
-                size={isMobile ? "large" : "medium"}
-                fullWidth={isMobile}
-                onClick={loadMoreHotels}
-              >
-                Show More Hotels
-              </Button>
-            </Grid>
-          )}
+          {currentPage < totalPages &&
+            loadingState !== LOADING_STATES.LOADING && (
+              <Grid container xs={12} justifyContent="center">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size={isMobile ? "large" : "medium"}
+                  fullWidth={isMobile}
+                  onClick={handleLoadMoreHotels}
+                >
+                  Show More Hotels
+                </Button>
+              </Grid>
+            )}
         </Container>
       </Page>
     </DashboardLayout>

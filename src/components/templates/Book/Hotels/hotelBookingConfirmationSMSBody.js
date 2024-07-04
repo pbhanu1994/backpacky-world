@@ -6,7 +6,9 @@ export const hotelBookingConfirmationSMSBody = (
   hotelDetails
 ) =>
   `Hi ${firstName.charAt(0).toUpperCase()}${firstName.slice(1)},
+
 Your Hotel Booking Confirmation REF: # ${reference}
+
 We are delighted to confirm your reservation at ${hotelDetails.name}.
 
 Booking Details:

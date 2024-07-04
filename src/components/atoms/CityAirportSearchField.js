@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import Iconify from "./Iconify";
+import { LOADING_STATES } from "../../constants/loadingStates";
 import { ENVIRONMENTS } from "../../constants/environments";
 import useCurrentEnvironment from "../../hooks/useCurrentEnvironment";
 import { getCityAirportDetails } from "../../services/flight/cityAirportSearch";
@@ -24,7 +25,7 @@ const CityAirportSearchField = ({
   autoFocus,
 }) => {
   const [searchTerm, setSearchTerm] = useState(inputValue ?? "");
-  const [loading, setLoading] = useState(false);
+  const [loadingState, setLoadingState] = useState(LOADING_STATES.INITIAL);
   const [options, setOptions] = useState([]);
 
   const dispatch = useDispatch();
@@ -48,15 +49,20 @@ const CityAirportSearchField = ({
           airport
         );
         setOptions(results);
+
+        if (results.length > 0) {
+          setLoadingState(LOADING_STATES.LOADED);
+        } else {
+          setLoadingState(LOADING_STATES.NO_RESULTS);
+        }
       } catch (err) {
         console.error("Error occurred:", err.message);
-      } finally {
-        setLoading(false);
+        setLoadingState(LOADING_STATES.ERROR);
       }
     };
 
     if (searchTerm && !searchTerm.includes(",")) {
-      setLoading(true);
+      setLoadingState(LOADING_STATES.LOADING);
 
       if (isDevEnv) {
         delayApiCall = setTimeout(() => {
@@ -72,8 +78,8 @@ const CityAirportSearchField = ({
     return () => clearTimeout(delayApiCall);
   }, [searchTerm]);
 
-  const handleCityAddressSelected = (destinationDetails) => {
-    onSelected(destinationDetails);
+  const handleCityAddressSelected = (cityAddressDetails) => {
+    onSelected(cityAddressDetails);
   };
 
   return (
@@ -81,7 +87,7 @@ const CityAirportSearchField = ({
       freeSolo
       disableClearable
       options={options.map((option) => ({
-        destination: option,
+        cityAddress: option,
         label: `${option.name}, ${
           option.address.stateCode
             ? `${option.address.stateCode}, ${option.address.countryCode}`
@@ -105,7 +111,7 @@ const CityAirportSearchField = ({
             ...params.InputProps,
             endAdornment: (
               <React.Fragment>
-                {loading ? (
+                {loadingState === LOADING_STATES.LOADING ? (
                   <CircularProgress color="inherit" size={20} />
                 ) : null}
                 {params.InputProps.endAdornment}
@@ -121,12 +127,12 @@ const CityAirportSearchField = ({
               <Iconify icon={"mdi:map-marker"} width={20} height={20} />
               <Box>
                 <Typography fontWeight={600}>
-                  {option.destination.name}
+                  {option.cityAddress.name}
                 </Typography>
                 <Typography color="GrayText">
-                  {option.destination.address.stateCode
-                    ? `${option.destination.address.stateCode}, ${option.destination.address.countryName}`
-                    : option.destination.address.countryName}
+                  {option.cityAddress.address.stateCode
+                    ? `${option.cityAddress.address.stateCode}, ${option.cityAddress.address.countryName}`
+                    : option.cityAddress.address.countryName}
                 </Typography>
               </Box>
             </Box>
