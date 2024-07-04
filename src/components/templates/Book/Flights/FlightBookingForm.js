@@ -1137,8 +1137,6 @@ const FlightBookingForm = ({
               holder: true,
             },
           ],
-          // redressNumber: "",
-          // residenceCountry: "",
           airFranceDiscount: {
             subType: "",
             cityName: "",
