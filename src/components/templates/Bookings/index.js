@@ -346,7 +346,8 @@ const Bookings = () => {
     filterCheckOutDate,
   });
 
-  const isNotFound = !flightDataFiltered.length || !hotelDataFiltered.length;
+  const isFlightDataNotFound = !flightDataFiltered.length;
+  const isHotelDataNotFound = !hotelDataFiltered.length;
 
   // Functions for Flights Bookings
   const handleFilterFlightKeyword = (filterFlightKeyword) => {
@@ -633,7 +634,12 @@ const Bookings = () => {
                   )}
                 </TableBody>
 
-                {isNotFound && <TableSearchNotFound />}
+                {filterStatus === "flights" && isFlightDataNotFound && (
+                  <TableSearchNotFound />
+                )}
+                {filterStatus === "hotels" && isHotelDataNotFound && (
+                  <TableSearchNotFound />
+                )}
               </Table>
             </TableContainer>
           </Scrollbar>
