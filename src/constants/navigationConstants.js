@@ -15,12 +15,12 @@ export const PAGE_PATH = {
   BOOK_FLIGHTS_CONFIRMATION: "/book/flights/bookingConfirmation/",
   BOOK_HOTELS: "/book/hotels/",
   BOOK_HOTELS_CONFIRMATION: "/book/hotels/bookingConfirmation/",
-  // TODO: Implement below routes..
   BOOKINGS: "/bookings/",
   BOOKINGS_FLIGHTS: "/bookings/flights/",
   BOOKINGS_HOTELS: "/bookings/hotels/",
-  CHAT: "/chat/",
   CALENDAR: "/calendar/",
+  // TODO: Implement below routes..
+  CHAT: "/chat/",
   SETTINGS: "/settings/",
 };
 
