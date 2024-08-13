@@ -47,6 +47,9 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { uid } = useSelector((state) => state.auth.user);
+  const destinationDetails = useSelector(
+    (state) => state.book.hotels.destination
+  );
 
   const { offers } = offer;
   const { checkInDate, checkOutDate, price, roomQuantity = 1 } = offers[0];
@@ -244,6 +247,8 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
         const hotelDetails = {
           hotelId,
           name,
+          latitude,
+          longitude,
           checkInDate,
           checkOutDate,
           price: {
@@ -295,6 +300,7 @@ const HotelOfferCard = ({ selectedHotel, offer }) => {
               id: reference,
               bookingConfirmation: successHotelBookingResult,
               hotelDetails,
+              destinationDetails,
               download: {
                 fileName,
                 downloadURL,

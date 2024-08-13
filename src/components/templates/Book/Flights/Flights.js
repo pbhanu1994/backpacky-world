@@ -20,6 +20,7 @@ import useSettings from "../../../../hooks/useSettings";
 import { LOADING_STATES } from "../../../../constants/loadingStates";
 import { PAGE_PATH } from "../../../../constants/navigationConstants";
 import updateSelectedFlightOffer from "../../../../store/actions/book/flights/updateSelectedFlightOffer";
+import addSearchParamsForFlight from "../../../../store/actions/book/flights/addSearchParams";
 import { performFlightOffersSearch } from "../../../../services/flight/flightOffers";
 
 const Flights = ({ pageTitle }) => {
@@ -119,6 +120,7 @@ const Flights = ({ pageTitle }) => {
   };
 
   const handleSelectedFlight = (flightOffer) => {
+    dispatch(addSearchParamsForFlight(query));
     dispatch(updateSelectedFlightOffer(flightOffer));
     router.push(`${PAGE_PATH.BOOK_FLIGHTS}${flightOffer.id}`);
     window.sessionStorage.setItem("canGoBack", true);

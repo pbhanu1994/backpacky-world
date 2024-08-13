@@ -79,6 +79,9 @@ const FlightBookingForm = ({
   const dispatch = useDispatch();
   const theme = useTheme();
   const { uid } = useSelector((state) => state.auth.user);
+  const fromDetails = useSelector((state) => state.book.flights.from);
+  const toDetails = useSelector((state) => state.book.flights.to);
+  const searchParams = useSelector((state) => state.book.flights.searchParams);
 
   // Getting all the images for booking confirmation PDF
   useEffect(() => {
@@ -1271,6 +1274,9 @@ const FlightBookingForm = ({
                 fileName,
                 downloadURL,
               },
+              fromDetails,
+              toDetails,
+              searchParams,
               ...flightBookingData.data,
             };
 

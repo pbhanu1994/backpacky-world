@@ -26,7 +26,7 @@ export default function HeaderBreadcrumbs({
           <Typography variant="h4" gutterBottom>
             {heading}
           </Typography>
-          <MBreadcrumbs links={links} {...other} />
+          {links && <MBreadcrumbs links={links} {...other} />}
         </Box>
 
         {action && <Box sx={{ flexShrink: 0 }}>{action}</Box>}
