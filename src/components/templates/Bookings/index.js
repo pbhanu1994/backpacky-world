@@ -554,14 +554,22 @@ const Bookings = () => {
                 {filterStatus === "flights" &&
                   flightLoadingState === LOADING_STATES.LOADING && (
                     <TableBody>
-                      <FlightsBookingsTableRowSkeleton />
+                      {Array.from({ length: 5 }).map((item, index) => (
+                        <React.Fragment key={`flightDataLoad-${index}`}>
+                          <FlightsBookingsTableRowSkeleton />
+                        </React.Fragment>
+                      ))}
                     </TableBody>
                   )}
 
                 {filterStatus === "hotels" &&
                   hotelLoadingState === LOADING_STATES.LOADING && (
                     <TableBody>
-                      <HotelsBookingsTableRowSkeleton />
+                      {Array.from({ length: 5 }).map((item, index) => (
+                        <React.Fragment key={`hotelDataLoad-${index}`}>
+                          <HotelsBookingsTableRowSkeleton />
+                        </React.Fragment>
+                      ))}
                     </TableBody>
                   )}
 
