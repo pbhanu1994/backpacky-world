@@ -49,6 +49,17 @@ const Bookings = () => {
   const flightBookings = useSelector((state) => state.book.flights.bookings);
   const hotelBookings = useSelector((state) => state.book.hotels.bookings);
 
+  useEffect(() => {
+    if (_.isEmpty(flightBookings) || _.isEmpty(hotelBookings)) {
+      if (_.isEmpty(flightBookings)) {
+        dispatch(getFlightBookings());
+      }
+      if (_.isEmpty(hotelBookings)) {
+        dispatch(getHotelBookings());
+      }
+    }
+  }, []);
+
   const flightBookingData = Object.values(flightBookings);
   const hotelBookingData = Object.values(hotelBookings);
 
@@ -105,17 +116,6 @@ const Bookings = () => {
   const { themeStretch } = useSettings();
   const { push } = useRouter();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (_.isEmpty(flightBookings) || _.isEmpty(hotelBookings)) {
-      if (_.isEmpty(flightBookings)) {
-        dispatch(getFlightBookings());
-      }
-      if (_.isEmpty(hotelBookings)) {
-        dispatch(getHotelBookings());
-      }
-    }
-  }, []);
 
   const TABS = [
     {
