@@ -30,6 +30,8 @@ import {
   TableHeadCustom,
   TableSearchNotFound,
 } from "../../atoms/table";
+import FlightsBookingsTableRowSkeleton from "./FlightsBookingsTableRowSkeleton";
+import HotelsBookingsTableRowSkeleton from "./HotelsBookingsTableRowSkeleton";
 import FlightsBookingsTableToolbar from "./FlightsBookingsTableToolbar";
 import FlightsBookingsTableRow from "./FlightsBookingsTableRow";
 import HotelsBookingsTableToolbar from "./HotelsBookingsTableToolbar";
@@ -37,6 +39,7 @@ import HotelsBookingsTableRow from "./HotelsBookingsTableRow";
 import useSettings from "../../../hooks/useSettings";
 import useTabs from "../../../hooks/useTabs";
 import useTable, { getComparator, emptyRows } from "../../../hooks/useTable";
+import { LOADING_STATES } from "../../../constants/loadingStates";
 import { PAGE_PATH } from "../../../constants/navigationConstants";
 import { TICKETING_AGREEMENT_OPTION_TYPE } from "../../../constants/flightBooking";
 import getFlightBookings from "../../../store/actions/book/flights/bookings/getFlightBookings";
@@ -46,19 +49,64 @@ import deleteHotelBooking from "../../../store/actions/book/hotels/bookings/dele
 import setAndShowDeleteDialog from "../../../store/actions/config/dialog/setAndShowDeleteDialog";
 
 const Bookings = () => {
-  const flightBookings = useSelector((state) => state.book.flights.bookings);
-  const hotelBookings = useSelector((state) => state.book.hotels.bookings);
+  const dispatch = useDispatch();
+  const [flightLoadingState, setFlightLoadingState] = useState(
+    LOADING_STATES.INITIAL
+  );
+  const [hotelLoadingState, setHotelLoadingState] = useState(
+    LOADING_STATES.INITIAL
+  );
+
+  const flightBookings = useSelector(
+    (state) => state.book?.flights?.bookings ?? {}
+  );
+  const hotelBookings = useSelector(
+    (state) => state.book?.hotels?.bookings ?? {}
+  );
 
   useEffect(() => {
-    if (_.isEmpty(flightBookings) || _.isEmpty(hotelBookings)) {
-      if (_.isEmpty(flightBookings)) {
-        dispatch(getFlightBookings());
-      }
-      if (_.isEmpty(hotelBookings)) {
-        dispatch(getHotelBookings());
-      }
+    // If bookings are empty and not in loading state, start fetching
+    if (!_.isEmpty(flightBookings)) {
+      setFlightLoadingState(LOADING_STATES.LOADED);
+    } else {
+      setFlightLoadingState(LOADING_STATES.LOADING);
+      dispatch(getFlightBookings())
+        .then(() => {
+          // Check if flightBookings is still empty after fetching
+          if (_.isEmpty(flightBookings)) {
+            setFlightLoadingState(LOADING_STATES.NO_RESULTS);
+          } else {
+            setFlightLoadingState(LOADING_STATES.LOADED);
+          }
+        })
+        .catch(() => setFlightLoadingState(LOADING_STATES.ERROR));
     }
-  }, []);
+
+    if (!_.isEmpty(hotelBookings)) {
+      setHotelLoadingState(LOADING_STATES.LOADED);
+    } else {
+      setHotelLoadingState(LOADING_STATES.LOADING);
+      dispatch(getHotelBookings())
+        .then(() => {
+          // Check if hotelBookings is still empty after fetching
+          if (_.isEmpty(hotelBookings)) {
+            setHotelLoadingState(LOADING_STATES.NO_RESULTS);
+          } else {
+            setHotelLoadingState(LOADING_STATES.LOADED);
+          }
+        })
+        .catch(() => setHotelLoadingState(LOADING_STATES.ERROR));
+    }
+  }, [
+    dispatch,
+    flightBookings,
+    hotelBookings,
+    flightLoadingState,
+    hotelLoadingState,
+  ]);
+
+  const { themeStretch } = useSettings();
+  const { push } = useRouter();
 
   const flightBookingData = Object.values(flightBookings);
   const hotelBookingData = Object.values(hotelBookings);
@@ -112,10 +160,6 @@ const Bookings = () => {
   const [filterHotelKeyword, setFilterHotelKeyword] = useState("");
   const [filterCheckInDate, setFilterCheckInDate] = useState(null);
   const [filterCheckOutDate, setFilterCheckOutDate] = useState(null);
-
-  const { themeStretch } = useSettings();
-  const { push } = useRouter();
-  const dispatch = useDispatch();
 
   const TABS = [
     {
@@ -346,9 +390,6 @@ const Bookings = () => {
     filterCheckOutDate,
   });
 
-  const isFlightDataNotFound = !flightDataFiltered.length;
-  const isHotelDataNotFound = !hotelDataFiltered.length;
-
   // Functions for Flights Bookings
   const handleFilterFlightKeyword = (filterFlightKeyword) => {
     setFilterFlightKeyword(filterFlightKeyword);
@@ -510,136 +551,167 @@ const Bookings = () => {
                   onSort={onSort}
                 />
 
-                <TableBody>
-                  {filterStatus === "flights" &&
-                    flightDataFiltered
-                      .slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((row) => (
-                        <FlightsBookingsTableRow
-                          key={row.bookingRef}
-                          row={row}
-                          onViewRow={() => handleViewFlightRow(row.bookingRef)}
-                          actions={
-                            <>
-                              <MenuItem
-                                onClick={() =>
-                                  handleViewFlightRow(row.bookingRef)
-                                }
-                              >
-                                <Iconify icon={"eva:eye-fill"} />
-                                View
-                              </MenuItem>
-                              <MenuItem
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  downloadFile(
-                                    row?.download?.downloadURL,
-                                    row?.download?.fileName
-                                  );
-                                }}
-                              >
-                                <Iconify icon={"eva:printer-outline"} />
-                                Print
-                              </MenuItem>
-                              <Divider />
-                              <MenuItem
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  dispatch(
-                                    setAndShowDeleteDialog(row.bookingRef, () =>
-                                      handleDeleteFlightRow(row.bookingRef)
-                                    )
-                                  );
-                                }}
-                                sx={{ color: "error.main" }}
-                              >
-                                <Iconify icon={"eva:trash-2-outline"} />
-                                Delete
-                              </MenuItem>
-                            </>
-                          }
-                        />
-                      ))}
-                  {filterStatus === "hotels" &&
-                    hotelDataFiltered
-                      .slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((row) => (
-                        <HotelsBookingsTableRow
-                          key={row.bookingRef}
-                          row={row}
-                          onViewRow={() => handleViewHotelRow(row.bookingRef)}
-                          actions={
-                            <>
-                              <MenuItem
-                                onClick={() =>
-                                  handleViewHotelRow(row.bookingRef)
-                                }
-                              >
-                                <Iconify icon={"eva:eye-fill"} />
-                                View
-                              </MenuItem>
-                              <MenuItem
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  downloadFile(
-                                    row?.download?.downloadURL,
-                                    row?.download?.fileName
-                                  );
-                                }}
-                              >
-                                <Iconify icon={"eva:printer-outline"} />
-                                Print
-                              </MenuItem>
-                              <Divider />
-                              <MenuItem
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  dispatch(
-                                    setAndShowDeleteDialog(row.bookingRef, () =>
-                                      handleDeleteHotelRow(row.bookingRef)
-                                    )
-                                  );
-                                }}
-                                sx={{ color: "error.main" }}
-                              >
-                                <Iconify icon={"eva:trash-2-outline"} />
-                                Delete
-                              </MenuItem>
-                            </>
-                          }
-                        />
-                      ))}
+                {filterStatus === "flights" &&
+                  flightLoadingState === LOADING_STATES.LOADING && (
+                    <TableBody>
+                      <FlightsBookingsTableRowSkeleton />
+                    </TableBody>
+                  )}
 
-                  {filterStatus === "flights" && (
-                    <TableEmptyRows
-                      height={dense ? 56 : 76}
-                      emptyRows={emptyRows(
-                        page,
-                        rowsPerPage,
-                        flightData.length
+                {filterStatus === "hotels" &&
+                  hotelLoadingState === LOADING_STATES.LOADING && (
+                    <TableBody>
+                      <HotelsBookingsTableRowSkeleton />
+                    </TableBody>
+                  )}
+
+                {filterStatus === "flights" &&
+                  (flightLoadingState === LOADING_STATES.NO_RESULTS ||
+                    !flightDataFiltered.length) && <TableSearchNotFound />}
+                {filterStatus === "hotels" &&
+                  (hotelLoadingState === LOADING_STATES.NO_RESULTS ||
+                    !hotelDataFiltered.length) && <TableSearchNotFound />}
+
+                {flightLoadingState === LOADING_STATES.LOADED &&
+                  hotelLoadingState === LOADING_STATES.LOADED && (
+                    <TableBody>
+                      {filterStatus === "flights" &&
+                        flightDataFiltered
+                          .slice(
+                            page * rowsPerPage,
+                            page * rowsPerPage + rowsPerPage
+                          )
+                          .map((row) => (
+                            <FlightsBookingsTableRow
+                              key={row.bookingRef}
+                              row={row}
+                              onViewRow={() =>
+                                handleViewFlightRow(row.bookingRef)
+                              }
+                              actions={
+                                <>
+                                  <MenuItem
+                                    onClick={() =>
+                                      handleViewFlightRow(row.bookingRef)
+                                    }
+                                  >
+                                    <Iconify icon={"eva:eye-fill"} />
+                                    View
+                                  </MenuItem>
+                                  <MenuItem
+                                    onClick={(event) => {
+                                      event.stopPropagation();
+                                      downloadFile(
+                                        row?.download?.downloadURL,
+                                        row?.download?.fileName
+                                      );
+                                    }}
+                                  >
+                                    <Iconify icon={"eva:printer-outline"} />
+                                    Print
+                                  </MenuItem>
+                                  <Divider />
+                                  <MenuItem
+                                    onClick={(event) => {
+                                      event.stopPropagation();
+                                      dispatch(
+                                        setAndShowDeleteDialog(
+                                          row.bookingRef,
+                                          () =>
+                                            handleDeleteFlightRow(
+                                              row.bookingRef
+                                            )
+                                        )
+                                      );
+                                    }}
+                                    sx={{ color: "error.main" }}
+                                  >
+                                    <Iconify icon={"eva:trash-2-outline"} />
+                                    Delete
+                                  </MenuItem>
+                                </>
+                              }
+                            />
+                          ))}
+                      {filterStatus === "hotels" &&
+                        hotelDataFiltered
+                          .slice(
+                            page * rowsPerPage,
+                            page * rowsPerPage + rowsPerPage
+                          )
+                          .map((row) => (
+                            <HotelsBookingsTableRow
+                              key={row.bookingRef}
+                              row={row}
+                              onViewRow={() =>
+                                handleViewHotelRow(row.bookingRef)
+                              }
+                              actions={
+                                <>
+                                  <MenuItem
+                                    onClick={() =>
+                                      handleViewHotelRow(row.bookingRef)
+                                    }
+                                  >
+                                    <Iconify icon={"eva:eye-fill"} />
+                                    View
+                                  </MenuItem>
+                                  <MenuItem
+                                    onClick={(event) => {
+                                      event.stopPropagation();
+                                      downloadFile(
+                                        row?.download?.downloadURL,
+                                        row?.download?.fileName
+                                      );
+                                    }}
+                                  >
+                                    <Iconify icon={"eva:printer-outline"} />
+                                    Print
+                                  </MenuItem>
+                                  <Divider />
+                                  <MenuItem
+                                    onClick={(event) => {
+                                      event.stopPropagation();
+                                      dispatch(
+                                        setAndShowDeleteDialog(
+                                          row.bookingRef,
+                                          () =>
+                                            handleDeleteHotelRow(row.bookingRef)
+                                        )
+                                      );
+                                    }}
+                                    sx={{ color: "error.main" }}
+                                  >
+                                    <Iconify icon={"eva:trash-2-outline"} />
+                                    Delete
+                                  </MenuItem>
+                                </>
+                              }
+                            />
+                          ))}
+
+                      {filterStatus === "flights" && (
+                        <TableEmptyRows
+                          height={dense ? 56 : 76}
+                          emptyRows={emptyRows(
+                            page,
+                            rowsPerPage,
+                            flightData.length
+                          )}
+                        />
                       )}
-                    />
+                      {filterStatus === "hotels" && (
+                        <TableEmptyRows
+                          height={dense ? 56 : 76}
+                          emptyRows={emptyRows(
+                            page,
+                            rowsPerPage,
+                            hotelData.length
+                          )}
+                        />
+                      )}
+                    </TableBody>
                   )}
-                  {filterStatus === "hotels" && (
-                    <TableEmptyRows
-                      height={dense ? 56 : 76}
-                      emptyRows={emptyRows(page, rowsPerPage, hotelData.length)}
-                    />
-                  )}
-                </TableBody>
-
-                {filterStatus === "flights" && isFlightDataNotFound && (
-                  <TableSearchNotFound />
-                )}
-                {filterStatus === "hotels" && isHotelDataNotFound && (
-                  <TableSearchNotFound />
-                )}
               </Table>
             </TableContainer>
           </Scrollbar>
