@@ -566,9 +566,11 @@ const Bookings = () => {
                   )}
 
                 {filterStatus === "flights" &&
+                  flightLoadingState !== LOADING_STATES.LOADING &&
                   (flightLoadingState === LOADING_STATES.NO_RESULTS ||
                     !flightDataFiltered.length) && <TableSearchNotFound />}
                 {filterStatus === "hotels" &&
+                  hotelLoadingState !== LOADING_STATES.LOADING &&
                   (hotelLoadingState === LOADING_STATES.NO_RESULTS ||
                     !hotelDataFiltered.length) && <TableSearchNotFound />}
 
