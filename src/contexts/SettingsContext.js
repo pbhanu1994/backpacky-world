@@ -138,6 +138,8 @@ function SettingsProvider({ children }) {
   const uid = useSelector((state) => state.auth.user?.uid);
 
   useEffect(() => {
+    if (!uid) return;
+
     const getThemeSettings = async () => {
       try {
         const themeSettingsDocRef = doc(db, "settings", uid, "theme", uid);
@@ -158,7 +160,7 @@ function SettingsProvider({ children }) {
     };
 
     getThemeSettings();
-  }, []);
+  }, [uid]);
 
   const updateThemeSettings = (updatedSettings) => {
     try {
