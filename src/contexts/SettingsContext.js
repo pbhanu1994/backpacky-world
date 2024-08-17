@@ -1,4 +1,4 @@
-import { useEffect, createContext } from "react";
+import { useState, useEffect, createContext } from "react";
 import { useSelector } from "react-redux";
 import { db } from "../handlers/firebaseClient";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -117,9 +117,6 @@ const initialState = {
   onToggleStretch: () => {},
   setColor: PRIMARY_COLOR[0],
   colorOption: [],
-  themeSidebarOpen: false,
-  onToggleThemeSidebar: () => {},
-  onCloseThemeSidebar: () => {},
 };
 
 const SettingsContext = createContext(initialState);
@@ -134,8 +131,9 @@ function SettingsProvider({ children }) {
     themeDirection: initialState.themeDirection,
     themeColor: initialState.themeColor,
     themeStretch: initialState.themeStretch,
-    themeSidebarOpen: initialState.themeSidebarOpen,
   });
+
+  const [themeSidebarOpen, setThemeSidebarOpen] = useState(false);
 
   const uid = useSelector((state) => state.auth.user?.uid);
 
@@ -210,17 +208,11 @@ function SettingsProvider({ children }) {
 
   // Theme Sidebar
   const onToggleThemeSidebar = () => {
-    setSettings({
-      ...settings,
-      themeSidebarOpen: !settings.themeSidebarOpen,
-    });
+    setThemeSidebarOpen((prev) => !prev);
   };
 
   const onCloseThemeSidebar = () => {
-    setSettings({
-      ...settings,
-      themeSidebarOpen: false,
-    });
+    setThemeSidebarOpen(false);
   };
 
   return (
@@ -241,6 +233,7 @@ function SettingsProvider({ children }) {
         // Stretch
         onToggleStretch,
         // ThemeSidebar
+        themeSidebarOpen,
         onToggleThemeSidebar,
         onCloseThemeSidebar,
       }}
