@@ -12,6 +12,8 @@ import GlobalStyles from "../src/theme/globalStyles";
 import createEmotionCache from "../src/handlers/createEmotionCache";
 import { AuthProvider } from "../src/handlers/auth";
 import ThemePrimaryColor from "../src/components/ThemePrimaryColor";
+import Settings from "../src/components/templates/Settings";
+import RtlLayout from "../src/components/atoms/RtlLayout";
 // material
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -39,35 +41,36 @@ function MyApp(props) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <SettingsProvider>
-        <CollapseDrawerProvider>
-          <CacheProvider value={emotionCache}>
-            <React.Fragment>
-              <Head>
-                <meta
-                  name="viewport"
-                  content="minimum-scale=1, initial-scale=1, width=device-width"
-                />
-              </Head>
-              <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                  <ThemeConfig>
-                    <ThemePrimaryColor>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <SettingsProvider>
+            <CollapseDrawerProvider>
+              <CacheProvider value={emotionCache}>
+                <Head>
+                  <meta
+                    name="viewport"
+                    content="minimum-scale=1, initial-scale=1, width=device-width"
+                  />
+                </Head>
+                <ThemeConfig>
+                  <ThemePrimaryColor>
+                    <RtlLayout>
                       <AuthProvider>
                         <GlobalStyles />
+                        <Settings />
                         <Component {...pageProps} />
                         {/* Adding the Toast, dialog box - modals, etc. */}
                         <Toast selector="#toast" />
                         <Dialog selector="#dialog" />
                       </AuthProvider>
-                    </ThemePrimaryColor>
-                  </ThemeConfig>
-                </PersistGate>
-              </Provider>
-            </React.Fragment>
-          </CacheProvider>
-        </CollapseDrawerProvider>
-      </SettingsProvider>
+                    </RtlLayout>
+                  </ThemePrimaryColor>
+                </ThemeConfig>
+              </CacheProvider>
+            </CollapseDrawerProvider>
+          </SettingsProvider>
+        </PersistGate>
+      </Provider>
     </LocalizationProvider>
   );
 }

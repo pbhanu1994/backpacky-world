@@ -1,5 +1,8 @@
+import { useEffect, createContext } from "react";
+import { useSelector } from "react-redux";
+import { db } from "../handlers/firebaseClient";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import PropTypes from "prop-types";
-import { createContext } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import palette from "../theme/palette";
 
@@ -114,6 +117,9 @@ const initialState = {
   onToggleStretch: () => {},
   setColor: PRIMARY_COLOR[0],
   colorOption: [],
+  themeSidebarOpen: false,
+  onToggleThemeSidebar: () => {},
+  onCloseThemeSidebar: () => {},
 };
 
 const SettingsContext = createContext(initialState);
@@ -128,33 +134,92 @@ function SettingsProvider({ children }) {
     themeDirection: initialState.themeDirection,
     themeColor: initialState.themeColor,
     themeStretch: initialState.themeStretch,
+    themeSidebarOpen: initialState.themeSidebarOpen,
   });
 
+  const uid = useSelector((state) => state.auth.user?.uid);
+
+  useEffect(() => {
+    const getThemeSettings = async () => {
+      try {
+        const themeSettingsDocRef = doc(db, "settings", uid, "theme", uid);
+        const themeSettingsDocSnap = await getDoc(themeSettingsDocRef);
+
+        if (themeSettingsDocSnap.exists()) {
+          const data = themeSettingsDocSnap.data();
+          setSettings({
+            themeMode: data.themeMode || initialState.themeMode,
+            themeDirection: data.themeDirection || initialState.themeDirection,
+            themeColor: data.themeColor || initialState.themeColor,
+            themeStretch: data.themeStretch || initialState.themeStretch,
+          });
+        }
+      } catch (error) {
+        console.error("Failed to fetch theme settings:", error);
+      }
+    };
+
+    getThemeSettings();
+  }, []);
+
+  const updateThemeSettings = (updatedSettings) => {
+    try {
+      const themeSettingsDocRef = doc(db, "settings", uid, "theme", uid);
+
+      setDoc(themeSettingsDocRef, updatedSettings, { merge: true });
+    } catch (error) {
+      console.error("Failed to save theme settings:", error);
+    }
+  };
+
   const onChangeMode = (event) => {
-    setSettings({
+    const updatedSettings = {
       ...settings,
       themeMode: event.target.value,
-    });
+    };
+    setSettings(updatedSettings);
+    updateThemeSettings(updatedSettings);
   };
 
   const onChangeDirection = (event) => {
-    setSettings({
+    const updatedSettings = {
       ...settings,
       themeDirection: event.target.value,
-    });
+    };
+    setSettings(updatedSettings);
+    updateThemeSettings(updatedSettings);
   };
 
   const onChangeColor = (event) => {
-    setSettings({
+    const updatedSettings = {
       ...settings,
       themeColor: event.target.value,
-    });
+    };
+    setSettings(updatedSettings);
+    updateThemeSettings(updatedSettings);
   };
 
   const onToggleStretch = () => {
-    setSettings({
+    const updatedSettings = {
       ...settings,
       themeStretch: !settings.themeStretch,
+    };
+    setSettings(updatedSettings);
+    updateThemeSettings(updatedSettings);
+  };
+
+  // Theme Sidebar
+  const onToggleThemeSidebar = () => {
+    setSettings({
+      ...settings,
+      themeSidebarOpen: !settings.themeSidebarOpen,
+    });
+  };
+
+  const onCloseThemeSidebar = () => {
+    setSettings({
+      ...settings,
+      themeSidebarOpen: false,
     });
   };
 
@@ -175,6 +240,9 @@ function SettingsProvider({ children }) {
         })),
         // Stretch
         onToggleStretch,
+        // ThemeSidebar
+        onToggleThemeSidebar,
+        onCloseThemeSidebar,
       }}
     >
       {children}

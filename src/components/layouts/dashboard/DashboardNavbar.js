@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import { Icon } from "@iconify/react";
 import menu2Fill from "@iconify/icons-eva/menu-2-fill";
+import options2Fill from "@iconify/icons-eva/options-2-fill";
 import { alpha, styled } from "@mui/material/styles";
 import { Box, Stack, AppBar, Toolbar, IconButton } from "@mui/material";
+import { MIconButton } from "../../@material-extend";
 import useCollapseDrawer from "../../../hooks/useCollapseDrawer";
 import { MHidden } from "../../@material-extend";
 import Searchbar from "./Searchbar";
@@ -10,6 +12,7 @@ import AccountPopover from "./AccountPopover";
 import LanguagePopover from "./LanguagePopover";
 import ContactsPopover from "./ContactsPopover";
 import NotificationsPopover from "./NotificationsPopover";
+import useSettings from "../../../hooks/useSettings";
 
 const DRAWER_WIDTH = 280;
 const COLLAPSE_WIDTH = 102;
@@ -37,6 +40,7 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
 
 const DashboardNavbar = ({ onOpenSidebar }) => {
   const { isCollapse } = useCollapseDrawer();
+  const { themeSidebarOpen, onToggleThemeSidebar } = useSettings();
 
   return (
     <RootStyle
@@ -67,6 +71,13 @@ const DashboardNavbar = ({ onOpenSidebar }) => {
           <LanguagePopover />
           <NotificationsPopover />
           <ContactsPopover />
+          <MIconButton
+            size="large"
+            color={themeSidebarOpen ? "primary" : "default"}
+            onClick={onToggleThemeSidebar}
+          >
+            <Icon icon={options2Fill} width={20} height={20} />
+          </MIconButton>
           <AccountPopover />
         </Stack>
       </ToolbarStyle>
