@@ -1,13 +1,14 @@
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import SignUpComponent from "../src/components/templates/SignUp";
-import { useAuth } from "../src/handlers/auth";
 
 export default function SignUp() {
-  const { user } = useAuth();
+  const user = useSelector((state) => state.auth.user);
   const router = useRouter();
 
-  if (user && user.uid) {
+  if (user) {
     router.push("/home");
+    return;
   }
   return <SignUpComponent />;
 }

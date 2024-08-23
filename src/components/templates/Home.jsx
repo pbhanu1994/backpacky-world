@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { useRouter } from "next/router";
 import { Container, Typography } from "@mui/material";
 import DashboardLayout from "../layouts/dashboard";
 import useSettings from "../../hooks/useSettings";
@@ -16,9 +15,8 @@ const Home = ({ userId }) => {
   // const router = useRouter();
   const dispatch = useDispatch();
   const { themeStretch } = useSettings();
-  const {
-    user: { displayName },
-  } = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth?.user);
+  const displayName = user?.displayName ?? "";
 
   useEffect(() => {
     // Journal - Pack items

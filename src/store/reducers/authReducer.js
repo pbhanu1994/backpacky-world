@@ -2,6 +2,7 @@ import {
   SIGNUP_USER,
   SIGNIN_USER,
   SIGNIN_WITH_SOCIAL_ACCOUNT,
+  SIGN_OUT,
 } from "../actionTypes/auth";
 
 const initialState = {
@@ -20,6 +21,10 @@ export const authReducer = (state = initialState, action) => {
 
     case SIGNIN_WITH_SOCIAL_ACCOUNT: {
       return { ...state, user: action.payload };
+    }
+
+    case SIGN_OUT: {
+      return { user: null };
     }
 
     default:

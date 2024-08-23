@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from "react";
-import Head from "next/head";
-import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { useAuth } from "../src/handlers/auth";
 import LandingComponent from "../src/components/templates/Landing";
 import styles from "../styles/Home.module.css";
 
 export default function Landing() {
-  const { user } = useAuth();
+  const user = useSelector((state) => state.auth.user);
   const router = useRouter();
 
-  if (user && user.uid) {
+  if (user) {
     router.push("/home");
+    return;
   }
   return <LandingComponent />;
 }

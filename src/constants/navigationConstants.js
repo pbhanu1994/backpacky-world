@@ -1,7 +1,9 @@
 export const PAGE_PATH = {
+  LANDING: "/",
   SIGNIN: "/signin/",
   SIGNUP: "/signup/",
   RESET_PASSWORD: "/resetPassword/",
+  LOGOUT: "/logout/",
   HOME: "/home/",
   PROFILE: "/profile/",
   BOOK: "/book/",

@@ -1,10 +1,12 @@
 import { useState, useEffect, createContext } from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import { db } from "../handlers/firebaseClient";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import PropTypes from "prop-types";
 import useLocalStorage from "../hooks/useLocalStorage";
 import palette from "../theme/palette";
+import { PAGE_PATH } from "../constants/navigationConstants";
 
 const PRIMARY_COLOR = [
   // DEFAULT
@@ -133,25 +135,39 @@ function SettingsProvider({ children }) {
     themeStretch: initialState.themeStretch,
   });
 
+  const router = useRouter();
+  const { asPath } = router;
+
   const [themeSidebarOpen, setThemeSidebarOpen] = useState(false);
 
   const uid = useSelector((state) => state.auth.user?.uid);
 
   useEffect(() => {
-    if (!uid) return;
-
     const getThemeSettings = async () => {
       try {
-        const themeSettingsDocRef = doc(db, "settings", uid, "theme", uid);
-        const themeSettingsDocSnap = await getDoc(themeSettingsDocRef);
+        if (uid) {
+          const themeSettingsDocRef = doc(db, "settings", uid, "theme", uid);
+          const themeSettingsDocSnap = await getDoc(themeSettingsDocRef);
 
-        if (themeSettingsDocSnap.exists()) {
-          const data = themeSettingsDocSnap.data();
+          if (themeSettingsDocSnap.exists()) {
+            const data = themeSettingsDocSnap.data();
+            setSettings({
+              themeMode: data.themeMode || initialState.themeMode,
+              themeDirection:
+                data.themeDirection || initialState.themeDirection,
+              themeColor: data.themeColor || initialState.themeColor,
+              themeStretch: data.themeStretch || initialState.themeStretch,
+            });
+          }
+        }
+        // TODO: Check with an experienced dev if this is a good approach
+        // Resetting Theme Settings
+        if (!uid && asPath === PAGE_PATH.LANDING) {
           setSettings({
-            themeMode: data.themeMode || initialState.themeMode,
-            themeDirection: data.themeDirection || initialState.themeDirection,
-            themeColor: data.themeColor || initialState.themeColor,
-            themeStretch: data.themeStretch || initialState.themeStretch,
+            themeMode: initialState.themeMode,
+            themeDirection: initialState.themeDirection,
+            themeColor: initialState.themeColor,
+            themeStretch: initialState.themeStretch,
           });
         }
       } catch (error) {
@@ -160,7 +176,7 @@ function SettingsProvider({ children }) {
     };
 
     getThemeSettings();
-  }, [uid]);
+  }, [uid, asPath]);
 
   const updateThemeSettings = (updatedSettings) => {
     try {

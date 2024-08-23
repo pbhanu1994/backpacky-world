@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
 import homeFill from "@iconify/icons-eva/home-fill";
 import personFill from "@iconify/icons-eva/person-fill";
@@ -17,7 +18,7 @@ import {
 } from "@mui/material";
 import { MenuPopover } from "../../atoms/MenuPopover";
 import { MIconButton } from "../../@material-extend";
-import signOutUser from "../../../store/actions/auth/signOutUser";
+import { PAGE_PATH } from "../../../constants/navigationConstants";
 
 const MENU_OPTIONS = [
   { label: "Home", icon: homeFill, linkTo: "/" },
@@ -27,11 +28,11 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const anchorRef = useRef(null);
-  const dispatch = useDispatch();
+  const router = useRouter();
 
-  const {
-    user: { displayName, email },
-  } = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth?.user);
+  const displayName = user?.displayName ?? "";
+  const email = user?.email ?? "";
 
   const [open, setOpen] = useState(false);
 
@@ -125,7 +126,7 @@ export default function AccountPopover() {
             fullWidth
             color="inherit"
             variant="outlined"
-            onClick={() => dispatch(signOutUser())}
+            onClick={() => router.push(PAGE_PATH.LOGOUT)}
           >
             Logout
           </Button>

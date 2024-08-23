@@ -102,9 +102,8 @@ function IconCollapse({
 const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
   const [mouseEnter, setMouseEnter] = useState(false);
   const { pathname } = useRouter();
-  const {
-    user: { displayName },
-  } = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth?.user);
+  const displayName = user?.displayName ?? "";
 
   const { isCollapse, collapseClick, collapseHover, onToggleCollapse } =
     useCollapseDrawer();

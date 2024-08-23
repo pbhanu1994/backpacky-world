@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import dynamic from "next/dynamic";
 import App from "next/app";
 import Head from "next/head";
+import cookie from "js-cookie";
+import { auth } from "../src/handlers/firebaseClient";
 import { CacheProvider } from "@emotion/react";
 import { Provider } from "react-redux";
 import { createWrapper } from "next-redux-wrapper";
@@ -10,7 +12,6 @@ import store, { persistor } from "../src/store/store";
 import ThemeConfig from "../src/theme";
 import GlobalStyles from "../src/theme/globalStyles";
 import createEmotionCache from "../src/handlers/createEmotionCache";
-import { AuthProvider } from "../src/handlers/auth";
 import ThemePrimaryColor from "../src/components/ThemePrimaryColor";
 import Settings from "../src/components/templates/Settings";
 import RtlLayout from "../src/components/atoms/RtlLayout";
@@ -39,6 +40,26 @@ const clientSideEmotionCache = createEmotionCache();
 function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
+  useEffect(() => {
+    return auth.onIdTokenChanged(async (user) => {
+      if (!user) {
+        cookie.remove("__session");
+        return;
+      }
+      const token = await user.getIdToken();
+      cookie.set("__session", token);
+    });
+  }, []);
+
+  useEffect(() => {
+    const handle = setInterval(async () => {
+      const user = auth.currentUser;
+      if (user) await user.getIdToken(true);
+    }, 10 * 60 * 1000);
+
+    return () => clearInterval(handle);
+  }, []);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Provider store={store}>
@@ -55,14 +76,12 @@ function MyApp(props) {
                 <ThemeConfig>
                   <ThemePrimaryColor>
                     <RtlLayout>
-                      <AuthProvider>
-                        <GlobalStyles />
-                        <Settings />
-                        <Component {...pageProps} />
-                        {/* Adding the Toast, dialog box - modals, etc. */}
-                        <Toast selector="#toast" />
-                        <Dialog selector="#dialog" />
-                      </AuthProvider>
+                      <GlobalStyles />
+                      <Settings />
+                      <Component {...pageProps} />
+                      {/* Adding the Toast, dialog box - modals, etc. */}
+                      <Toast selector="#toast" />
+                      <Dialog selector="#dialog" />
                     </RtlLayout>
                   </ThemePrimaryColor>
                 </ThemeConfig>
