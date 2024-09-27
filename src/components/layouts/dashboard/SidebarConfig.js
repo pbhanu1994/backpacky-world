@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import homeIcon from "@iconify/icons-eva/home-outline";
 import bookIcon from "@iconify/icons-eva/file-text-outline";
-import planIcon from "@iconify/icons-eva/compass-outline";
+import exploreIcon from "@iconify/icons-eva/compass-outline";
 // import journalIcon from "@iconify/icons-eva/book-outline";
 import travelBudgetIcon from "@iconify/icons-ic/outline-attach-money";
 // import chatIcon from "@iconify/icons-eva/message-circle-outline";
@@ -21,10 +21,15 @@ const sidebarConfig = [
         path: PAGE_PATH.HOME,
         icon: <Icon icon={homeIcon} width={20} height={20} />,
       },
+      // {
+      //   title: "Plan",
+      //   path: PAGE_PATH.PLAN,
+      //   icon: <Icon icon={exploreIcon} width={20} height={20} />,
+      // },
       {
-        title: "Plan",
-        path: PAGE_PATH.PLAN,
-        icon: <Icon icon={planIcon} width={20} height={20} />,
+        title: "Explore",
+        path: PAGE_PATH.EXPLORE,
+        icon: <Icon icon={exploreIcon} width={20} height={20} />,
       },
       // {
       //   title: "Journal",

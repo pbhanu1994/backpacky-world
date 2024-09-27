@@ -40,6 +40,7 @@ const clientSideEmotionCache = createEmotionCache();
 function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
+  // Listening to Firebase Authentication - onIdTokenChanged
   useEffect(() => {
     return auth.onIdTokenChanged(async (user) => {
       if (!user) {
